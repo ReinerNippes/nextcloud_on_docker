@@ -1,0 +1,21 @@
+---
+# tasks file to start adminer container
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} adminer container"
+  docker_container:
+    name: adminer
+    image: adminer:{{ docker_adminer_image }}
+    restart_policy: always
+    tty: yes
+    links: nextcloud-db:db
+    networks:
+      - name: backend
+      - name: frontend
+    labels:
+      traefik.docker.network: "frontend"
+      traefik.enable:         "true"
+      traefik.frontend.rule:  "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/adminer"
+      traefik.port:           "8080"
+      traefik.protocol:       "http"
+    state: "{{ state | default('started') }}"
+      

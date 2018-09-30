@@ -1,0 +1,67 @@
+---
+
+- name: generate admin passwd if nextcloud_passwd is empty
+  set_fact:
+    nextcloud_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/nextcloud_admin_secret chars=ascii_letters,digits length=32') }}"
+  when: nextcloud_passwd == ''
+
+
+- name: first setup nextcloud
+  shell: |
+    docker exec --user www-data nextcloud php occ  maintenance:install \
+    --database {{ nextcloud_db_type }} --database-host db --database-name {{ nextcloud_db_name }} \
+    --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} \
+    --database-pass {{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }} \
+    --admin-user {{ nextcloud_admin }} --admin-pass {{ nextcloud_passwd }} --data-dir {{ nextcloud_datadir }}
+  args:
+    creates: "{{ nextcloud_config_dir }}/config.php"
+  register: setup_nc
+
+- name: set nextcloud system config.php values
+  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
+  loop: "{{ nextccloud_system_config }}"
+
+- name: set nextcloud mail config.php values
+  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
+  loop: "{{ nextccloud_mail_config }}"
+  when: nextcloud_configure_mail
+
+- name: set nextcloud app settings
+  shell: docker exec --user www-data nextcloud php occ app:{{ item }}
+  loop: "{{ nextcloud_app_config }}"
+
+- name: backup jobs, upgrade apps and database tuning
+  shell: docker exec --user www-data nextcloud php occ {{ item }}
+  loop:
+    - background:cron
+    - upgrade
+    - db:add-missing-indices
+    - db:convert-filecache-bigint
+
+- name: create optimize batch job
+  copy:
+    dest: /usr/local/bin/nextcloud_optimize.sh
+    owner: root
+    group: root
+    mode: 0755
+    content: |
+      #!/bin/bash
+      docker exec redis redis-cli -a {{ lookup('password', '{{ nextcloud_credential_store }}/redis_secret chars=ascii_letters,digits length=32') }} FLUSHALL
+      docker exec --user www-data nextcloud php occ files:scan --all
+      docker exec --user www-data nextcloud php occ files:scan-app-data
+      exit 0
+      
+- name: nextcloud cronjob
+  cron:
+    name: nextcloud cronjob
+    minute: '15'
+    hour:   '01'
+    user: root
+    job: "/usr/local/bin/nextcloud_optimize.sh > /dev/null 2>&1"
+
+- name: nextcloud cronjob
+  cron:
+    name: nextcloud cronjob
+    minute: '*/15'
+    user: root
+    job: "sudo docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"

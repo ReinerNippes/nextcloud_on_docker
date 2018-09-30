@@ -1,0 +1,55 @@
+---
+# tasks file for docker_traefik
+
+- name: install python docker
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - pip
+    - passlib
+    - bcrypt
+
+- name: ensures traefik dir exists
+  file:
+    path: "{{ traefik_config_dir }}"
+    state: directory
+    owner: root
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+
+- name: ensures acme.json file exists
+  file:
+    path:  "{{ traefik_config_dir }}/acme.json"
+    state: touch
+    owner: root
+    group: root
+    mode:  0600
+
+- name: adding traefik.toml file
+  template:
+    src:     traefik.toml.j2
+    dest:    "{{ traefik_config_dir }}/traefik.toml"
+    owner:   root
+    group:   root
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik container"
+  docker_container:
+    name: traefik
+    image: traefik:{{ docker_traefik_image | default('latest') }}
+    restart_policy: unless-stopped
+    networks:
+      - name: frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "{{ traefik_config_dir }}/traefik.toml:/etc/traefik/traefik.toml"
+      - "{{ traefik_config_dir }}/acme.json:/acme.json"
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      traefik.frontend.rule:                   "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/traefik"
+      traefik.docker.network:                  "frontend"
+      traefik.port:                            "8080"
+      traefik.enable:                          "true"
+    state: "{{ state | default('started') }}"
+      

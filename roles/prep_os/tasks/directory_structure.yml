@@ -1,0 +1,50 @@
+---
+# create all diretories
+
+- name: make sure {{ nextcloud_base_dir }} is present
+  file:
+    name: "{{ nextcloud_base_dir }}"
+    owner: "{{ ansible_env.SUDO_USER | default('root') }}"
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    state: directory
+
+- name: make sure {{ nextcloud_credential_store }} is present
+  file: 
+    name: '{{ nextcloud_credential_store }}'
+    owner: "{{ ansible_env.SUDO_USER | default('root') }}"
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    mode:  0700
+    state: directory
+
+- name: make sure nextcloud directoies are present
+  file:
+    name:  "{{ item }}"
+    mode:  0750
+    owner: 33
+    group: 33
+    state: directory
+  loop:
+    - "{{ nextcloud_config_dir }}"
+    - "{{ nextcloud_data_dir }}"
+    - "{{ nextcloud_www_dir }}"
+
+- name: make sure {{ traefik_config_dir }} is present
+  file:
+    name:  "{{ traefik_config_dir }}"
+    mode:  0750
+    owner: root
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    state: directory
+
+- name: selinux targets
+  sefcontext:
+    target: "{{ item }}"
+    setype: container_var_lib_t
+    state: present
+  loop: 
+    - '{{ nextcloud_base_dir }}(/.*)?'
+  when: ansible_os_family == "RedHat"
+
+- name: restorecon 
+  command: restorecon -Rv '{{ nextcloud_base_dir }}'
+  when: ansible_os_family == "RedHat"

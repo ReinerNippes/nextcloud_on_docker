@@ -1,0 +1,43 @@
+---
+# tasks file to start nextcloud container
+
+- name: copy php.ini to {{ nextcloud_config_dir }}
+  copy:
+    src:  "php.ini"
+    dest: "{{ nextcloud_config_dir }}/php.ini"
+    owner: 33
+    group: 33
+    mode: 0644
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the nextcloud container"
+  docker_container:
+    name: nextcloud
+    image: nextcloud:{{ docker_nextcloud_image | default('latest') }}
+    restart_policy: always
+    networks:
+      - name: backend
+      - name: frontend
+    links: "{{ nextcloud_db_link[nextcloud_db_type] | default(omit) }}"
+    volumes:
+      - "{{ nextcloud_www_dir }}:/var/www/html"
+      - "{{ nextcloud_config_dir }}:/var/www/html/config"
+      - "{{ nextcloud_data_dir }}:/var/nc-data"
+      - "{{ nextcloud_config_dir }}/php.ini:/usr/local/etc/php/php.ini"
+    env: 
+      "{{ nextcloud_docker_env[nextcloud_db_type] }}"
+    labels:
+      traefik.docker.network: "frontend"
+      traefik.enable:         "true"
+      traefik.frontend.rule:  "Host:{{ nextcloud_server_fqdn }}"
+      traefik.port:           "80"
+      traefik.protocol:       "http"
+      traefik.frontend.headers.STSSeconds: "15768000"
+      traefik.frontend.headers.referrerPolicy: "no-referrer"
+    state: "{{ state | default('started') }}"
+  register: docker_result
+    
+- name: wait for nextcloud container to come up
+  wait_for:
+    delay: 10
+    path: "{{ nextcloud_www_dir }}/lib/versioncheck.php"
+  when: state is undefined or 'absent' not in state
