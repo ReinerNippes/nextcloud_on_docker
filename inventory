@@ -70,7 +70,8 @@ online_office     = none
 # Install turn server for Nextcloud Talk
 # talk_install         = true
 
-# adminer is a webfront end for your database
+# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
+# password stored in {{ nextcloud_base_dir }}/secrets
 adminer_enabled      = true
 
 # user for traefik dashboard at https://nextcloud_server_fqdn/traefik
