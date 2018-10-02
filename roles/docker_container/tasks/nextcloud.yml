@@ -21,7 +21,7 @@
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html"
       - "{{ nextcloud_config_dir }}:/var/www/html/config"
-      - "{{ nextcloud_data_dir }}:/var/nc-data"
+      - "{{ nextcloud_data_dir }}:{{ nextcloud_container_data_dir }}"
       - "{{ nextcloud_config_dir }}/php.ini:/usr/local/etc/php/php.ini"
     env: 
       "{{ nextcloud_docker_env[nextcloud_db_type] }}"

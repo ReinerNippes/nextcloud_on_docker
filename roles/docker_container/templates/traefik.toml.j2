@@ -51,12 +51,13 @@ address = ":8080"
                      "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", 
                      "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"]
 
+{% if traefik_api_user is defined %}
   [entryPoints.traefik]
     address = ":8080"
     [entryPoints.traefik.auth]
       [entryPoints.traefik.auth.basic]
         users = ["{{ traefik_api_user }}:{{ lookup('password', '{{ nextcloud_credential_store }}/traefik_api_password chars=ascii_letters,digits length=32') | password_hash('blowfish','1234567890123456789012') }}"]
-
+{% endif %}
 ################################################################
 # Traefik logs configuration
 ################################################################

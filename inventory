@@ -6,14 +6,10 @@ connection=local
 
 # 
 # Your domain name to get a letsencrypt certificate
-nextcloud_server_fqdn       = ec2-52-73-200-8.compute-1.amazonaws.com
+nextcloud_server_fqdn       = nextcloud.example.org
 
 # Your email adresse for letsencrypt
-ssl_cert_email = nextcloud@example.local
-
-# receive a certificate from from staging
-# uncomment if you want to use letsencrypt staging environment
-# cert_stage = '--staging'
+ssl_cert_email = nextcloud@example.org
 
 # Your dns resolver (nginx reverse ip lookup)
 # e.g. your fritz.box ; default ist google dns server 8.8.8.8
@@ -22,16 +18,19 @@ nginx_resolver = '8.8.8.8'
 # Nextcloud varibales
 
 # data dir
-nextcloud_datadir    = /var/nc-data
+nextcloud_base_dir          = /opt/nextcloud
 
 # admin user
 nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
 
-# database settings
-#nextcloud_db_type           = 'mysql'        # (MariaDB)
-nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
-#nextcloud_db_type           = 'sqlite'        # (SQLite)
+# database settings (choose one)
+# nextcloud_db_type           = 'mysql'        # (MariaDB)
+# nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
+
+nextcloud_db_type           = 'sqlite'        # (SQLite)
+
+# options for mariadb or postgres
 nextcloud_db_host           = 'localhost'
 nextcloud_db_name           = 'nextcloud'
 nextcloud_db_user           = 'nextcloud'
@@ -52,9 +51,6 @@ nextcloud_mail_smtpport     = 587
 nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      = 
 
-# Allways get the latest version of Nextcloud
-nextcloud_version     = latest
-
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
 backup_folder        = '' # e.g. /var/nc-backup
@@ -72,14 +68,11 @@ online_office     = none
 # online_office     = onlyoffice
 
 # Install turn server for Nextcloud Talk
-talk_install         = true
+# talk_install         = true
 
 # adminer is a webfront end for your database
 adminer_enabled      = true
 
-# 
-# change dhparam numbits if generating takes to long
-dhparam_numbits = 1024
-
-traefik_api_user      = traefik
+# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
+# traefik_api_user      = traefik
 

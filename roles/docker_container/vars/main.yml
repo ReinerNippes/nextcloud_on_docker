@@ -9,7 +9,7 @@ nextcloud_docker_env:
       POSTGRES_PASSWORD:        "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
       NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
       NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "/var/nc-data"
+      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
       NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}"
   mysql:
       MYSQL_HOST:               db
@@ -18,13 +18,13 @@ nextcloud_docker_env:
       MYSQL_PASSWORD:           "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
       NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
       NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "/var/nc-data"
+      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
       NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}" 
   sqlite:
       SQLITE_DATABASE:          "{{ nextcloud_db_name }}"
       NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
       NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "/var/nc-data"
+      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
       NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}" 
 
 nextcloud_db_link:

@@ -7,7 +7,10 @@ nextcloud_data_dir:            "{{ nextcloud_base_dir }}/data"
 nextcloud_www_dir:             "{{ nextcloud_base_dir }}/www"
 nextcloud_config_dir:          "{{ nextcloud_base_dir }}/config"
 nextcloud_database_dir:        "{{ nextcloud_base_dir }}/database"
+
 traefik_config_dir:            "{{ nextcloud_base_dir }}/traefik"
+
+nextcloud_container_data_dir:  /var/nc-data
 
 docker_postgres_image:         10-alpine
 docker_mysql_image:            latest
@@ -16,30 +19,4 @@ docker_adminer_image:          latest
 docker_traefik_image:          alpine
 docker_watchtower_image:       latest
 docker_redis_image:            4-alpine
-
-
-web_user:
-  'CentOS': 'nginx'
-  'Amazon': 'nginx'
-  'Ubuntu': 'www-data'
-  'Debian': 'www-data'
-
-web_group:
-  'CentOS': 'nginx'
-  'Amazon': 'nginx'
-  'Ubuntu': 'www-data'
-  'Debian': 'www-data'
-
-pg_user_id:
-  'CentOS': '70'
-  'Amazon': '70'
-  'Ubuntu': '70'
-  'Debian': '70'
-
-pg_group_id:
-  'CentOS': '70'
-  'Amazon': '70'
-  'Ubuntu': '70'
-  'Debian': '70'
-
 

@@ -20,4 +20,3 @@
           - "Login with user: {{ nextcloud_admin }} and password: {{ nextcloud_passwd }} "
           - "Other secrets you'll find in the directory {{ nextcloud_credential_store }} "
       when: (state is undefined or 'absent' not in state)
-
