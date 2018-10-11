@@ -19,18 +19,18 @@
 
 - name: install needed packages
   yum:
-    name: "{{ item }}"
+    name:
+      - zip
+      - unzip
+      - bzip2
+      - screen
+      - python2-pip
+      - curl
+      - wget
+      - facter
+      - policycoreutils-python
     state: latest
     enablerepo: epel 
-  with_items:
-    - zip
-    - unzip
-    - bzip2
-    - screen
-    - python2-pip
-    - curl
-    - wget
-    - facter
 
 - name: turn on selinux
   selinux:
