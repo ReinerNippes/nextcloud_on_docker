@@ -14,9 +14,9 @@ nextcloud_container_data_dir:  /var/nc-data
 
 docker_postgres_image:         10-alpine
 docker_mysql_image:            latest
-docker_nextcloud_image:        latest
+docker_nextcloud_image:        fpm-alpine
+docker_nginx_image:            alpine
 docker_adminer_image:          latest
 docker_traefik_image:          alpine
 docker_watchtower_image:       latest
 docker_redis_image:            4-alpine
-
