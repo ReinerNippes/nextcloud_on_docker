@@ -6,10 +6,10 @@ connection=local
 
 # 
 # Your domain name to get a letsencrypt certificate
-nextcloud_server_fqdn       = nextcloud.example.org
+nextcloud_server_fqdn       = ec2-18-207-103-222.compute-1.amazonaws.com
 
 # Your email adresse for letsencrypt
-ssl_cert_email = nextcloud@example.org
+ssl_cert_email = reiner@nippes.it
 
 # Your dns resolver (nginx reverse ip lookup)
 # e.g. your fritz.box ; default ist google dns server 8.8.8.8
@@ -25,10 +25,10 @@ nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
 
 # database settings (choose one)
-# nextcloud_db_type           = 'mysql'        # (MariaDB)
+nextcloud_db_type           = 'mysql'        # (MariaDB)
 # nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
 
-nextcloud_db_type           = 'sqlite'        # (SQLite)
+# nextcloud_db_type           = 'sqlite'        # (SQLite)
 
 # options for mariadb or postgres
 nextcloud_db_host           = 'localhost'

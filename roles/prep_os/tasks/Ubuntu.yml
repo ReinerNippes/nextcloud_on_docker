@@ -8,16 +8,15 @@
 
 - name: install additional packages
   apt:
-    name: "{{ item }}"
+    name:
+      - zip
+      - unzip
+      - bzip2
+      - screen
+      - curl
+      - language-pack-en-base
+      - software-properties-common
+      - facter
+      - unattended-upgrades
+      - gnupg2
     state: latest
-  with_items:
-    - zip
-    - unzip
-    - bzip2
-    - screen
-    - curl
-    - language-pack-en-base
-    - software-properties-common
-    - facter
-    - unattended-upgrades
-    - gnupg2

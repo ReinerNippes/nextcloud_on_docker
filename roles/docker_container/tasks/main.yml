@@ -21,12 +21,16 @@
 - name: docker adminer
   include_tasks: adminer.yml
   when: adminer_enabled and nextcloud_db_type != 'sqlite'
-  
+
 - name: docker nextcloud
   include_tasks: nextcloud.yml
 
+- name: docker nginx
+  include_tasks: nginx.yml
+  when: "'fpm' in docker_nextcloud_image"
+
 - name: docker onlyoffice
-  include_tasks: onlyoffice.yml
+  include_tasks: only_office.yml
   when: online_office == 'onlyoffice'
   
 - name: docker collabora office

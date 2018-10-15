@@ -3,12 +3,11 @@
 
 - name: install python docker
   pip:
-    name: "{{ item }}"
+    name:
+      - pip
+      - passlib
+      - bcrypt
     state: latest
-  with_items:
-    - pip
-    - passlib
-    - bcrypt
 
 - name: ensures traefik dir exists
   file:
@@ -42,6 +41,7 @@
     ports:
       - "80:80"
       - "443:443"
+      - "8443:8443"
     volumes:
       - "{{ traefik_config_dir }}/traefik.toml:/etc/traefik/traefik.toml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
@@ -51,5 +51,15 @@
       traefik.docker.network:                  "frontend"
       traefik.port:                            "8080"
       traefik.enable:                          "true"
+      traefik.frontend.headers.referrerPolicy:       "no-referrer"
+      traefik.frontend.headers.SSLRedirect:          "true"
+      traefik.frontend.headers.STSSeconds:           "315360000"
+      traefik.frontend.headers.browserXSSFilter:     "true"
+      traefik.frontend.headers.contentTypeNosniff:   "true"
+      traefik.frontend.headers.forceSTSHeader:       "true"
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload:           "true"
+      traefik.frontend.headers.frameDeny:            "true"
+      com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"
       

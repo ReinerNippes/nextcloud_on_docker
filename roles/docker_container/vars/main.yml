@@ -1,34 +1,37 @@
 ---
 # vars file for docker_container
 
-nextcloud_docker_env:
-  pgsql:
-      POSTGRES_HOST:            db
-      POSTGRES_USER:            "{{ nextcloud_db_user }}"
-      POSTGRES_DB:              "{{ nextcloud_db_name }}"
-      POSTGRES_PASSWORD:        "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
-      NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
-      NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
-      NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}"
-  mysql:
-      MYSQL_HOST:               db
-      MYSQL_DATABASE:           "{{ nextcloud_db_name }}"
-      MYSQL_USER:               "{{ nextcloud_db_user }}"
-      MYSQL_PASSWORD:           "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
-      NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
-      NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
-      NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}" 
-  sqlite:
-      SQLITE_DATABASE:          "{{ nextcloud_db_name }}"
-      NEXTCLOUD_ADMIN_USER:     "{{ nextcloud_admin }}"
-      NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_passwd }}"
-      NEXTCLOUD_DATA_DIR:       "{{ nextcloud_container_data_dir }}"
-      NEXTCLOUD_TABLE_PREFIX:   "{{ nextcloud_db_prefix }}" 
-
 nextcloud_db_link:
   pgsql:
     nextcloud-db:db
   mysql:
     nextcloud-db:db
+    
+nextcloud_traefik_label:
+  nginx:
+    traefik.enable:                        "false"
+    com.centurylinklabs.watchtower.enable: "true"
+  apache:
+    traefik.docker.network: "frontend"
+    traefik.enable:         "true"
+    traefik.frontend.rule:  "Host:{{ nextcloud_server_fqdn }}"
+    traefik.port:           "80"
+    traefik.protocol:       "http"
+    traefik.frontend.headers.referrerPolicy:          "no-referrer"
+    traefik.frontend.headers.SSLRedirect:             "true"
+    traefik.frontend.headers.STSSeconds:              "315360000"
+    traefik.frontend.headers.browserXSSFilter:        "true"
+    traefik.frontend.headers.contentTypeNosniff:      "true"
+    traefik.frontend.headers.forceSTSHeader:          "true"
+    traefik.frontend.headers.STSIncludeSubdomains:    "true"
+    traefik.frontend.headers.STSPreload:              "true"
+    traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
+    com.centurylinklabs.watchtower.enable:            "true"
+
+nextcloud_networks:
+  nginx:
+    - name: backend
+  apache:
+    - name: backend
+    - name: frontend
+

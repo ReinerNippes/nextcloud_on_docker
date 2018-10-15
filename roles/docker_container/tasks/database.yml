@@ -42,6 +42,8 @@
           - "{{ nextcloud_database_dir }}:/var/lib/mysql"
         networks:
           - name: backend
+        labels:
+          com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
   when: nextcloud_db_type == 'mysql'
 
@@ -88,6 +90,8 @@
           - "{{ nextcloud_database_dir }}:/var/lib/postgresql/data:rw"
         networks:
           - name: backend
+        labels:
+          com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
     
     - name: wait for nextcloud-db to come up
