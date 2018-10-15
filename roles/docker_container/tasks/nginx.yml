@@ -1,0 +1,45 @@
+---
+# tasks file to start nginx container
+
+- name: copy nginx.conf to {{ nextcloud_config_dir }}
+  copy:
+    src:  "{{ item }}"
+    dest: "{{ nextcloud_config_dir }}/{{ item }}"
+    owner: 33
+    group: 33
+    mode: 0644
+  loop:
+    - nginx.conf
+    - uploadsize.conf
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the nginx container"
+  docker_container:
+    name: nginx
+    image: nginx:{{ docker_nginx_image | default('latest') }}
+    restart_policy: always
+    networks:
+      - name: backend
+      - name: frontend
+    volumes:
+      - "{{ nextcloud_config_dir }}/nginx.conf:/etc/nginx/nginx.conf"
+      - "{{ nextcloud_config_dir }}/uploadsize.conf:/etc/nginx/conf.d/uploadsize.conf"
+    volumes_from:
+      - nextcloud
+    labels:
+      traefik.docker.network: "frontend"
+      traefik.enable:         "true"
+      traefik.frontend.rule:  "Host:{{ nextcloud_server_fqdn }}"
+      traefik.port:           "80"
+      traefik.protocol:       "http"
+      traefik.frontend.headers.referrerPolicy:          "no-referrer"
+      traefik.frontend.headers.SSLRedirect:             "true"
+      traefik.frontend.headers.STSSeconds:              "315360000"
+      traefik.frontend.headers.browserXSSFilter:        "true"
+      traefik.frontend.headers.contentTypeNosniff:      "true"
+      traefik.frontend.headers.forceSTSHeader:          "true"
+      traefik.frontend.headers.STSIncludeSubdomains:    "true"
+      traefik.frontend.headers.STSPreload:              "true"
+      traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
+      com.centurylinklabs.watchtower.enable:            "true"
+    state: "{{ state | default('started') }}"
+  register: docker_result
