@@ -25,8 +25,8 @@ nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
 
 # database settings (choose one)
-nextcloud_db_type           = 'mysql'        # (MariaDB)
-# nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
+# nextcloud_db_type           = 'mysql'        # (MariaDB)
+nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
 
 # nextcloud_db_type           = 'sqlite'        # (SQLite)
 
