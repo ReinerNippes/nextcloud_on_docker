@@ -4,19 +4,19 @@
 #
 
 install_pip () {
-	curl https://bootstrap.pypa.io/get-pip.py | sudo -H $PYTHON_BIN
-	sudo -H pip install setuptools -U
-	sudo -H pip install ansible -U
-	sudo -H pip install netaddr -U
-	sudo -H pip install dnspython -U
-	sudo -H pip install passlib -U
-	sudo -H pip install bcrypt -U
+	curl https://bootstrap.pypa.io/get-pip.py | $SUDO $PYTHON_BIN
+	$SUDO pip install setuptools -U
+	$SUDO pip install ansible -U
+	$SUDO pip install netaddr -U
+	$SUDO pip install dnspython -U
+	$SUDO pip install passlib -U
+	$SUDO pip install bcrypt -U
 }
 
 prepare_ubuntu() { 
-	sudo apt update -y
-	sudo apt dist-upgrade -y
-	sudo apt install software-properties-common curl git mc vim facter python-minimal -y
+	$SUDO apt update -y
+	$SUDO apt dist-upgrade -y
+	$SUDO apt install software-properties-common curl git mc vim facter python-minimal -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 		
@@ -26,9 +26,9 @@ prepare_ubuntu() {
 }
 
 prepare_debian() { 
-	sudo apt update -y
-	sudo apt dist-upgrade -y
-	sudo apt install dirmngr curl git mc vim facter python -y
+	$SUDO apt update -y
+	$SUDO apt dist-upgrade -y
+	$SUDO apt install dirmngr curl git mc vim facter python -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
@@ -38,9 +38,9 @@ prepare_debian() {
 }
 
 prepare_raspbian() {
-	sudo apt update -y
-	sudo apt dist-upgrade -y
-	sudo apt install dirmngr mc vim git libffi-dev curl facter -y
+	$SUDO apt update -y
+	$SUDO apt dist-upgrade -y
+	$SUDO apt install dirmngr mc vim git libffi-dev curl facter -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
@@ -50,9 +50,9 @@ prepare_raspbian() {
 }
 
 prepare_centos() { 
-	sudo yum install epel-release -y
-	sudo yum install git vim mc curl facter -y
-	sudo yum update -y
+	$SUDO yum install epel-release -y
+	$SUDO yum install git vim mc curl facter -y
+	$SUDO yum update -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
@@ -91,7 +91,7 @@ prepare_coreos() {
 	install_pip
 	
 	echo
-	echo "CentOS Sytem ready for nextcloud."
+	echo "CoreOS Sytem ready for nextcloud."
 	echo
 }
 
@@ -109,7 +109,14 @@ if [  -f /etc/os-release ]; then
 elif [ -f /etc/debian_version ]; then
 	$ID=debian
 fi
-	
+
+# root or not
+if [[ $EUID -ne 0 ]]; then
+  SUDO='sudo -H'
+else
+  SUDO=''
+fi
+
 case $ID in
 	'ubuntu')
 		prepare_ubuntu
@@ -117,14 +124,14 @@ case $ID in
 	'debian')
 		prepare_debian
 	;;
-        'raspbian')
-                prepare_raspbian
-        ;;
+	'raspbian')
+		prepare_raspbian
+	;;
 	'centos')
 		prepare_centos
 	;;
 	'coreos')
-		sudo prepare_coreos
+		$SUDO prepare_coreos
 	;;
 	*)
 		usage
