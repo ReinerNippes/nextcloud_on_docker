@@ -51,7 +51,7 @@ prepare_raspbian() {
 
 prepare_centos() { 
 	$SUDO yum install epel-release -y
-	$SUDO yum install git vim mc curl facter -y
+	$SUDO yum install git vim mc curl facter libselinux-python -y
 	$SUDO yum update -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
