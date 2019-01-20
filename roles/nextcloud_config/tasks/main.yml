@@ -53,7 +53,7 @@
       
 - name: nextcloud cronjob
   cron:
-    name: nextcloud cronjob
+    name: nextcloud optimize
     minute: '15'
     hour:   '01'
     user: root
@@ -64,4 +64,4 @@
     name: nextcloud cronjob
     minute: '*/15'
     user: root
-    job: "sudo docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
+    job: "docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
