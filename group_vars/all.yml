@@ -10,6 +10,8 @@ nextcloud_database_dir:        "{{ nextcloud_base_dir }}/database"
 
 traefik_config_dir:            "{{ nextcloud_base_dir }}/traefik"
 
+portainer_data_dir:            "{{ nextcloud_base_dir }}/portainer-data"
+
 nextcloud_container_data_dir:  /var/nc-data
 
 docker_postgres_image:         10-alpine

@@ -1,0 +1,26 @@
+---
+
+- name: generate admin passwd for portainer
+  set_fact:
+    portainer_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/portainer_admin_secret chars=ascii_letters,digits length=32') }}"
+  when: portainer_passwd == ''
+
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the portainer container"
+  docker_container:
+    name: portainer
+    image: portainer/portainer:latest
+    restart_policy: unless-stopped
+    command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt','1234567890A2b456z89012') }}
+    networks:
+      - name: frontend
+    labels:
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/portainer"
+      traefik.backend: "portainer"
+      traefik.port: "9000"
+      com.centurylinklabs.watchtower.enable: "true"
+    volumes:
+      - "{{ portainer_data_dir }}:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    state: "{{ state | default('started') }}"

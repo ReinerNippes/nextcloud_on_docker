@@ -12,6 +12,9 @@
 - name: docker traefik
   include_tasks: traefik.yml
 
+- name: docker portainer
+  include_tasks: portainer.yml
+
 - name: docker database
   include_tasks: database.yml
 

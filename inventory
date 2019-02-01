@@ -6,10 +6,10 @@ connection=local
 
 # 
 # Your domain name to get a letsencrypt certificate
-nextcloud_server_fqdn       = nc.example.org
+nextcloud_server_fqdn       = nc-u.nippes.it
 
 # Your email adresse for letsencrypt
-ssl_cert_email = nc@example.org
+ssl_cert_email = reiner@nippes.it
 
 # Your dns resolver (nginx reverse ip lookup)
 # e.g. your fritz.box ; default ist google dns server 8.8.8.8
@@ -73,6 +73,10 @@ online_office     = none
 # adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
 # password stored in {{ nextcloud_base_dir }}/secrets
 adminer_enabled      = true
+
+# portainer is a webfront end for docker host
+portainer_enabled    = true
+portainer_passwd     = ''              # leave empty to generate random password
 
 # user for traefik dashboard at https://nextcloud_server_fqdn/traefik
 # traefik_api_user      = traefik
