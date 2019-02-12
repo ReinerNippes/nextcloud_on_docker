@@ -74,6 +74,9 @@ online_office     = none
 # password stored in {{ nextcloud_base_dir }}/secrets
 adminer_enabled      = true
 
-# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
-# traefik_api_user      = traefik
+# portainer is a webfront end for docker host
+portainer_enabled    = true
+portainer_passwd     = ''              # leave empty to generate random password
 
+# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
+# traefik_api_user = traefik
