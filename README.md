@@ -111,13 +111,20 @@ online_office     = none
 
 If you want to access your database through an admin web page set this value to true
 ```
-# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
+# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer/
 adminer_enabled      = false
+```
+
+If you want to install a webgui for docker set this value to true
+```
+# portainer is a webfront end for docker host at https://nextcloud_server_fqdn/portainer/
+portainer_enabled    = true
+portainer_passwd     = ''              # leave empty to generate random password
 ```
 
 If you want to access your traefik dashboard uncomment the traefik_api_user
 ```
-# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
+# user for traefik dashboard at https://nextcloud_server_fqdn/traefik/
 # traefik_api_user      = traefik
 ```
 
