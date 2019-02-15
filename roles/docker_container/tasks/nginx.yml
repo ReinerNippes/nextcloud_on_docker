@@ -40,6 +40,10 @@
       traefik.frontend.headers.STSIncludeSubdomains:    "true"
       traefik.frontend.headers.STSPreload:              "true"
       traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
+      traefik.frontend.redirect.permanent:              "true"
+      traefik.frontend.redirect.regex:                  "https://(.*)/.well-known/(card|cal)dav"
+      traefik.frontend.redirect.replacement:            "https://$1/remote.php/dav/"
+
       com.centurylinklabs.watchtower.enable:            "true"
     state: "{{ state | default('started') }}"
   register: docker_result
