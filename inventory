@@ -1,8 +1,7 @@
 [nextcloud]
-localhost
+localhost ansible_connection=local
 
 [nextcloud:vars]
-connection=local
 
 # 
 # Your domain name to get a letsencrypt certificate
