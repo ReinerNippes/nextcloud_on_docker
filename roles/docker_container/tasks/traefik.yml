@@ -41,7 +41,7 @@
     ports:
       - "80:80"
       - "443:443"
-      - "8443:8443"
+#      - "8443:8443"
     volumes:
       - "{{ traefik_config_dir }}/traefik.toml:/etc/traefik/traefik.toml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
@@ -62,4 +62,10 @@
       traefik.frontend.headers.frameDeny:            "true"
       com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"
-      
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik cert dumper container"
+  docker_container:
+    name: certdumper
+    image: svendowideit/traefik-certdumper:latest
+    volumes:
+      - '{{ traefik_config_dir }}:/traefik'

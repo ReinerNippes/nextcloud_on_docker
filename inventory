@@ -67,7 +67,7 @@ online_office     = none
 # online_office     = onlyoffice
 
 # Install turn server for Nextcloud Talk
-# talk_install         = true
+talk_install         = false
 
 # adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
 # password stored in {{ nextcloud_base_dir }}/secrets

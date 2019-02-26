@@ -65,3 +65,11 @@
     minute: '*/15'
     user: root
     job: "docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
+
+- name: setup collabora app in nextcloud
+  include_tasks: configure_collabora.yml
+  when: online_office == 'collabora'
+
+- name: setup talk app in nextcloud
+  include_tasks: talk.yml
+  when: talk_install

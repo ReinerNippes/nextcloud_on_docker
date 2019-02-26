@@ -40,6 +40,10 @@
   include_tasks: collabora.yml
   when: online_office == 'collabora'
 
+- name: docker turn server
+  include_tasks: turnserver.yml
+  when: talk_install 
+
 - name: docker network
   include_tasks: network.yml
   when: state is defined and 'absent' in state
