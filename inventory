@@ -62,12 +62,12 @@ backup_minute        = 0
 # more info about collabora office: https://www.collaboraoffice.com/
 # more info about onlyoffice office: https://www.onlyoffice.com
 
-online_office     = none
-# online_office     = collabora
+# online_office     = none
+online_office     = collabora
 # online_office     = onlyoffice
 
 # Install turn server for Nextcloud Talk
-talk_install         = false
+talk_install         = true
 
 # adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
 # password stored in {{ nextcloud_base_dir }}/secrets
