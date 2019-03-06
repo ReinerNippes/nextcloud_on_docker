@@ -38,6 +38,7 @@
     restart_policy: unless-stopped
     networks:
       - name: frontend
+      - name: backend
     ports:
       - "80:80"
       - "443:443"
