@@ -1,4 +1,4 @@
----
+#!/usr/bin/env ansible-playbook
 
 - name: install nextcloud
   hosts: nextcloud
