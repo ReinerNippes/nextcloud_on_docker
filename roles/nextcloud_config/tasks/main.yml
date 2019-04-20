@@ -18,20 +18,20 @@
   register: setup_nc
 
 - name: set nextcloud system config.php values
-  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
-  loop: "{{ nextccloud_system_config }}"
+  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+  loop:  '{{ nextccloud_system_config }}'
 
 - name: set nextcloud mail config.php values
-  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
-  loop: "{{ nextccloud_mail_config }}"
-  when: nextcloud_configure_mail
+  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+  loop:  '{{ nextccloud_mail_config }}'
+  when: nextcloud_configure_mail 
 
 - name: set nextcloud app settings
-  shell: docker exec --user www-data nextcloud php occ app:{{ item }}
-  loop: "{{ nextcloud_app_config }}"
+  shell: '{{ docker_occ_cmd }} app:{{ item }}'
+  loop:  '{{ nextcloud_app_config }}'
 
 - name: backup jobs, upgrade apps and database tuning
-  shell: docker exec --user www-data nextcloud php occ {{ item }}
+  shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
     - background:cron
     - upgrade
@@ -51,7 +51,7 @@
       docker exec --user www-data nextcloud php occ files:scan-app-data
       exit 0
       
-- name: nextcloud cronjob
+- name: optimize nextcloud cronjob
   cron:
     name: nextcloud optimize
     minute: '15'
@@ -65,6 +65,9 @@
     minute: '*/15'
     user: root
     job: "docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
+
+- name: run nextcloud cronjob once
+  shell: 'docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1'
 
 - name: setup collabora app in nextcloud
   include_tasks: configure_collabora.yml
