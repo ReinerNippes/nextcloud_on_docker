@@ -10,10 +10,6 @@ nextcloud_server_fqdn       = nc.example.org
 # Your email adresse for letsencrypt
 ssl_cert_email = nc@example.org
 
-# Your dns resolver (nginx reverse ip lookup)
-# e.g. your fritz.box ; default is ccc 213.73.91.35 (germany) - 216.87.84.211 OpenNIC (usa)
-nginx_resolver       = '213.73.91.35 216.87.84.211 valid=30s'
-
 # Nextcloud varibales
 
 # data dir
