@@ -1,4 +1,4 @@
-Install Nextcloud (Latest) + Database (MariaDB/PostgreSQL/SQLite) + Encryption (Let's Encrypt Certificate/Self-signed) on Docker
+Install Nextcloud (Latest) + Database (MariaDB/PostgreSQL/SQLite) + Encryption (Let's Encrypt Certificate/Self-signed) + Extra options on Docker
 ================================================
 100% Handsfree & Ready to login
 
@@ -94,12 +94,13 @@ nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      =
 ```
 
-Backup will come soon.
+Coming Soon:
+Restic Backup tool. Will be installed if backup_folder is not empty.
 ```
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
 backup_folder        = '' # e.g. /var/nc-backup
-# crontab settings restic for restic
+# crontab settings for restic
 backup_day           = *
 backup_hour          = 4
 backup_minute        = 0
@@ -111,31 +112,32 @@ Online office and Talk support as well.
 # more info about collabora office: https://www.collaboraoffice.com/
 # more info about onlyoffice office: https://www.onlyoffice.com
 
-online_office     = none
-# online_office     = collabora
-# online_office     = onlyoffice
+online_office               = none
+# online_office             = collabora
+# online_office             = onlyoffice
 
 # Install turn server for Nextcloud Talk
-talk_install         = true
+talk_install                = false
 ```
 
 If you want to access your database through an admin web page set this value to true
 ```
-# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer/
-adminer_enabled      = false
+# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
+# password stored in {{ nextcloud_base_dir }}/secrets
+adminer_enabled             = false
 ```
 
 If you want to install a webgui for docker set this value to true
 ```
-# portainer is a webfront end for docker host at https://nextcloud_server_fqdn/portainer/
-portainer_enabled    = true
-portainer_passwd     = ''              # leave empty to generate random password
+# portainer is a webfront end for docker host
+portainer_enabled           = true
+portainer_passwd            = ''              # leave empty to generate random password
 ```
 
 If you want to access your traefik dashboard uncomment the traefik_api_user
 ```
-# user for traefik dashboard at https://nextcloud_server_fqdn/traefik/
-# traefik_api_user      = traefik
+# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
+# traefik_api_user          = traefik
 ```
 
 Installation
