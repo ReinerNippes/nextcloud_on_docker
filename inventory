@@ -3,14 +3,15 @@ localhost ansible_connection=local
 
 [nextcloud:vars]
 
-# 
-# Your domain name to get a letsencrypt certificate
-nextcloud_server_fqdn       = nc.example.org
+### Preliminary variables ###
 
-# Your email adresse for letsencrypt
-ssl_cert_email = nc@example.org
+# Your domain name to get a Let's Encrypt certificate
+nextcloud_server_fqdn       = nextcloud.example.tld
 
-# Nextcloud varibales
+# Your email address for Let's Encrypt
+ssl_cert_email              = nextcloud@example.tld
+
+### Nextcloud variables ###
 
 # data dir
 nextcloud_base_dir          = /opt/nextcloud
@@ -20,10 +21,9 @@ nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
 
 # database settings (choose one)
-# nextcloud_db_type           = 'mysql'        # (MariaDB)
-nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
-
-# nextcloud_db_type           = 'sqlite'        # (SQLite)
+nextcloud_db_type           = 'pgsql'         # (PostgreSQL)
+# nextcloud_db_type         = 'mysql'         # (MariaDB)
+# nextcloud_db_type         = 'sqlite'        # (SQLite)
 
 # options for mariadb or postgres
 nextcloud_db_host           = 'localhost'
@@ -31,6 +31,8 @@ nextcloud_db_name           = 'nextcloud'
 nextcloud_db_user           = 'nextcloud'
 nextcloud_db_passwd         = ''              # leave empty to generate random password
 nextcloud_db_prefix         = 'oc_'
+
+### Optional variables ###
 
 # Nextcloud mail setup
 nextcloud_configure_mail    = false
@@ -48,30 +50,30 @@ nextcloud_mail_smtppwd      =
 
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
-backup_folder        = '' # e.g. /var/nc-backup
+backup_folder               = ''              # e.g. /var/nc-backup
 # crontab settings restic for restic
-backup_day           = *
-backup_hour          = 4
-backup_minute        = 0
+backup_day                  = *
+backup_hour                 = 4
+backup_minute               = 0
 
 # Enable an Online Office Suite [collabora|onlyoffice|none]
 # more info about collabora office: https://www.collaboraoffice.com/
 # more info about onlyoffice office: https://www.onlyoffice.com
 
-# online_office     = none
-online_office     = collabora
-# online_office     = onlyoffice
+online_office               = none
+# online_office             = collabora
+# online_office             = onlyoffice
 
 # Install turn server for Nextcloud Talk
-talk_install         = true
+talk_install                = false
 
 # adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
 # password stored in {{ nextcloud_base_dir }}/secrets
-adminer_enabled      = true
+adminer_enabled             = false
 
 # portainer is a webfront end for docker host
-portainer_enabled    = true
-portainer_passwd     = ''              # leave empty to generate random password
+portainer_enabled           = true
+portainer_passwd            = ''              # leave empty to generate random password
 
 # user for traefik dashboard at https://nextcloud_server_fqdn/traefik
-# traefik_api_user = traefik
+# traefik_api_user          = traefik
