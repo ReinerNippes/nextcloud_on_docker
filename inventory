@@ -11,9 +11,6 @@ nextcloud_server_fqdn       = nextcloud.example.tld
 # Your email address for Let's Encrypt
 ssl_cert_email              = nextcloud@example.tld
 
-# Your DNS resolver (nginx reverse ip lookup)
-nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
-
 ### Nextcloud variables ###
 
 # data dir

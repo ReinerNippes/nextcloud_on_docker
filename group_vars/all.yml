@@ -22,3 +22,6 @@ docker_adminer_image:          latest
 docker_traefik_image:          alpine
 docker_watchtower_image:       latest
 docker_redis_image:            4-alpine
+
+# nginx resolver http://blog.zorinaq.com/nginx-resolver-vulns/)
+nginx_resolver              = '127.0.0.1 valid=30s'
