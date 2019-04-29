@@ -76,7 +76,7 @@ adminer_enabled             = false
 
 # portainer is a webfront end for docker host
 portainer_enabled           = true
-portainer_passwd             = ''             # leave empty to generate random password
+portainer_passwd            = ''              # leave empty to generate random password
 
 # user for traefik dashboard at https://nextcloud_server_fqdn/traefik
-# traefik_api_user = traefik
+# traefik_api_user          = traefik
