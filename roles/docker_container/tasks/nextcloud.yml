@@ -15,6 +15,7 @@
     image:          nextcloud:{{ docker_nextcloud_image | default('latest') }}
     restart_policy: always
     networks:       "{{ nextcloud_networks['nginx' if ( 'fpm' in docker_nextcloud_image ) else 'apache'] }}"
+    purge_networks: true
     links:          "{{ nextcloud_db_link[nextcloud_db_type] | default(omit) }}"
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html"

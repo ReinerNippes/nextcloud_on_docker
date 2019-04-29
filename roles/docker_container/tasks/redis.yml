@@ -9,6 +9,7 @@
     command: redis-server --requirepass {{ lookup('password', '{{ nextcloud_credential_store }}/redis_secret chars=ascii_letters,digits length=32') }}
     networks:
       - name: backend
+    purge_networks: true
     labels:
       com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"

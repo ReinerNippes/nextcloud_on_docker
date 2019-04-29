@@ -10,7 +10,7 @@
     links: nextcloud-db:db
     networks:
       - name: backend
-      - name: frontend
+    purge_networks: true
     labels:
       traefik.docker.network: "frontend"
       traefik.enable:         "true"

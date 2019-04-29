@@ -42,6 +42,7 @@
           - "{{ nextcloud_database_dir }}:/var/lib/mysql"
         networks:
           - name: backend
+        purge_networks: true
         labels:
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
@@ -90,6 +91,7 @@
           - "{{ nextcloud_database_dir }}:/var/lib/postgresql/data:rw"
         networks:
           - name: backend
+        purge_networks: true
         labels:
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"

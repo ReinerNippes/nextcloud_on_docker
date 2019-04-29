@@ -39,6 +39,7 @@
     networks:
       - name: frontend
       - name: backend
+    purge_networks: true
     ports:
       - "80:80"
       - "443:443"
@@ -61,6 +62,7 @@
       traefik.frontend.headers.STSIncludeSubdomains: "true"
       traefik.frontend.headers.STSPreload:           "true"
       traefik.frontend.headers.frameDeny:            "true"
+      traefik.frontend.whiteList.useXForwardedFor:   "true"
       com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"
 
