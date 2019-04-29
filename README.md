@@ -1,46 +1,50 @@
-Install Nextcloud (Latest) + Database (MariaDB/PostgreSQL/SQLite) + Encryption (Let's Encrypt Certificate/Self-signed) + Extra options on Docker
-================================================
+# Install Nextcloud (Latest) + Database (MariaDB/PostgreSQL/SQLite) + Encryption (Let's Encrypt Certificate/Self-signed) + Extra options on Docker
+
 100% Handsfree & Ready to login
 
-Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7. 
+Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7.
 The script is prepared for Raspbian and CoreOS. But this is still under development (pre-alpha).
 
-Preparation
------
+## Preparation
 
 Clone this repo and change into the directory nextcloud_on_docker.
-```
-git clone https://github.com/ReinerNippes/nextcloud_on_docker
+
+```bash
+git clone <https://github.com/ReinerNippes/nextcloud_on_docker>
 
 cd nextcloud_on_docker
 ```
 
 Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root.
-```
+
+```bash
 ./prepare_system.sh
 ```
 
-Configuration
-----
+## Configuration
+
 Now you can configure the whole thing by editing the file `inventory` and some other files.
 
 ### Preliminary variables
 
 First of all you must define the server fqdn. If you want to get a Let's Encrypt certificate this must be a valid DNS record pointing to your server, and port 80+443 must be open to the internet. If you have a private server or if you use an AWS domain name like `ec2-52-3-229-194.compute-1.amazonaws.com` for example, you'll end up with a self-signed certificate. Which is fine but annoying because you have to accept this certificate manually in your browser. If you don't have a fqdn use the server IP address.
-```
+
+```ini
 # Your domain name to get a Let's Encrypt certificate
 nextcloud_server_fqdn       = nextcloud.example.tld
 ```
 
 Let's Encrypt wants your email address. Enter it here:
-```
+
+```ini
 # Your email address for Let's Encrypt
 ssl_cert_email              = nextcloud@example.tld
 ```
 
 Choose a DNS resolver.
 (e.g. your fritz.box ; default is ccc 213.73.91.35 (germany) - 216.87.84.211 OpenNIC (usa))
-```
+
+```ini
 # Your DNS resolver (nginx reverse ip lookup)
 nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
 ```
@@ -48,21 +52,24 @@ nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
 ### Nextcloud variables
 
 Where do you want to find your Nextcloud program, config, database and data files in the hosts filesystem.
-```
+
+```ini
 # data dir
 nextcloud_base_dir          = /opt/nextcloud
 ```
 
 Define your admin user. Leave the password empty and a random one will be generated and displayed at the end of the playbook run.
-```
+
+```ini
 # admin user
 nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
 ```
 
-Your favorite database, name, user and password. 
+Your favorite database, name, user and password.
 The db password will be generated and stored in {{ nextcloud_base_dir }}/secrets. In case you need it
-```
+
+```ini
 # database settings (choose one)
 nextcloud_db_type           = 'pgsql'         # (PostgreSQL)
 # nextcloud_db_type         = 'mysql'         # (MariaDB)
@@ -75,10 +82,12 @@ nextcloud_db_user           = 'nextcloud'
 nextcloud_db_passwd         = ''              # leave empty to generate random password
 nextcloud_db_prefix         = 'oc_'
 ```
+
 ### Optional variables
 
 If you want to setup the nextcloud mail system put your mail server config here.
-```
+
+```ini
 # Nextcloud mail setup
 nextcloud_configure_mail    = false
 nextcloud_mail_from         =
@@ -96,7 +105,8 @@ nextcloud_mail_smtppwd      =
 
 Coming Soon:
 Restic Backup tool. Will be installed if backup_folder is not empty.
-```
+
+```ini
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
 backup_folder        = '' # e.g. /var/nc-backup
@@ -107,7 +117,8 @@ backup_minute        = 0
 ```
 
 Online office and Talk support as well.
-```
+
+```ini
 # Enable an Online Office Suite [collabora|onlyoffice|none]
 # more info about collabora office: https://www.collaboraoffice.com/
 # more info about onlyoffice office: https://www.onlyoffice.com
@@ -121,34 +132,39 @@ talk_install                = false
 ```
 
 If you want to access your database through an admin web page set this value to true
-```
+
+```ini
 # adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
 # password stored in {{ nextcloud_base_dir }}/secrets
 adminer_enabled             = false
 ```
 
 If you want to install a webgui for docker set this value to true
-```
+
+```ini
 # portainer is a webfront end for docker host
 portainer_enabled           = true
 portainer_passwd            = ''              # leave empty to generate random password
 ```
 
 If you want to access your traefik dashboard uncomment the traefik_api_user
-```
+
+```ini
 # user for traefik dashboard at https://nextcloud_server_fqdn/traefik
 # traefik_api_user          = traefik
 ```
 
-Installation
------
+## Installation
+
 Run the ansible playbook.
-```
+
+```ini
 ansible-playbook nextdocker.yml
 ```
 
 Your nextcloud access credentials will be displayed at the end of the run.
-```
+
+```json
 ok: [localhost] => {
     "msg": [
         "Your Nextcloud at https://nextcloud.example.org is ready.",
@@ -159,11 +175,13 @@ ok: [localhost] => {
 ```
 
 If you want to get rid of the container run
-```
+
+```bash
 ansible-playbook nextdocker.yml -e state=absent
 ```
 
-Your data won't be deleted. You have to do this manually by 
-```
+Your data won't be deleted. You have to do this manually by
+
+```bash
 rm -rf ....
 ```
