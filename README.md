@@ -41,14 +41,6 @@ Let's Encrypt wants your email address. Enter it here:
 ssl_cert_email              = nextcloud@example.tld
 ```
 
-Choose a DNS resolver.
-(e.g. your fritz.box ; default is ccc 213.73.91.35 (germany) - 216.87.84.211 OpenNIC (usa))
-
-```ini
-# Your DNS resolver (nginx reverse ip lookup)
-nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
-```
-
 ### Nextcloud variables
 
 Where do you want to find your Nextcloud program, config, database and data files in the hosts filesystem.
