@@ -9,7 +9,7 @@
 - name: first setup nextcloud
   shell: |
     docker exec --user www-data nextcloud php occ  maintenance:install \
-    --database {{ nextcloud_db_type }} --database-host db --database-name {{ nextcloud_db_name }} \
+    --database {{ nextcloud_db_type }} --database-host nextcloud-db --database-name {{ nextcloud_db_name }} \
     --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} \
     --database-pass {{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }} \
     --admin-user {{ nextcloud_admin }} --admin-pass {{ nextcloud_passwd }} --data-dir {{ nextcloud_container_data_dir }}
