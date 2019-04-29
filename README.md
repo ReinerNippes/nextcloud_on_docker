@@ -1,44 +1,53 @@
-Install Latest Nextclod + Mariadb/Postgres/Sqlite + A+ Certificate or Selfsigned - 100% Handsfree on Docker -> Ready to login
+Install Nextcloud (Latest) + Database (MariaDB/PostgreSQL/SQLite) + Encryption (Let's Encrypt Certificate/Self-signed) on Docker
 ================================================
+100% Handsfree & Ready to login
 
-Usage
+Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7. 
+The script is prepared for Raspbian and CoreOS. But this is still under development (pre-alpha).
+
+Preparation
 -----
 
 Clone this repo and change into the directory nextcloud_on_docker.
-
 ```
 git clone https://github.com/ReinerNippes/nextcloud_on_docker
 
 cd nextcloud_on_docker
-```  
+```
 
-Install ansible and some needed tools by running the following command with a user that can sudo or is root.
-
+Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root.
 ```
 ./prepare_system.sh
 ```
 
-Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7. 
-The script is prepared for Raspbian and CoreOS. But this is still under development. Pre-Alpha.
-
+Configuration
+----
 Now you can configure the whole thing by editing the file `inventory` and some other files.
 
-First of all you must define the server fqdn. If you want to get a Letsencrypt certificate this must be a valid DNS record pointing to your server and port 80+443 must be open to the internet.
-If you have a private server or you use for example an AWS domain name like `ec2-52-3-229-194.compute-1.amazonaws.com` you'll end up with a selfsigned certificate.Which is fine but annoying because you have to accept this certificate manually in your browser.
-If you don't have a fqdn use the server IP address.
+### Preliminary variables
 
+First of all you must define the server fqdn. If you want to get a Let's Encrypt certificate this must be a valid DNS record pointing to your server, and port 80+443 must be open to the internet. If you have a private server or if you use an AWS domain name like `ec2-52-3-229-194.compute-1.amazonaws.com` for example, you'll end up with a self-signed certificate. Which is fine but annoying because you have to accept this certificate manually in your browser. If you don't have a fqdn use the server IP address.
 ```
-# Your domain name to get a letsencrypt certificate
-nextcloud_server_fqdn       = nextcloud.example.org
-```
-
-Letsencrypt wants your email address. Enter it here:
-```
-# Your email address for letsencrypt
-ssl_cert_email = nextcloud@example.org
+# Your domain name to get a Let's Encrypt certificate
+nextcloud_server_fqdn       = nextcloud.example.tld
 ```
 
-Where to you want to find your nextcloud program, config, database and data files in the hosts filesystem. 
+Let's Encrypt wants your email address. Enter it here:
+```
+# Your email address for Let's Encrypt
+ssl_cert_email              = nextcloud@example.tld
+```
+
+Choose a DNS resolver.
+(e.g. your fritz.box ; default is ccc 213.73.91.35 (germany) - 216.87.84.211 OpenNIC (usa))
+```
+# Your DNS resolver (nginx reverse ip lookup)
+nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
+```
+
+### Nextcloud variables
+
+Where do you want to find your Nextcloud program, config, database and data files in the hosts filesystem.
 ```
 # data dir
 nextcloud_base_dir          = /opt/nextcloud
@@ -46,7 +55,6 @@ nextcloud_base_dir          = /opt/nextcloud
 
 Define your admin user. Leave the password empty and a random one will be generated and displayed at the end of the playbook run.
 ```
-
 # admin user
 nextcloud_admin             = 'admin'
 nextcloud_passwd            = ''
@@ -56,17 +64,19 @@ Your favorite database, name, user and password.
 The db password will be generated and stored in {{ nextcloud_base_dir }}/secrets. In case you need it
 ```
 # database settings (choose one)
-# nextcloud_db_type           = 'mysql'        # (MariaDB)
-# nextcloud_db_type           = 'pgsql'        # (PostgreSQL)
-
-nextcloud_db_type           = 'sqlite'        # (SQLite)
+nextcloud_db_type           = 'pgsql'         # (PostgreSQL)
+# nextcloud_db_type         = 'mysql'         # (MariaDB)
+# nextcloud_db_type         = 'sqlite'        # (SQLite)
 
 # options for mariadb or postgres
 nextcloud_db_host           = 'localhost'
 nextcloud_db_name           = 'nextcloud'
 nextcloud_db_user           = 'nextcloud'
+nextcloud_db_passwd         = ''              # leave empty to generate random password
 nextcloud_db_prefix         = 'oc_'
 ```
+### Optional variables
+
 If you want to setup the nextcloud mail system put your mail server config here.
 ```
 # Nextcloud mail setup
@@ -106,7 +116,7 @@ online_office     = none
 # online_office     = onlyoffice
 
 # Install turn server for Nextcloud Talk
-# talk_install         = true
+talk_install         = true
 ```
 
 If you want to access your database through an admin web page set this value to true
@@ -128,14 +138,14 @@ If you want to access your traefik dashboard uncomment the traefik_api_user
 # traefik_api_user      = traefik
 ```
 
-Run the ansible playbook book.
-
+Installation
+-----
+Run the ansible playbook.
 ```
 ansible-playbook nextdocker.yml
 ```
 
 Your nextcloud access credentials will be displayed at the end of the run.
-
 ```
 ok: [localhost] => {
     "msg": [
@@ -151,4 +161,7 @@ If you want to get rid of the container run
 ansible-playbook nextdocker.yml -e state=absent
 ```
 
-Your data won't be deleted. You have to do this manually by rm -rf ....
+Your data won't be deleted. You have to do this manually by 
+```
+rm -rf ....
+```
