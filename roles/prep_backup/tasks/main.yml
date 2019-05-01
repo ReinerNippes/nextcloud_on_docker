@@ -1,0 +1,53 @@
+---
+# tasks file for prep_backup
+
+- name: install restic
+  include_tasks: install_restic.yml
+
+- name: install restic
+  include_tasks: install_rclone.yml
+  when: ( 'rclone' in restic_repo )
+
+- name: generate restic secret if restic_backup_secret is empty
+  set_fact:
+    restic_backup_secret: "{{ lookup('password', '{{ nextcloud_credential_store }}/restic_backup_secret chars=ascii_letters,digits length=32') }}"
+  when: restic_backup_secret == ''
+
+- name: create restic backup directory
+  file:
+    name:  '{{ restic_repo }}'
+    owner: 'root'
+    group: 'root'
+    mode:  '0700'
+    state: directory
+  when: ( 'rclone' not in restic_repo )
+  
+- name: initialize repository
+  command: '{{ restic_install_path }}/restic init'
+  environment:
+    RESTIC_REPOSITORY: "{{ restic_repo }}"
+    RESTIC_PASSWORD:   "{{ restic_backup_secret }}"
+  no_log: true
+  register: restic_init
+  changed_when: "'created restic backend' in restic_init.stdout"
+  failed_when:
+    - restic_init.rc != 0
+    - not ( 'config already initialized' in restic_init.stderr or 'config file already exists' in restic_init.stderr )
+
+- name: create restic nextcloud backup script
+  template:
+    src:   'backup_nextcloud.sh.j2'
+    dest:  '/usr/local/bin/backup_nextcloud.sh'
+    owner: 'root'
+    group: 'root'
+    mode:  '0750'
+    force: false
+    
+- name: cron nextcloud backup
+  cron:
+    name:   "backup selfhosted"
+    day:    "{{ restic_backup_day }}"
+    minute: "{{ restic_backup_minute }}"
+    hour:   "{{ restic_backup_hour }}"
+    job:    "/usr/local/bin/backup_nextcloud.sh > /var/log/backup_nextcloud.log 2>&1"
+  
