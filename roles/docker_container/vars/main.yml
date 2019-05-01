@@ -1,12 +1,6 @@
 ---
 # vars file for docker_container
 
-nextcloud_db_link:
-  pgsql:
-    nextcloud-db:db
-  mysql:
-    nextcloud-db:db
-    
 nextcloud_traefik_label:
   nginx:
     traefik.enable:                        "false"
@@ -27,11 +21,4 @@ nextcloud_traefik_label:
     traefik.frontend.headers.STSPreload:              "true"
     traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
     com.centurylinklabs.watchtower.enable:            "true"
-
-nextcloud_networks:
-  nginx:
-    - name: backend
-  apache:
-    - name: backend
-    - name: frontend
 
