@@ -9,7 +9,10 @@
     tty:            'yes'
     networks:
      - name:        'backend'
+    purge_networks: true
     env:
         domain:     "{{ nextcloud_server_fqdn | regex_replace('\\.', '\\.') }}"
     capabilities:   'MKNOD'
+    labels:
+        com.centurylinklabs.watchtower.enable:            "true"
     state:          '{{ state | default("started") }}'
