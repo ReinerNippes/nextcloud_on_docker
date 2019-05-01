@@ -63,7 +63,7 @@ http {
             log_not_found off;
             access_log off;
         }
-{% if (online_office == 'collabora') %}
+{% if (online_office == 'collabora') and (ansible_architecture == 'x86_64') %}
 
         location ^~ /loleaflet {
             proxy_pass https://collabora_online:9980;
