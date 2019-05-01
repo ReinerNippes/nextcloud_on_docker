@@ -10,6 +10,8 @@
     networks:
       - name: backend
     purge_networks: true
+    volumes:
+      - 'redis-data-vol:/data:rw'
     labels:
       com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"
