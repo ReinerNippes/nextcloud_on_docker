@@ -1,6 +1,11 @@
 ---
 # tasks file for docker_mysql
 
+- name: generate admin passwd if nextcloud_db_passwd is empty
+  set_fact:
+    nextcloud_db_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
+  when: nextcloud_db_passwd == ''
+
 - name: mysql container
   block:
     - name: create mysql group
@@ -20,11 +25,14 @@
 
     - name: create data directory
       file:
-        name: "{{ nextcloud_database_dir }}"
+        name: '{{ item }}'
         owner: mysql
         group: mysql
         mode: 0700
         state: directory
+      loop:
+        - '{{ nextcloud_database_dump_dir }}'
+        - '{{ nextcloud_database_dir }}'
 
     - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} mysql container"
       docker_container:
@@ -36,7 +44,7 @@
         env:
             MYSQL_DATABASE:      "{{ nextcloud_db_name  }}"
             MYSQL_USER:          "{{ nextcloud_db_user }}"
-            MYSQL_PASSWORD:      "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
+            MYSQL_PASSWORD:      "{{ nextcloud_db_passwd }}"
             MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
         volumes: 
           - "{{ nextcloud_database_dir }}:/var/lib/mysql"
@@ -66,15 +74,18 @@
         shell: /bin/bash
         comment: PostgreSQL administrator
         state: present
-        
+
     - name: create data directory
       file:
-        name: "{{ nextcloud_database_dir }}"
+        name: '{{ item }}'
         owner: postgres
         group: postgres
         mode: 0700
         state: directory
-    
+      loop:
+        - '{{ nextcloud_database_dump_dir }}'
+        - '{{ nextcloud_database_dir }}'
+
     - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} postgres container"
       docker_container:
         name: nextcloud-db
@@ -85,7 +96,7 @@
         env:
             POSTGRES_DB:       "default"
             POSTGRES_USER:     "{{ nextcloud_db_user }}"
-            POSTGRES_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
+            POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
             PGDATA:            /var/lib/postgresql/data
         volumes: 
           - "{{ nextcloud_database_dir }}:/var/lib/postgresql/data:rw"
