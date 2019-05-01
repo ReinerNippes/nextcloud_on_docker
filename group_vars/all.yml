@@ -36,7 +36,7 @@ nginx_resolver: '127.0.0.1'
 # use rclone to backup to a cloud storage, see https://rclone.org for more details
 #restic_repo:     "rclone:backup-nextcloud:nextcloud-{{ lookup('password', '{{ nextcloud_credential_store }}/restic_backup_s3_bucket_uid chars=ascii_lowercase,digits length=12') }}/backup"
 #rclone_remote: |
-#      [backup-backup-nextcloud]
+#      [backup-nextcloud]
 #      type = s3
 #      provider = AWS
 #      env_auth = false
