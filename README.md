@@ -3,7 +3,10 @@
 100% Handsfree & Ready to login
 
 Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7.
-The script is prepared for Raspbian and CoreOS. But this is still under development (pre-alpha).
+
+The playbook runs onx86_64 and ARM(64) server. It's tested on both architektures on AWS EC2 and Scaleway Server as well on Rasbian Debian 9.
+
+Collabora and Talk work only on x86_64 server. Only Office is not yet available.
 
 ## Preparation
 
@@ -101,7 +104,8 @@ Restic Backup tool. Will be installed if backup_folder is not empty.
 ```ini
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
-backup_folder        = '' # e.g. /var/nc-backup
+restic_repo          = '' # e.g. /var/nc-backup
+
 # crontab settings for restic
 backup_day           = *
 backup_hour          = 4
@@ -150,7 +154,7 @@ If you want to access your traefik dashboard uncomment the traefik_api_user
 
 Run the ansible playbook.
 
-```ini
+```bash
 ansible-playbook nextdocker.yml
 ```
 
@@ -164,6 +168,15 @@ ok: [localhost] => {
         "Other secrets you'll find in the directory /opt/nextcloud/secrets "
     ]
 }
+....
+ok: [localhost] => {
+    "msg": [
+        "Manage your container at https://nextcloud.example.tld/portainer/ .",
+        "Login with user: admin and password: CqDy4SqAXC5kEU0hHGQ5IucdBegwaVXa "
+    ]
+}
+....
+
 ```
 
 If you want to get rid of the containers run the following command:
