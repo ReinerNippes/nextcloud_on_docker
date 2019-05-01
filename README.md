@@ -10,7 +10,7 @@ The script is prepared for Raspbian and CoreOS. But this is still under developm
 Clone this repo and change into the directory nextcloud_on_docker.
 
 ```bash
-git clone <https://github.com/ReinerNippes/nextcloud_on_docker>
+git clone https://github.com/ReinerNippes/nextcloud_on_docker
 
 cd nextcloud_on_docker
 ```
@@ -159,14 +159,14 @@ Your nextcloud access credentials will be displayed at the end of the run.
 ```json
 ok: [localhost] => {
     "msg": [
-        "Your Nextcloud at https://nextcloud.example.org is ready.",
+        "Your Nextcloud at https://nextcloud.example.tld is ready.",
         "Login with user: admin and password: fTkLgvPYdmjfalP8XgMsEg7plnoPsTvp ",
         "Other secrets you'll find in the directory /opt/nextcloud/secrets "
     ]
 }
 ```
 
-If you want to get rid of the container run
+If you want to get rid of the containers run the following command:
 
 ```bash
 ansible-playbook nextdocker.yml -e state=absent
