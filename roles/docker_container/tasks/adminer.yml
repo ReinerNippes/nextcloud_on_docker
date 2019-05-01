@@ -7,7 +7,8 @@
     image: adminer:{{ docker_adminer_image }}
     restart_policy: always
     tty: yes
-    links: nextcloud-db:db
+    links: 
+      - 'nextcloud-db:db'
     networks:
       - name: backend
     purge_networks: true
