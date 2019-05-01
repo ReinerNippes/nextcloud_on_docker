@@ -17,6 +17,8 @@ prepare_ubuntu() {
 	$SUDO apt update -y
 	$SUDO apt dist-upgrade -y
 	$SUDO apt install software-properties-common curl git mc vim facter python-minimal -y
+	$SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python-dev libffi-dev libssl-dev make -y
+
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 		
@@ -29,6 +31,8 @@ prepare_debian() {
 	$SUDO apt update -y
 	$SUDO apt dist-upgrade -y
 	$SUDO apt install dirmngr curl git mc vim facter python -y
+	$SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python-dev libffi-dev libssl-dev make -y
+	
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
@@ -61,45 +65,10 @@ prepare_centos() {
 	echo
 }
 
-prepare_coreos() { 
-	VERSION=2.7.13.2715
-	PACKAGE=ActivePython-${VERSION}-linux-x86_64-glibc-2.12-402695
-	
-	# make directory
-	mkdir -p /opt/bin
-	cd /opt
-	
-	wget https://downloads.activestate.com/ActivePython/releases/${VERSION}/${PACKAGE}.tar.gz
-	wget https://downloads.activestate.com/ActivePython/releases/${VERSION}/SHA256SUM
-	
-	if [ ! $(grep ${PACKAGE}.tar.gz SHA256SUM | sha256sum --check) ] ; then
-		echo "sha256sum check of ${PACKAGE}.tar.gz failed. verify download"
-		exit 1
-	fi
-	
-	tar -xzvf ${PACKAGE}.tar.gz && rm -f ${PACKAGE}.tar.gz
-	
-	mv ${PACKAGE} apy && cd apy && ./install.sh -I /opt/python/
-	
-	ln -sf /opt/python/bin/easy_install /opt/bin/easy_install
-	ln -sf /opt/python/bin/pip /opt/bin/pip
-	ln -sf /opt/python/bin/python /opt/bin/python
-	ln -sf /opt/python/bin/python /opt/bin/python2
-	ln -sf /opt/python/bin/virtualenv /opt/bin/virtualenv
-	
-	PYTHON_BIN=/opt/bin/python
-	install_pip
-	
-	echo
-	echo "CoreOS Sytem ready for nextcloud."
-	echo
-}
-
-
 usage() { 
 	echo
 	echo "Linux distribution not detected."
-	echo "Use: IB=[Ubuntu|Debian|CentOS|raspbian] setup_ec2.sh"
+	echo "Use: ID=[Ubuntu|Debian|CentOS|raspbian] setup_ec2.sh"
 	echo "Other distributions not yet supported."
 	echo
 }
@@ -129,9 +98,6 @@ case $ID in
 	;;
 	'centos')
 		prepare_centos
-	;;
-	'coreos')
-		$SUDO prepare_coreos
 	;;
 	*)
 		usage

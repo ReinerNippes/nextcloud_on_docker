@@ -13,7 +13,8 @@
     restart_policy: unless-stopped
     command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt','1234567890A2b456z89012') }}
     networks:
-      - name: frontend
+      - name: backend
+    purge_networks: true
     labels:
       traefik.enable: "true"
       traefik.frontend.rule: "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/portainer"

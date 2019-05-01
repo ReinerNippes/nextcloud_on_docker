@@ -7,10 +7,12 @@ nextcloud_data_dir:            "{{ nextcloud_base_dir }}/data"
 nextcloud_www_dir:             "{{ nextcloud_base_dir }}/www"
 nextcloud_config_dir:          "{{ nextcloud_base_dir }}/config"
 nextcloud_database_dir:        "{{ nextcloud_base_dir }}/database"
+nextcloud_database_dump_dir:   "{{ nextcloud_base_dir }}/database-dump"
+
 
 traefik_config_dir:            "{{ nextcloud_base_dir }}/traefik"
 
-portainer_data_dir:            "{{ nextcloud_base_dir }}/portainer-data"
+portainer_data_dir:            "portainer-data-vol"
 
 nextcloud_container_data_dir:  /var/nc-data
 
@@ -22,6 +24,25 @@ docker_adminer_image:          latest
 docker_traefik_image:          alpine
 docker_watchtower_image:       latest
 docker_redis_image:            4-alpine
+docker_collabora_image:        latest
+docker_turnserver_image:       latest
 
-# nginx resolver http://blog.zorinaq.com/nginx-resolver-vulns/)
-nginx_resolver              = '127.0.0.1 valid=30s'
+docker_occ_cmd:                'docker exec --user www-data nextcloud php occ'
+
+# dns resolver (nginx reverse ip lookup) set to 127.0.0.1
+# see http://blog.zorinaq.com/nginx-resolver-vulns/
+nginx_resolver: '127.0.0.1'
+
+# use rclone to backup to a cloud storage, see https://rclone.org for more details
+#restic_repo:     "rclone:backup-nextcloud:nextcloud-{{ lookup('password', '{{ nextcloud_credential_store }}/restic_backup_s3_bucket_uid chars=ascii_lowercase,digits length=12') }}/backup"
+#rclone_remote: |
+#      [backup-nextcloud]
+#      type = s3
+#      provider = AWS
+#      env_auth = false
+#      access_key_id = AKIxxxxx
+#      secret_access_key = QMpoxxxx
+#      region = us-east-1
+#      acl = private
+#      server_side_encryption = AES256
+#      storage_class = STANDARD_IA

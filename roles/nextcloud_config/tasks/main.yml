@@ -7,31 +7,30 @@
 
 
 - name: first setup nextcloud
-  shell: |
-    docker exec --user www-data nextcloud php occ  maintenance:install \
-    --database {{ nextcloud_db_type }} --database-host db --database-name {{ nextcloud_db_name }} \
-    --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} \
-    --database-pass {{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }} \
+  shell: >
+    docker exec --user www-data nextcloud php occ  maintenance:install 
+    --database {{ nextcloud_db_type }} --database-host nextcloud-db --database-name {{ nextcloud_db_name }} 
+    --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} --database-pass {{ nextcloud_db_passwd }} 
     --admin-user {{ nextcloud_admin }} --admin-pass {{ nextcloud_passwd }} --data-dir {{ nextcloud_container_data_dir }}
   args:
     creates: "{{ nextcloud_config_dir }}/config.php"
   register: setup_nc
 
 - name: set nextcloud system config.php values
-  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
-  loop: "{{ nextccloud_system_config }}"
+  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+  loop:  '{{ nextccloud_system_config }}'
 
 - name: set nextcloud mail config.php values
-  shell: docker exec --user www-data nextcloud php occ config:system:set {{ item }}
-  loop: "{{ nextccloud_mail_config }}"
-  when: nextcloud_configure_mail
+  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+  loop:  '{{ nextccloud_mail_config }}'
+  when: nextcloud_configure_mail 
 
 - name: set nextcloud app settings
-  shell: docker exec --user www-data nextcloud php occ app:{{ item }}
-  loop: "{{ nextcloud_app_config }}"
+  shell: '{{ docker_occ_cmd }} app:{{ item }}'
+  loop:  '{{ nextcloud_app_config }}'
 
 - name: backup jobs, upgrade apps and database tuning
-  shell: docker exec --user www-data nextcloud php occ {{ item }}
+  shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
     - background:cron
     - upgrade
@@ -51,7 +50,7 @@
       docker exec --user www-data nextcloud php occ files:scan-app-data
       exit 0
       
-- name: nextcloud cronjob
+- name: optimize nextcloud cronjob
   cron:
     name: nextcloud optimize
     minute: '15'
@@ -65,3 +64,14 @@
     minute: '*/15'
     user: root
     job: "docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
+
+- name: run nextcloud cronjob once
+  shell: 'docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1'
+
+- name: setup collabora app in nextcloud
+  include_tasks: configure_collabora.yml
+  when: online_office == 'collabora' and ansible_architecture == 'x86_64'
+
+- name: setup talk app in nextcloud
+  include_tasks: talk.yml
+  when: talk_install and ansible_architecture == 'x86_64'

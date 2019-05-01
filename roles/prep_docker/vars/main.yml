@@ -1,0 +1,6 @@
+---
+
+pkg_architekture: 
+  'x86_64':  amd64
+  'armv7l':  arm
+  'aarch64': arm64
