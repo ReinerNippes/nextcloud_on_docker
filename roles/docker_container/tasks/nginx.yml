@@ -22,6 +22,8 @@
     name: nginx
     image: nginx:{{ docker_nginx_image | default('latest') }}
     restart_policy: always
+    links:
+      - 'nextcloud:nextcloud'
     networks:
       - name: backend
     purge_networks: true
