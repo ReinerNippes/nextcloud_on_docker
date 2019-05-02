@@ -14,6 +14,7 @@
 
 - name: docker portainer
   include_tasks: portainer.yml
+  when: portainer_enabled
 
 - name: docker database
   include_tasks: database.yml
@@ -38,7 +39,11 @@
   
 - name: docker collabora office
   include_tasks: collabora.yml
-  when: online_office == 'collabora'
+  when: online_office == 'collabora' and ansible_architecture == 'x86_64'
+
+- name: docker turn server
+  include_tasks: turnserver.yml
+  when: talk_install and ansible_architecture == 'x86_64'
 
 - name: docker network
   include_tasks: network.yml

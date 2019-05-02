@@ -7,10 +7,11 @@
     image: adminer:{{ docker_adminer_image }}
     restart_policy: always
     tty: yes
-    links: nextcloud-db:db
+    links: 
+      - 'nextcloud-db:db'
     networks:
       - name: backend
-      - name: frontend
+    purge_networks: true
     labels:
       traefik.docker.network: "frontend"
       traefik.enable:         "true"

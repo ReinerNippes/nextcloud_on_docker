@@ -1,0 +1,37 @@
+#!/bin/bash
+
+export RESTIC_REPOSITORY="{{ restic_repo }}"
+export RESTIC_PASSWORD="{{ restic_backup_secret }}"
+
+# abort entire script if any command fails
+set -e
+
+# unlock restic to keep automatic backups going
+{{ restic_install_path }}/restic unlock --cleanup-cache
+
+# Make sure nextcloud is enabled when we are done
+trap "docker exec -u www-data nextcloud php occ maintenance:mode --off" EXIT
+
+# set nextcloud to maintenance mode
+docker exec -u www-data nextcloud php occ maintenance:mode --on
+
+{% if nextcloud_db_type == 'mysql' %}
+sudo docker exec nextcloud-db mysqldump --single-transaction -h localhost -u {{ nextcloud_db_user }} -p{{ nextcloud_db_passwd }} {{ nextcloud_db_name }} > {{ nextcloud_database_dump_dir }}/db_dump_{{ nextcloud_db_type }}_nextcloud.sql
+{% elif nextcloud_db_type == 'pgsql' %}
+sudo docker exec nextcloud-db pg_dump -c -U {{ nextcloud_db_user }} {{ nextcloud_db_name }} > {{ nextcloud_database_dump_dir }}/db_dump_{{ nextcloud_db_type }}_nextcloud.sql
+{% endif %}
+
+# backup the data dir
+{{ restic_install_path }}/restic backup --verbose --exclude {{ nextcloud_database_dir }} {{ nextcloud_base_dir }}
+
+#
+# end maintenance mode
+docker exec -u www-data nextcloud php occ maintenance:mode --off
+
+# delete trap
+trap "" EXIT
+
+
+# clean up backup dir
+{{ restic_install_path }}/restic forget --keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75
+{{ restic_install_path }}/restic prune

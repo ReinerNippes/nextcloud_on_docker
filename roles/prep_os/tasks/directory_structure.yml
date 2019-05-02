@@ -19,7 +19,6 @@
 - name: make sure nextcloud directoies are present
   file:
     name:  "{{ item }}"
-    mode:  0755
     owner: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
     group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
     state: directory

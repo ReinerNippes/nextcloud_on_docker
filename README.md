@@ -3,23 +3,28 @@
 100% Handsfree & Ready to login
 
 Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7.
-The script is prepared for Raspbian and CoreOS. But this is still under development (pre-alpha).
+
+The playbook runs onx86_64 and ARM(64) server. It's tested on both architektures on AWS EC2 and Scaleway Server as well on Rasberry 3+ running Debian 9.
+
+Collabora and Talk work only on x86_64 server. OnlyOffice is not yet available.
 
 ## Preparation
 
 Clone this repo and change into the directory nextcloud_on_docker.
 
 ```bash
-git clone <https://github.com/ReinerNippes/nextcloud_on_docker>
+git clone https://github.com/ReinerNippes/nextcloud_on_docker
 
 cd nextcloud_on_docker
 ```
 
-Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root.
+Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
 
 ```bash
 ./prepare_system.sh
 ```
+
+Note that root must have also sudo right otherwise the script will complain. Some hoster use distros where is is not in the sudoers file. In this case you have to add `root ALL=(ALL) NOPASSWD:ALL` to /etc/sudoers.
 
 ## Configuration
 
@@ -27,7 +32,11 @@ Now you can configure the whole thing by editing the file `inventory` and some o
 
 ### Preliminary variables
 
-First of all you must define the server fqdn. If you want to get a Let's Encrypt certificate this must be a valid DNS record pointing to your server, and port 80+443 must be open to the internet. If you have a private server or if you use an AWS domain name like `ec2-52-3-229-194.compute-1.amazonaws.com` for example, you'll end up with a self-signed certificate. Which is fine but annoying because you have to accept this certificate manually in your browser. If you don't have a fqdn use the server IP address.
+First of all you must define the server fqdn. If you want to get a Let's Encrypt certificate this must be a valid DNS record pointing to your server, and port 80+443 must be open to the internet. 
+
+If you have a private server or if you use an AWS domain name like `ec2-52-3-229-194.compute-1.amazonaws.com` for example, you'll end up with a self-signed certificate. Which is fine but annoying because you have to accept this certificate manually in your browser. If you don't have a fqdn use the server IP address.
+
+*Important:* You only will be able to access nextcloud through this address. 
 
 ```ini
 # Your domain name to get a Let's Encrypt certificate
@@ -39,14 +48,6 @@ Let's Encrypt wants your email address. Enter it here:
 ```ini
 # Your email address for Let's Encrypt
 ssl_cert_email              = nextcloud@example.tld
-```
-
-Choose a DNS resolver.
-(e.g. your fritz.box ; default is ccc 213.73.91.35 (germany) - 216.87.84.211 OpenNIC (usa))
-
-```ini
-# Your DNS resolver (nginx reverse ip lookup)
-nginx_resolver              = '213.73.91.35 216.87.84.211 valid=30s'
 ```
 
 ### Nextcloud variables
@@ -109,7 +110,8 @@ Restic Backup tool. Will be installed if backup_folder is not empty.
 ```ini
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
-backup_folder        = '' # e.g. /var/nc-backup
+restic_repo          = '' # e.g. /var/nc-backup
+
 # crontab settings for restic
 backup_day           = *
 backup_hour          = 4
@@ -154,12 +156,29 @@ If you want to access your traefik dashboard uncomment the traefik_api_user
 # traefik_api_user          = traefik
 ```
 
+If you want to use rclone to backup your data to cloud storage provider remove the variable `restic_repo` from `ìnventory` and edit the file `group_var/all` instead. See https://rclone.org for more details
+
+```ini
+restic_repo:     "rclone:backup-nextcloud:unique-s3-bucket-name/s3-folder-name"
+rclone_remote: |
+      [backup-nextcloud]
+      type = s3
+      provider = AWS
+      env_auth = false
+      access_key_id = AKIxxxxx
+      secret_access_key = QMpoxxxx
+      region = us-east-1
+      acl = private
+      server_side_encryption = AES256
+      storage_class = STANDARD_IA
+```
+
 ## Installation
 
 Run the ansible playbook.
 
-```ini
-ansible-playbook nextdocker.yml
+```bash
+./nextdocker.yml
 ```
 
 Your nextcloud access credentials will be displayed at the end of the run.
@@ -167,14 +186,30 @@ Your nextcloud access credentials will be displayed at the end of the run.
 ```json
 ok: [localhost] => {
     "msg": [
-        "Your Nextcloud at https://nextcloud.example.org is ready.",
+        "Your Nextcloud at https://nextcloud.example.tld is ready.",
         "Login with user: admin and password: fTkLgvPYdmjfalP8XgMsEg7plnoPsTvp ",
         "Other secrets you'll find in the directory /opt/nextcloud/secrets "
     ]
 }
+....
+ok: [localhost] => {
+    "msg": [
+        "Manage your container at https://nextcloud.example.tld/portainer/ .",
+        "Login with user: admin and password: CqDy4SqAXC5kEU0hHGQ5IucdBegwaVXa "
+    ]
+}
+....
+ok: [localhost] => {
+    "msg": [
+        "restic backup is configured. Keep your credentials in a safe place.",
+        "RESTIC_REPOSITORY='/var/nc-backup'",
+        "RESTIC_PASSWORD='ILIOxgRbmrvmvsUhtI7VtOcIz6II10jq'"
+    ]
+}
+
 ```
 
-If you want to get rid of the container run
+If you want to get rid of the containers run the following command:
 
 ```bash
 ansible-playbook nextdocker.yml -e state=absent

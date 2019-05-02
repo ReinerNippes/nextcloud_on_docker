@@ -4,11 +4,9 @@ worker_processes  1;
 error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
 
-
 events {
     worker_connections  1024;
 }
-
 
 http {
     include       /etc/nginx/mime.types;
@@ -28,8 +26,7 @@ http {
     set_real_ip_from  10.0.0.0/8;
     set_real_ip_from  172.16.0.0/12;
     set_real_ip_from  192.168.0.0/16;
-    real_ip_header    X-Forwarded-For;
-    real_ip_recursive on;
+    real_ip_header    X-Real-IP;
 
     #gzip  on;
 
@@ -66,6 +63,25 @@ http {
             log_not_found off;
             access_log off;
         }
+{% if (online_office == 'collabora') and (ansible_architecture == 'x86_64') %}
+
+        location ^~ /loleaflet {
+            proxy_pass https://collabora_online:9980;
+             proxy_set_header Host $http_host;
+        }
+        
+        location ^~ /hosting/discovery {
+            proxy_pass https://collabora_online:9980;
+            proxy_set_header Host $http_host;
+        }
+         
+        location ^~ /lool {
+            proxy_pass https://collabora_online:9980;
+            proxy_set_header Host $http_host;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        } 
+{% endif %}
 
         # The following 2 rules are only needed for the user_webfinger app.
         # Uncomment it if you're planning to use this app.
