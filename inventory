@@ -50,7 +50,7 @@ nextcloud_mail_smtppwd      =
 
 # Install restic backup tool if backup_folder is not empty
 # more info about restic: https://restic.readthedocs.io/en/latest/
-backup_folder               = ''              # e.g. /var/nc-backup
+restic_repo                 = ''              # e.g. /var/nc-backup
 # crontab settings restic for restic
 backup_day                  = *
 backup_hour                 = 4
