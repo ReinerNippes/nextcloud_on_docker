@@ -12,6 +12,7 @@
     purge_networks: true
     env:
         domain:     "{{ nextcloud_server_fqdn | regex_replace('\\.', '\\.') }}"
+        dictionaries: "{{ collabora_dictionaries }}"
     capabilities:   'MKNOD'
     labels:
         com.centurylinklabs.watchtower.enable:            "true"
