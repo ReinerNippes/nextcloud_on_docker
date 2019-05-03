@@ -98,7 +98,7 @@ Coming Soon:
 Setup the [restic](https://restic.readthedocs.io/en/latest/) backup tool.
 ```ini
 # The restic backup tool will be installed when 'backup_folder' is not empty.
-backup_folder               = ''              # e.g. '/var/nc-backup' .
+restic_repo                 = ''              # e.g. '/var/nc-backup' .
 # Configure the crontab settings for restic.
 backup_day                  = *
 backup_hour                 = 4
