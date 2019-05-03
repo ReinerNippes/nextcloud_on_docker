@@ -47,9 +47,9 @@ nextcloud_mail_smtpport     = 587
 nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      = 
 
-# The restic backup tool will be installed when 'backup_folder' is not empty.
-backup_folder               = ''              # e.g. '/var/nc-backup' .
-# Configure the crontab settings for restic.
+# Install restic backup tool if backup_folder is not empty
+restic_repo                 = ''              # e.g. /var/nc-backup
+# crontab settings restic for restic
 backup_day                  = *
 backup_hour                 = 4
 backup_minute               = 0
