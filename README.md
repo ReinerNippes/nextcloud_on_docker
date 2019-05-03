@@ -94,7 +94,6 @@ nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      =
 ```
 
-Coming Soon:
 Setup the [restic](https://restic.readthedocs.io/en/latest/) backup tool.
 ```ini
 # The restic backup tool will be installed when 'backup_folder' is not empty.
