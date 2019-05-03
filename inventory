@@ -62,8 +62,8 @@ online_office               = none
 # Set to true to install TURN server for Nextcloud Talk.
 talk_install                = false
 
-# Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer .
-adminer_enabled             = false           # The password will be stored in {{ nextcloud_base_dir }}/secrets .
+# Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer . The password will be stored in {{ nextcloud_base_dir }}/secrets .
+adminer_enabled             = false
 
 # Set to true to install Portainer webgui for Docker.
 portainer_enabled           = false
