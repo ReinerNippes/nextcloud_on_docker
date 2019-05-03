@@ -5,36 +5,35 @@ localhost ansible_connection=local
 
 ### Preliminary variables ###
 
-# Your domain name to get a Let's Encrypt certificate
+# The domain name for your Nextcloud instance. You'll get a Let's Encrypt certificate for this domain.
 nextcloud_server_fqdn       = nextcloud.example.tld
 
-# Your email address for Let's Encrypt
+# Your email address (for Let's Encrypt).
 ssl_cert_email              = nextcloud@example.tld
 
 ### Nextcloud variables ###
 
-# data dir
+# Choose a directory for your Nextcloud data.
 nextcloud_base_dir          = /opt/nextcloud
 
-# admin user
+# Choose a username and password for your Nextcloud admin user.
 nextcloud_admin             = 'admin'
-nextcloud_passwd            = ''
+nextcloud_passwd            = ''              # If empty the playbook will generate a random password.
 
-# database settings (choose one)
-nextcloud_db_type           = 'pgsql'         # (PostgreSQL)
-# nextcloud_db_type         = 'mysql'         # (MariaDB)
-# nextcloud_db_type         = 'sqlite'        # (SQLite)
+# You must choose one database management system.
+# Choose between 'pgsql' (PostgreSQL), 'mysql' (MariaDB) and 'sqlite' (SQLite).
+nextcloud_db_type           = ''
 
-# options for mariadb or postgres
+# Options for Mariadb and PostgreSQL.
 nextcloud_db_host           = 'localhost'
 nextcloud_db_name           = 'nextcloud'
 nextcloud_db_user           = 'nextcloud'
-nextcloud_db_passwd         = ''              # leave empty to generate random password
+nextcloud_db_passwd         = ''              # If empty the playbook will generate a random password (stored in {{ nextcloud_base_dir }}/secrets ).
 nextcloud_db_prefix         = 'oc_'
 
 ### Optional variables ###
 
-# Nextcloud mail setup
+# Setup the Nextcloud mail server.
 nextcloud_configure_mail    = false
 nextcloud_mail_from         = 
 nextcloud_mail_smtpmode     = smtp
@@ -48,32 +47,27 @@ nextcloud_mail_smtpport     = 587
 nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      = 
 
-# Install restic backup tool if backup_folder is not empty
-# more info about restic: https://restic.readthedocs.io/en/latest/
-backup_folder               = ''              # e.g. /var/nc-backup
-# crontab settings restic for restic
+# The restic backup tool will be installed when 'backup_folder' is not empty.
+backup_folder               = ''              # e.g. '/var/nc-backup' .
+# Configure the crontab settings for restic.
 backup_day                  = *
 backup_hour                 = 4
 backup_minute               = 0
 
-# Enable an Online Office Suite [collabora|onlyoffice|none]
-# more info about collabora office: https://www.collaboraoffice.com/
-# more info about onlyoffice office: https://www.onlyoffice.com
-
+# Choose an online office suite to integrate with your Nextcloud. Your options are (without quotation marks): 'none', 'collabora' and 'onlyoffice'.
 online_office               = none
-# online_office             = collabora
-# online_office             = onlyoffice
+# When using Collabora, you're able to install dictionaries alongside with it. Collabora's default is German (de).
+# collabora_dictionaries    = 'en'            # Separate ISO 639-1 codes with a space.
 
-# Install turn server for Nextcloud Talk
+# Set to true to install TURN server for Nextcloud Talk.
 talk_install                = false
 
-# adminer is a webfront end for your database at https://nextcloud_server_fqdn/adminer
-# password stored in {{ nextcloud_base_dir }}/secrets
-adminer_enabled             = false
+# Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer .
+adminer_enabled             = false           # The password will be stored in {{ nextcloud_base_dir }}/secrets .
 
-# portainer is a webfront end for docker host
-portainer_enabled           = true
-portainer_passwd            = ''              # leave empty to generate random password
+# Set to true to install Portainer webgui for Docker.
+portainer_enabled           = false
+portainer_passwd            = ''              # If empty the playbook will generate a random password.
 
-# user for traefik dashboard at https://nextcloud_server_fqdn/traefik
+# Uncomment 'traefik_api_user' to get access to your Traefik dashboard at https://nextcloud_server_fqdn/traefik .
 # traefik_api_user          = traefik
