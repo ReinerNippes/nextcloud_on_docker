@@ -113,7 +113,7 @@ online_office               = none
 # collabora_dictionaries    = 'en'            # Separate ISO 639-1 codes with a space.
 ```
 
-You can also install the TURN server needed for (Nextcloud Talk)[https://nextcloud.com/talk/].
+You can also install the TURN server needed for [Nextcloud Talk](https://nextcloud.com/talk/).
 ```ini
 # Set to true to install TURN server for Nextcloud Talk.
 talk_install                = false
@@ -125,20 +125,20 @@ If you want to, you can get access to your database with [Adminer](https://www.a
 adminer_enabled             = false           # The password will be stored in {{ nextcloud_base_dir }}/secrets .
 ```
 
-You can install (Portainer)[https://www.portainer.io/], a webgui for Docker.
+You can install [Portainer](https://www.portainer.io/), a webgui for Docker.
 ```ini
 # Set to true to install Portainer webgui for Docker.
 portainer_enabled           = false
 portainer_passwd            = ''              # If empty the playbook will generate a random password.
 ```
 
-If you want to, you can get access to your (Traefik)[https://traefik.io/] dashboard.
+If you want to, you can get access to your [Traefik](https://traefik.io/) dashboard.
 ```ini
 # Uncomment 'traefik_api_user' to get access to your Traefik dashboard at https://nextcloud_server_fqdn/traefik .
 # traefik_api_user          = traefik
 ```
 
-If you want to use (rclone)[https://rclone.org] to backup your data to a cloud storage provider, remove the variable `restic_repo` from `ìnventory` and edit the file `group_var/all` instead.
+If you want to use [rclone](https://rclone.org) to backup your data to a cloud storage provider, remove the variable `restic_repo` from `ìnventory` and edit the file `group_var/all` instead.
 ```ini
 restic_repo:     "rclone:backup-nextcloud:unique-s3-bucket-name/s3-folder-name"
 rclone_remote: |
