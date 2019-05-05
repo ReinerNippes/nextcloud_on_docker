@@ -24,7 +24,9 @@
 
 - name: docker adminer
   include_tasks: adminer.yml
-  when: adminer_enabled and nextcloud_db_type != 'sqlite'
+  when: 
+    - adminer_enabled
+    - nextcloud_db_type != 'sqlite'
 
 - name: docker nextcloud
   include_tasks: nextcloud.yml
@@ -39,11 +41,15 @@
   
 - name: docker collabora office
   include_tasks: collabora.yml
-  when: online_office == 'collabora' and ansible_architecture == 'x86_64'
+  when: 
+    - online_office == 'collabora'
+    - ansible_architecture == 'x86_64'
 
-- name: docker turn server
+- name: docker turnserver
   include_tasks: turnserver.yml
-  when: talk_install and ansible_architecture == 'x86_64'
+  when: 
+    - talk_install
+    - ansible_architecture == 'x86_64'
 
 - name: docker network
   include_tasks: network.yml
