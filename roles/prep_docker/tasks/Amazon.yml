@@ -1,15 +1,7 @@
 ---
-# Amazon Linux related OS tasks
-
-- name: add docker repo
-  get_url: 
-    url: https://download.docker.com/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docker.repo
-    owner: root
-    group: root
-    mode: 0644
+# Amazon Linux related docker OS tasks
 
 - name: install docker
   yum: 
-    name: docker 
+    name: docker
     state: latest

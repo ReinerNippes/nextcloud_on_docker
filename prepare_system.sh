@@ -67,18 +67,20 @@ prepare_centos() {
 }
 
 prepare_amzn() { 
-	$SUDO yum install epel-release -y
+	$SUDO amazon-linux-extras install epel
 	$SUDO yum install git vim mc curl facter libselinux-python -y
 	$SUDO yum update -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
+	set +x
 	echo
 	echo "Amazon 2 Linux ready for nextcloud."
-	echo "Nevertheless you have to uninstall awscli, cloud-init and python-requests"
+	echo
+	echo "Nevertheless you have to uninstall python-requests"
 	echo "before you can run the playbook."
 	echo "python-requests cause broken dependency with pip docker." 
-	echo
+	echo "run 'sudo yum remove python-requests' "
 }
 
 usage() { 

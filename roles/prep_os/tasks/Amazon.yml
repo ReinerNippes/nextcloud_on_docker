@@ -1,16 +1,10 @@
 ---
 # AWS Linux related tasks
 
-- name: add epel repo
-  yum_repository:
-    name: epel
-    description: Extra Packages for Enterprise Linux 7 - $basearch
-    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
-    gpgkey: https://getfedora.org/static/352C64E5.txt
-    gpgcheck: yes
-    failovermethod: priority
-    enabled: 1
-#  when: false
+- name: add amazon epel repo
+  shell: amazon-linux-extras install epel
+  args:
+    creates: /etc/yum.repos.d/amzn2-extras.repo
 
 - name: update os
   yum:
