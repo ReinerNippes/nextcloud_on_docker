@@ -75,12 +75,8 @@ prepare_amzn() {
 	
 	set +x
 	echo
-	echo "Amazon 2 Linux ready for nextcloud."
+	echo "  Amazon Linux 2 ready for nextcloud."
 	echo
-	echo "Nevertheless you have to uninstall python-requests"
-	echo "before you can run the playbook."
-	echo "python-requests cause broken dependency with pip docker." 
-	echo "run 'sudo yum remove python-requests' "
 }
 
 usage() { 
