@@ -10,7 +10,7 @@
     gpgcheck: yes
     failovermethod: priority
     enabled: 1
-  when: false
+#  when: false
 
 - name: update os
   yum:
@@ -20,14 +20,13 @@
 
 - name: install needed packages
   yum:
-    name: "{{ item }}"
+    name: 
+      - zip
+      - unzip
+      - bzip2
+      - screen
+      - curl
+      - wget
+      - policycoreutils-python
+      - facter
     state: latest
-    enablerepo: epel 
-  with_items:
-    - zip
-    - unzip
-    - bzip2
-    - screen
-    - curl
-    - wget
-    - facter
