@@ -2,7 +2,7 @@
 
 100% Handsfree & Ready to login.
 
-Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7. Maybe on Redhat 7.
+Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7, Amazon Linux 2. Maybe on Redhat 7.
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
@@ -22,7 +22,7 @@ Install [Ansible](https://www.ansible.com/) and some needed tools by running the
 ./prepare_system.sh
 ```
 
-Note that root must have also sudo right otherwise the script will complain. Some hoster use distros where is is not in the sudoers file. In this case you have to add `root ALL=(ALL) NOPASSWD:ALL` to /etc/sudoers.
+Note that root must have also sudo right otherwise the script will complain. Some hoster use distros where root is not in the sudoers file. In this case you have to add `root ALL=(ALL) NOPASSWD:ALL` to /etc/sudoers.
 
 ## Configuration
 
@@ -64,8 +64,8 @@ nextcloud_passwd            = ''              # If empty the playbook will gener
 Now it's time to choose and configure your favorite database management system.
 ```ini
 # You must choose one database management system.
-# Choose between 'pgsql' (PostgreSQL), 'mysql' (MariaDB) and 'sqlite' (SQLite).
-nextcloud_db_type           = ''
+# Choose between 'pgsql' (PostgreSQL, default), 'mysql' (MariaDB) and 'sqlite' (SQLite).
+nextcloud_db_type           = 'pgsql'
 
 # Options for Mariadb and PostgreSQL.
 nextcloud_db_host           = 'localhost'
