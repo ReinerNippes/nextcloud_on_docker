@@ -66,6 +66,21 @@ prepare_centos() {
 	echo
 }
 
+prepare_amzn() { 
+	$SUDO yum install epel-release -y
+	$SUDO yum install git vim mc curl facter libselinux-python -y
+	$SUDO yum update -y
+	PYTHON_BIN=/usr/bin/python
+	install_pip
+	
+	echo
+	echo "Amazon 2 Linux ready for nextcloud."
+	echo "Nevertheless you have to uninstall awscli, cloud-init and python-requests"
+	echo "before you can run the playbook."
+	echo "python-requests cause broken dependency with pip docker." 
+	echo
+}
+
 usage() { 
 	echo
 	echo "Linux distribution not detected."
@@ -99,6 +114,9 @@ case $ID in
 	;;
 	'centos')
 		prepare_centos
+	;;
+	'amzn')
+		prepare_amzn
 	;;
 	*)
 		usage
