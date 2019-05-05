@@ -26,7 +26,7 @@
         msg: 
           - "Manage your container at https://{{ nextcloud_server_fqdn }}/portainer/ ."
           - "Login with user: admin and password: {{ portainer_passwd }} "
-      when: (state is undefined or 'absent' not in state) and portainer_enabled
+      when: (state is undefined or 'absent' not in state) and (portainer_passwd != '')
 
     - name: We are ready
       debug:
@@ -35,4 +35,4 @@
           - RESTIC_REPOSITORY='{{ restic_repo }}'
           - RESTIC_PASSWORD='{{ restic_backup_secret }}'
           
-      when: (state is undefined or 'absent' not in state) and restic_repo != ''
+      when: (state is undefined or 'absent' not in state) and (restic_repo != '')
