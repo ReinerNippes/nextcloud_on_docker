@@ -32,6 +32,8 @@
     
 - name: wait for nextcloud container to come up
   wait_for:
-    delay: 10
+#    delay: 10
     path: "{{ nextcloud_www_dir }}/lib/versioncheck.php"
-  when: state is undefined or 'absent' not in state
+  when: 
+    - docker_result is changed
+    - ( state is undefined or 'absent' not in state )
