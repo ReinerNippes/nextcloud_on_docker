@@ -11,6 +11,7 @@ install_pip () {
 	$SUDO pip install dnspython -U
 	$SUDO pip install passlib -U
 	$SUDO pip install bcrypt -U
+	$SUDO pip install Jinja2 -U
 }
 
 prepare_ubuntu() { 
