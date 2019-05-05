@@ -18,14 +18,14 @@
 
 - name: make sure nextcloud directoies are present
   file:
-    name:  "{{ item }}"
-    owner: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
-    group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
+    name:  "{{ item.name }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
     state: directory
   loop:
-    - "{{ nextcloud_config_dir }}"
-    - "{{ nextcloud_data_dir }}"
-    - "{{ nextcloud_www_dir }}"
+    - {name: "{{ nextcloud_config_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}" }
+    - {name: "{{ nextcloud_data_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"  }
+    - {name: "{{ nextcloud_www_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "root"  }
 
 - name: make sure {{ traefik_config_dir }} is present
   file:
