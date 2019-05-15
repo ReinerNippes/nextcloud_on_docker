@@ -1,7 +1,6 @@
 ---
 # Some common variables used in more then one roles
  
-nextcloud_base_dir:            /opt/nextcloud
 nextcloud_credential_store:    "{{ nextcloud_base_dir }}/secrets"
 nextcloud_data_dir:            "{{ nextcloud_base_dir }}/data"
 nextcloud_www_dir:             "{{ nextcloud_base_dir }}/www"
