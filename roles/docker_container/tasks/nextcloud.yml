@@ -17,9 +17,7 @@
     networks:
       - name: backend
     purge_networks: true
-    links:
-      - 'nextcloud-db:db'
-      - 'redis:redis'
+    links: '{{ nextcloud_db_links[nextcloud_db_type] }}'
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html"
       - "{{ nextcloud_config_dir }}:/var/www/html/config"

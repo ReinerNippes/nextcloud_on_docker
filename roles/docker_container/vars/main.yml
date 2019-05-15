@@ -22,3 +22,12 @@ nextcloud_traefik_label:
     traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
     com.centurylinklabs.watchtower.enable:            "true"
 
+nextcloud_db_links:
+  pgsql:
+    - 'nextcloud-db:db'
+    - 'redis:redis'
+  mysql:
+    - 'nextcloud-db:db'
+    - 'redis:redis'
+  sqlite:
+    - 'redis:redis'
