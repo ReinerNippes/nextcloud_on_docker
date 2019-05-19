@@ -9,7 +9,7 @@
     command: redis-server --requirepass {{ lookup('password', '{{ nextcloud_credential_store }}/redis_secret chars=ascii_letters,digits length=32') }}
     networks:
       - name: backend
-    purge_networks: true
+    networks_cli_compatible: true
     volumes:
       - 'redis-data-vol:/data:rw'
     labels:

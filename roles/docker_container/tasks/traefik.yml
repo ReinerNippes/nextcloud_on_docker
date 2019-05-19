@@ -39,7 +39,7 @@
     networks:
       - name: frontend
       - name: backend
-    purge_networks: true
+    networks_cli_compatible: true
     ports:
       - "80:80"
       - "443:443"

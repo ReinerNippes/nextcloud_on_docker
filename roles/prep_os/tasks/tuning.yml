@@ -4,7 +4,7 @@
 - name: sysctl vm.overcommit_memory=1
   sysctl: 
     name: vm.overcommit_memory
-    value: 1
+    value: '1'
     state: present
     reload: true
     sysctl_file: /etc/sysctl.conf
@@ -12,7 +12,7 @@
 - name: sysctl -w net.core.somaxconn=65535
   sysctl:
     name: net.core.somaxconn
-    value: 65535
+    value: '65535'
     state: present
     reload: true
     sysctl_file: /etc/sysctl.conf

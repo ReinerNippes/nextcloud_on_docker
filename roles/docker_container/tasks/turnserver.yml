@@ -31,9 +31,4 @@
       - '{{ traefik_config_dir }}:/etc/ssl/nextcloud:ro'
       - 'turnserver-data-vol:/var/lib/coturn:rw'
     network_mode: host
-#    networks:
-#     - name:        'frontend'
-#    ports:
-#     - 5349:5349/udp
-#     - 5349:5349
     state:          '{{ state | default("started") }}'

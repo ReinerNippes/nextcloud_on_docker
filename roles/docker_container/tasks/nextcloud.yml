@@ -16,7 +16,7 @@
     restart_policy: always
     networks:
       - name: backend
-    purge_networks: true
+    networks_cli_compatible: true
     links: '{{ nextcloud_db_links[nextcloud_db_type] }}'
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html"

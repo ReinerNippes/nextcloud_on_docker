@@ -9,7 +9,7 @@
     tty:            'yes'
     networks:
      - name:        'backend'
-    purge_networks: true
+    networks_cli_compatible: true
     env:
         domain:     "{{ nextcloud_server_fqdn | regex_replace('\\.', '\\.') }}"
         dictionaries: "{{ collabora_dictionaries }}"

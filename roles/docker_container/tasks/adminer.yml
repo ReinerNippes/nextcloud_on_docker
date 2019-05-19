@@ -11,7 +11,7 @@
       - 'nextcloud-db:db'
     networks:
       - name: backend
-    purge_networks: true
+    networks_cli_compatible: true
     labels:
       traefik.docker.network: "frontend"
       traefik.enable:         "true"

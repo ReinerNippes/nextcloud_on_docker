@@ -8,7 +8,7 @@
     restart_policy: 'always'
     networks:
      - name:        'backend'
-    purge_networks: true
+    networks_cli_compatible: true
     labels:
         com.centurylinklabs.watchtower.enable:            "true"
     state:          '{{ state | default("started") }}'
