@@ -1,0 +1,14 @@
+---
+# tasks file to start onlyoffice container
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the onlyoffice container"
+  docker_container:
+    name:           'onlyoffice_documentserver'
+    image:          'onlyoffice/documentserver:{{ docker_onlyoffice_image | default("latest") }}'
+    restart_policy: 'always'
+    networks:
+     - name:        'backend'
+    purge_networks: true
+    labels:
+        com.centurylinklabs.watchtower.enable:            "true"
+    state:          '{{ state | default("started") }}'

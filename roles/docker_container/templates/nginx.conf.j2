@@ -34,6 +34,23 @@ http {
         server nextcloud:9000;
     }
 
+{% if (online_office == 'onlyoffice') and (ansible_architecture == 'x86_64') %}
+    map $http_host $this_host {
+        "" $host;
+        default $http_host;
+    }
+
+    map $http_x_forwarded_proto $the_scheme {
+        default $http_x_forwarded_proto;
+        "" $scheme;
+    }
+
+    map $http_x_forwarded_host $the_host {
+       default $http_x_forwarded_host;
+       "" $this_host;
+    }
+{% endif %}
+
     server {
         listen 80;
 
@@ -81,6 +98,26 @@ http {
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
         } 
+{% endif %}
+
+{% if (online_office == 'onlyoffice') and (ansible_architecture == 'x86_64') %}
+        location ~* ^/ds-vpath/ {
+                rewrite /ds-vpath/(.*) /$1  break;
+                proxy_pass http://onlyoffice_documentserver;
+                proxy_redirect     off;
+
+                client_max_body_size 100m;
+
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Host $the_host/ds-vpath;
+                proxy_set_header X-Forwarded-Proto $the_scheme;
+        }
 {% endif %}
 
         # The following 2 rules are only needed for the user_webfinger app.

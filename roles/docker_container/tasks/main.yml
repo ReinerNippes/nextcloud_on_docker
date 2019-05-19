@@ -14,7 +14,7 @@
 
 - name: docker portainer
   include_tasks: portainer.yml
-  when: portainer_enabled
+  when: portainer_enabled|bool
 
 - name: docker database
   include_tasks: database.yml
@@ -25,7 +25,7 @@
 - name: docker adminer
   include_tasks: adminer.yml
   when: 
-    - adminer_enabled
+    - adminer_enabled|bool
     - nextcloud_db_type != 'sqlite'
 
 - name: docker nextcloud
@@ -36,7 +36,7 @@
   when: "'fpm' in docker_nextcloud_image"
 
 - name: docker onlyoffice
-  include_tasks: only_office.yml
+  include_tasks: onlyoffice.yml
   when: online_office == 'onlyoffice'
   
 - name: docker collabora office
@@ -48,7 +48,7 @@
 - name: docker turnserver
   include_tasks: turnserver.yml
   when: 
-    - talk_install
+    - talk_install|bool
     - ansible_architecture == 'x86_64'
 
 - name: docker network

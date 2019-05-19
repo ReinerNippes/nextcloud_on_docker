@@ -4,6 +4,7 @@
 nextccloud_system_config:
   - "overwrite.cli.url --value=https://{{ nextcloud_server_fqdn }}"
   - "trusted_domains 0 --value={{ nextcloud_server_fqdn }}"
+  - "trusted_domains 1 --value=nginx"
   - "trusted_proxies 0 --value={{ traefik_facts.ansible_facts.docker_container.NetworkSettings.Networks.backend.IPAddress }}"
   - "redis host --value='redis'"
   - "redis port --value='6379' --type=integer"

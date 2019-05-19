@@ -23,7 +23,7 @@
 - name: set nextcloud mail config.php values
   shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
   loop:  '{{ nextccloud_mail_config }}'
-  when: nextcloud_configure_mail 
+  when: nextcloud_configure_mail|bool 
 
 - name: set nextcloud app settings
   shell: '{{ docker_occ_cmd }} app:{{ item }}'
@@ -74,8 +74,15 @@
     - online_office == 'collabora'
     - ansible_architecture == 'x86_64'
 
+- name: setup onlyoffice app in nextcloud
+  include_tasks: configure_onlyoffice.yml
+  when: 
+    - online_office == 'onlyoffice'
+    - ansible_architecture == 'x86_64'
+
+
 - name: setup talk app in nextcloud
   include_tasks: talk.yml
   when: 
-    - talk_install
+    - talk_install|bool
     - ansible_architecture == 'x86_64'
