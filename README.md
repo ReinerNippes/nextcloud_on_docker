@@ -6,20 +6,20 @@ Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7, Amazon Linux 2. May
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
-Collabora and Talk work only on a x86_64 server. OnlyOffice is not yet available.
+Onlyoffice, Collabora and Talk work only on a x86_64 server.
 
 ## Preparation
+
+Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
+```bash
+curl -s https://raw.githubusercontent.com/ReinerNippes/nextcloud_on_docker/master/prepare_system.sh | /bin/bash
+```
 
 Clone this repo and change into the directory nextcloud_on_docker.
 ```bash
 git clone https://github.com/ReinerNippes/nextcloud_on_docker
 
 cd nextcloud_on_docker
-```
-
-Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
-```bash
-./prepare_system.sh
 ```
 
 Note that root must have also sudo right otherwise the script will complain. Some hoster use distros where root is not in the sudoers file. In this case you have to add `root ALL=(ALL) NOPASSWD:ALL` to /etc/sudoers.
