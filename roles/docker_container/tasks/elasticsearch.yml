@@ -1,0 +1,28 @@
+---
+# tasks file to start elasticsearch & tessearct ocr container
+
+- name: generate docker file
+  template:
+    src:  elasticsearch_tesseract
+    dest: docker/elasticsearch_tesseract/Dockerfile
+    
+- name: build docker image
+  docker_image:
+    source: build
+    name:   elasticsearch_tesseract
+    build:
+      path: docker/elasticsearch_tesseract
+      pull: yes
+    rm:     true
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} elasticsearch & tessearct container"
+  docker_container:
+    name: elasticsearch_tesseract
+    image: elasticsearch_tesseract
+    restart_policy: always
+    networks:
+      - name: backend
+    networks_cli_compatible: true
+    env:
+      discovery.type: single-node
+    state: "{{ state | default('started') }}"

@@ -65,6 +65,9 @@ talk_install                = false
 # Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer . The password will be stored in {{ nextcloud_base_dir }}/secrets .
 adminer_enabled             = false
 
+# # Set to true to fulltext search.
+fulltextsearch_enabled      = true
+
 # Set to true to install Portainer webgui for Docker.
 portainer_enabled           = false
 portainer_passwd            = ''              # If empty the playbook will generate a random password.

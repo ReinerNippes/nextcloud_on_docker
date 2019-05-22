@@ -25,6 +25,7 @@ docker_watchtower_image:       latest
 docker_redis_image:            4-alpine
 docker_collabora_image:        latest
 docker_turnserver_image:       latest
+docker_elasticsearch_image:    6.7.2
 
 docker_occ_cmd:                'docker exec --user www-data nextcloud php occ'
 
@@ -45,3 +46,7 @@ nginx_resolver: '127.0.0.1'
 #      acl = private
 #      server_side_encryption = AES256
 #      storage_class = STANDARD_IA
+
+tessreact_language_packs:
+  - deu
+  - eng
