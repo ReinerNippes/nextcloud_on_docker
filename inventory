@@ -6,7 +6,7 @@ localhost ansible_connection=local
 ### Preliminary variables ###
 
 # The domain name for your Nextcloud instance. You'll get a Let's Encrypt certificate for this domain.
-nextcloud_server_fqdn       = cloud.example.com
+nextcloud_server_fqdn       = nc-nippes.it
 
 # Your email address (for Let's Encrypt).
 ssl_cert_email              = 
@@ -22,7 +22,7 @@ nextcloud_passwd            = ''              # If empty the playbook will gener
 
 # You must choose one database management system.
 # Choose between 'pgsql' (PostgreSQL), 'mysql' (MariaDB) and 'sqlite' (SQLite).
-nextcloud_db_type           = 'mysql'
+nextcloud_db_type           = 'pgsql'
 
 # Options for Mariadb and PostgreSQL.
 nextcloud_db_host           = 'localhost'
@@ -75,6 +75,8 @@ talk_install                = false
 # Set to true to enable access to your database with Adminer at https://cloud.example.com/adminer/ . The password will be stored in {{ nextcloud_base_dir }}/secrets .
 adminer_enabled             = false
 
+# # Set to true to fulltext search.
+fulltextsearch_enabled      = true
 
 # Set to true to install Portainer webgui for Docker.
 portainer_enabled           = true

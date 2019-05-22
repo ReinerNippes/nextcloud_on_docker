@@ -1,0 +1,38 @@
+---
+# tasks file to start elasticsearch & tessearct ocr container
+
+- name: generate docker file
+  template:
+    src:  elasticsearch_tesseract.j2
+    dest: docker/elasticsearch_tesseract/Dockerfile
+
+- name: generate unit file
+  template:
+    src:  nextcloud-fulltext-elasticsearch-worker.service.j2
+    dest: '{{ service_path[ansible_distribution] }}/nextcloud-fulltext-elasticsearch-worker.service'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: build docker image
+  docker_image:
+    source: build
+    name:   elasticsearch_tesseract
+    build:
+      path: docker/elasticsearch_tesseract
+      pull: yes
+      rm:   true
+    tag:  "{{ docker_elasticsearch_image }}"
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} elasticsearch & tessearct container"
+  docker_container:
+    name: elasticsearch_tesseract
+    image: elasticsearch_tesseract:{{ docker_elasticsearch_image }}
+    restart_policy: always
+    networks:
+      - name: backend
+    networks_cli_compatible: true
+    env:
+      node.name: esearch
+      discovery.type: single-node
+    state: "{{ state | default('started') }}"

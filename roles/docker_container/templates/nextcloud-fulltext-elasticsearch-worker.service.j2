@@ -1,0 +1,16 @@
+[Unit]
+Description=Elasticsearch Worker for Nextcloud Fulltext Search
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/nextcloud
+ExecStart={{ docker_occ_cmd }} fulltextsearch:live -q
+ExecStop={{ docker_occ_cmd }} fulltextsearch:stop
+Nice=19
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
