@@ -12,6 +12,7 @@ install_pip () {
 	$SUDO pip install passlib -U
 	$SUDO pip install bcrypt -U
 	$SUDO pip install Jinja2 -U
+	$SUDO pip install python-apt -U
 }
 
 prepare_ubuntu() { 
