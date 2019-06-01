@@ -12,13 +12,12 @@ install_pip () {
 	$SUDO pip install passlib -U
 	$SUDO pip install bcrypt -U
 	$SUDO pip install Jinja2 -U
-	$SUDO pip install python-apt -U
 }
 
 prepare_ubuntu() { 
 	$SUDO apt update -y
 	$SUDO apt dist-upgrade -y
-	$SUDO apt install software-properties-common curl git mc vim facter python-minimal aptitude -y
+	$SUDO apt install software-properties-common curl git mc vim facter python-minimal python-apt aptitude -y
 	$SUDO [ $(uname -m) == "aarch64" ] && $SUDO apt install gcc python-dev libffi-dev libssl-dev make -y
 
 	PYTHON_BIN=/usr/bin/python
@@ -32,7 +31,7 @@ prepare_ubuntu() {
 prepare_debian() { 
 	$SUDO apt update -y
 	$SUDO apt dist-upgrade -y
-	$SUDO apt install dirmngr curl git mc vim facter python -y
+	$SUDO apt install dirmngr curl git mc vim facter python python-apt -y
 	$SUDO [ $(uname -m) == "aarch64" ] && $SUDO apt install gcc python-dev libffi-dev libssl-dev make -y
 	
 	PYTHON_BIN=/usr/bin/python
@@ -46,7 +45,7 @@ prepare_debian() {
 prepare_raspbian() {
 	$SUDO apt update -y
 	$SUDO apt dist-upgrade -y
-	$SUDO apt install dirmngr mc vim git libffi-dev curl facter gcc python-dev libffi-dev libssl-dev make -y
+	$SUDO apt install dirmngr mc vim git libffi-dev curl facter gcc python-dev python-apt libffi-dev libssl-dev make -y
 	PYTHON_BIN=/usr/bin/python
 	install_pip
 	
