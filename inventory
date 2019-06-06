@@ -57,7 +57,7 @@ backup_minute               = 0
 # Choose an online office suite to integrate with your Nextcloud. Your options are (without quotation marks): 'none', 'collabora' and 'onlyoffice'.
 online_office               = none
 # When using Collabora, you're able to install dictionaries alongside with it. Collabora's default is German (de).
-# collabora_dictionaries    = 'en'            # Separate ISO 639-1 codes with a space.
+collabora_dictionaries      = 'en'            # Separate ISO 639-1 codes with a space.
 
 # Set to true to install TURN server for Nextcloud Talk.
 talk_install                = false
