@@ -1,4 +1,4 @@
-FROM elasticsearch:6.7.2
+FROM elasticsearch:7.2.0
 
 RUN bin/elasticsearch-plugin install --batch ingest-attachment && \
     yum-config-manager --add-repo https://download.opensuse.org/repositories/home:/Alexander_Pozdnyakov/CentOS_7/ && \
