@@ -80,9 +80,14 @@
     - online_office == 'onlyoffice'
     - ansible_architecture == 'x86_64'
 
-
 - name: setup talk app in nextcloud
   include_tasks: talk.yml
   when: 
     - talk_install|bool
+    - ansible_architecture == 'x86_64'
+
+- name: setup fulltextsearch app in nextcloud
+  include_tasks: fulltextsearch.yml
+  when: 
+    - fulltextsearch_enabled|bool
     - ansible_architecture == 'x86_64'
