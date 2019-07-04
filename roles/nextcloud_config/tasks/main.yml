@@ -51,7 +51,7 @@
     dest: /usr/local/bin/nextcloud_optimize.sh
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
     content: |
       #!/bin/bash
       docker exec redis redis-cli -a {{ lookup('password', '{{ nextcloud_credential_store }}/redis_secret chars=ascii_letters,digits length=32') }} FLUSHALL
@@ -106,3 +106,9 @@
   when: 
     - talk_install|bool
     - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
+
+- name: setup fulltextsearch app in nextcloud
+  include_tasks: fulltextsearch.yml
+  when: 
+    - fulltextsearch_enabled|bool
+    - ansible_architecture == 'x86_64'
