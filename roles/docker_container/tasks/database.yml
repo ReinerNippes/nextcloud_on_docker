@@ -11,6 +11,7 @@
     - name: create mysql group
       group:
         name: mysql
+        system: true
         
     - name: create mysql user
       user:
