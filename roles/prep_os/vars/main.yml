@@ -1,0 +1,7 @@
+---
+# vars file for prep_os
+
+service_path:
+  CentOS: '/usr/lib/systemd/system'
+  Ubuntu: '/lib/systemd/system'
+  Debian: '/lib/systemd/system'

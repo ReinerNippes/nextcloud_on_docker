@@ -19,14 +19,14 @@
 
 - name: disable transparent hugepages - copy service file
   copy:
-    src: disable-transparent-hugepages
-    dest: /etc/init.d/disable-transparent-hugepages
+    src: disable-transparent-huge-pages.service
+    dest: '{{ service_path[ansible_distribution] }}/disable-transparent-huge-pages.service'
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
 
 - name: enable service disable-transparent-hugepages
   service:
-    name: disable-transparent-hugepages
+    name: disable-transparent-huge-pages.service
     enabled: true
     state: started
