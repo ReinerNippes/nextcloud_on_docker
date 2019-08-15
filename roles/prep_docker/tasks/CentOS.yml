@@ -11,8 +11,5 @@
 
 - name: install docker
   yum: 
-    name: "{{ item }}" 
+    name: docker-ce
     state: latest
-  with_items:
-    - docker-ce
-#    - python2-pip
