@@ -5,3 +5,4 @@ service_path:
   CentOS: '/usr/lib/systemd/system'
   Ubuntu: '/lib/systemd/system'
   Debian: '/lib/systemd/system'
+  Amazon: '/usr/lib/systemd/system'
