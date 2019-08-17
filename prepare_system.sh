@@ -5,42 +5,46 @@
 
 install_pip () {
         curl https://bootstrap.pypa.io/get-pip.py | $SUDO $PYTHON_BIN
-        $SUDO $PIP_BIN install setuptools -U
-        $SUDO $PIP_BIN install ansible -U
-        $SUDO $PIP_BIN install netaddr -U
-        $SUDO $PIP_BIN install dnspython -U
-        $SUDO $PIP_BIN install passlib -U
-        $SUDO $PIP_BIN install bcrypt -U
+        $SUDO pip install setuptools -U
+        $SUDO pip install ansible -U
+        $SUDO pip install netaddr -U
+        $SUDO pip install dnspython -U
+        $SUDO pip install passlib -U
+        $SUDO pip install bcrypt -U
 }
 
 prepare_ubuntu() {
         $SUDO apt update -y
         $SUDO apt dist-upgrade -y
-        $SUDO apt install software-properties-common curl git mc vim facter python3 python3-distutils python3-requests -y
-        $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python3-dev libffi-dev libssl-dev make -y
+        $SUDO apt install software-properties-common curl git mc vim facter python aptitude -y
+        $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python-dev libffi-dev libssl-dev make -y
 
-        PYTHON_BIN=/usr/bin/python3
-        PIP_BIN=/usr/local/bin/pip
+        PYTHON_BIN=/usr/bin/python
         install_pip
+        $SUDO pip install python-apt -U
 
+        set +x
         echo
-        echo "Ubuntu Sytem ready for nextcloud."
+        echo "   Ubuntu Sytem ready for nextcloud."
         echo
+        ansible --version
 }
 
 prepare_debian() {
         $SUDO apt update -y
         $SUDO apt dist-upgrade -y
-        $SUDO apt install dirmngr curl git mc vim facter python3 python3-distutils python3-requests aptitude -y
-        $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python3-dev libffi-dev libssl-dev make -y
+        $SUDO apt install dirmngr curl git mc vim facter python aptitude -y
+        $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python-dev libffi-dev libssl-dev make -y
 
-        PYTHON_BIN=/usr/bin/python3
-        PIP_BIN=/usr/local/bin/pip
+        PYTHON_BIN=/usr/bin/python
         install_pip
+        $SUDO pip install python-apt -U
 
+        set +x
         echo
-        echo "Debian Sytem ready for nextcloud."
+        echo "   Debian Sytem ready for nextcloud."
         echo
+        ansible --version
 }
 
 prepare_raspbian() {
@@ -50,44 +54,47 @@ prepare_raspbian() {
         PYTHON_BIN=/usr/bin/python
         install_pip
 
+        set +x
         echo
-        echo "Rasbpian System ready for nextcloud."
+        echo "   Rasbpian System ready for nextcloud."
         echo
+        ansible --version
 }
 
 prepare_centos() {
         $SUDO yum install epel-release -y
-        $SUDO yum install git vim mc curl facter libselinux-python python36 python36-pip -y
+        $SUDO yum install git vim mc curl facter libselinux-python python -y
         $SUDO yum update -y
 
-        PYTHON_BIN=/usr/bin/python3.6
-        PIP_BIN=/usr/local/bin/pip
-        install_pip
-
-        echo
-        echo "CentOS Sytem ready for nextcloud."
-        echo
-}
-
-prepare_amzn() {
-        $SUDO amazon-linux-extras install epel -y
-        $SUDO yum install git vim mc curl facter libselinux-python python3 -y
-        $SUDO yum update -y
-
-        PYTHON_BIN=/usr/bin/python3
-        PIP_BIN=/usr/local/bin/pip
+        PYTHON_BIN=/usr/bin/python
         install_pip
 
         set +x
         echo
-        echo "  Amazon Linux 2 ready for nextcloud."
+        echo "   CentOS Sytem ready for nextcloud."
         echo
+        ansible --version
+}
+
+prepare_amzn() {
+        $SUDO amazon-linux-extras install epel -y
+        $SUDO yum install git vim mc curl facter libselinux-python python -y
+        $SUDO yum update -y
+
+        PYTHON_BIN=/usr/bin/python
+        install_pip
+
+        set +x
+        echo
+        echo "   Amazon Linux 2 ready for nextcloud."
+        echo
+        ansible --version
 }
 
 usage() {
         echo
         echo "Linux distribution not detected."
-        echo "Use: ID=[Ubuntu|Debian|CentOS|raspbian] setup_ec2.sh"
+        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn] prepare_system.sh"
         echo "Other distributions not yet supported."
         echo
 }
@@ -126,3 +133,4 @@ case $ID in
                 usage
         ;;
 esac
+
