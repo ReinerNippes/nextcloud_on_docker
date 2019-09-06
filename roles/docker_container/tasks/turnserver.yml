@@ -10,8 +10,6 @@
       -n
       --log-file=stdout
       --external-ip=$(detect-external-ip)
-      --listening-ip={{ ansible_default_ipv4.address }}
-      --relay-ip={{ ansible_default_ipv4.address }}
       --tls-listening-port=5349
       --no-cli
       --no-tlsv1
