@@ -64,7 +64,13 @@ nextccloud_mail_config:
   - "mail_smtppassword --value={{ nextcloud_mail_smtppwd }}"
 
 nextcloud_app_config:
-  - "disable survey_client"
-  - "disable firstrunwizard"
-  - "enable  admin_audit"
-  - "enable  files_pdfviewer"
+  - name:  survey_client
+    state: disable
+  - name:  firstrunwizard
+    state: disable
+  - name:  admin_audit
+    state: enable
+  - name:  files_pdfviewer
+    state: enable
+  - name:  extract
+    state: enable

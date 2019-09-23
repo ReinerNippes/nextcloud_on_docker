@@ -25,9 +25,16 @@
   loop:  '{{ nextccloud_mail_config }}'
   when: nextcloud_configure_mail|bool 
 
-- name: set nextcloud app settings
-  shell: '{{ docker_occ_cmd }} app:{{ item }}'
+- name: install {{ item.name }} app
+  shell: '{{ docker_occ_cmd }} app:install {{ item.name }}'
+  args:
+    creates: '{{ nextcloud_www_dir }}/apps/{{ item.name }}'
   loop:  '{{ nextcloud_app_config }}'
+  
+- name: '{{ item.state }} {{ item.name }} app'
+  shell: '{{ docker_occ_cmd }} app:{{ item.state }} {{ item.name }}'
+  loop:  '{{ nextcloud_app_config }}'
+
 
 - name: backup jobs, upgrade apps and database tuning
   shell: '{{ docker_occ_cmd }} {{ item }}'
