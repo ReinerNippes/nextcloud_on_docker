@@ -1,15 +1,15 @@
 ---
 
 - name: install collabora app
-  shell: docker exec --user www-data nextcloud php occ app:install richdocuments
+  shell: '{{ docker_occ_cmd }} app:install richdocuments'
   args:
     creates: '{{ nextcloud_www_dir }}/apps/richdocuments'
   register: install_collabora_app
   
 - name: enable collabora app
-  shell: docker exec --user www-data nextcloud php occ app:enable richdocuments
+  shell: '{{ docker_occ_cmd }} app:enable richdocuments'
   when: install_collabora_app is changed
 
 - name: set collabora wopi url
-  shell: docker exec --user www-data nextcloud php occ config:app:set richdocuments wopi_url --value https://{{ nextcloud_server_fqdn }}:443
+  shell: '{{ docker_occ_cmd }} config:app:set richdocuments wopi_url --value https://{{ nextcloud_server_fqdn }}:443'
   when: install_collabora_app is changed
