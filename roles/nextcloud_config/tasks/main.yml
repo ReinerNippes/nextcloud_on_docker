@@ -5,6 +5,9 @@
     nextcloud_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/nextcloud_admin_secret chars=ascii_letters,digits length=32') }}"
   when: nextcloud_passwd == ''
 
+- name: check install state
+  shell: '{{ docker_occ_cmd }} status | grep "installed:"'
+  register: nextcloud_status
 
 - name: first setup nextcloud
   shell: >
@@ -12,37 +15,33 @@
     --database {{ nextcloud_db_type }} --database-host nextcloud-db --database-name {{ nextcloud_db_name }} 
     --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} --database-pass {{ nextcloud_db_passwd }} 
     --admin-user {{ nextcloud_admin }} --admin-pass {{ nextcloud_passwd }} --data-dir {{ nextcloud_container_data_dir }}
-  args:
-    creates: "{{ nextcloud_config_dir }}/config.php"
-  register: setup_nc
+  when: ( 'false' in nextcloud_status.stdout )
+  register: first_setup_nextcloud
 
-- name: set nextcloud system config.php values
-  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
-  loop:  '{{ nextccloud_system_config }}'
+- name: configure nextcloud 
+  block:
+  - name: set nextcloud system config.php values
+    shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+    loop:  '{{ nextccloud_system_config }}'
 
-- name: set nextcloud mail config.php values
-  shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
-  loop:  '{{ nextccloud_mail_config }}'
-  when: nextcloud_configure_mail|bool 
+  - name: set nextcloud mail config.php values
+    shell: '{{ docker_occ_cmd }} config:system:set {{ item }}'
+    loop:  '{{ nextccloud_mail_config }}'
+    when: 
+      - nextcloud_configure_mail|bool 
 
-- name: install {{ item.name }} app
-  shell: '{{ docker_occ_cmd }} app:install {{ item.name }}'
-  args:
-    creates: '{{ nextcloud_www_dir }}/apps/{{ item.name }}'
-  loop:  '{{ nextcloud_app_config }}'
-  
-- name: '{{ item.state }} {{ item.name }} app'
-  shell: '{{ docker_occ_cmd }} app:{{ item.state }} {{ item.name }}'
-  loop:  '{{ nextcloud_app_config }}'
+  - name: set nextcloud app settings
+    shell: '{{ docker_occ_cmd }} app:{{ item }}'
+    loop:  '{{ nextcloud_app_config }}'
 
-
-- name: backup jobs, upgrade apps and database tuning
-  shell: '{{ docker_occ_cmd }} {{ item }}'
-  loop:
-    - background:cron
-    - upgrade
-    - db:add-missing-indices
-    - db:convert-filecache-bigint
+  - name: backup jobs, upgrade apps and database tuning
+    shell: '{{ docker_occ_cmd }} {{ item }}'
+    loop:
+      - background:cron
+      - upgrade
+      - db:add-missing-indices
+      - db:convert-filecache-bigint
+  when: ( first_setup_nextcloud is changed ) or ( force_nextcloud_config|default(false) )
 
 - name: create optimize batch job
   copy:
@@ -86,7 +85,6 @@
   when: 
     - online_office == 'onlyoffice'
     - ansible_architecture == 'x86_64'
-
 
 - name: setup talk app in nextcloud
   include_tasks: talk.yml
