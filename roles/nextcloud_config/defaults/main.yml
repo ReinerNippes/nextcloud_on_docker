@@ -74,3 +74,5 @@ nextcloud_app_config:
     state: enable
 #  - name:  extract
 #    state: enable
+#  - name: files_versions_s3
+#    state: enable 
