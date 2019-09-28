@@ -34,7 +34,7 @@
             MYSQL_PASSWORD:      "{{ nextcloud_db_passwd }}"
             MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
         volumes: 
-          - 'nextcloud_database_vol:/var/lib/mysql'
+          - 'nextcloud-database-vol:/var/lib/mysql'
         networks:
           - name: backend
         networks_cli_compatible: true
@@ -58,7 +58,7 @@
             POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
             PGDATA:            /var/lib/postgresql/data
         volumes: 
-          - "{{ nextcloud_database_dir }}:/var/lib/postgresql/data:rw"
+          - "nextcloud-database-vol:/var/lib/postgresql/data:rw"
         networks:
           - name: backend
         networks_cli_compatible: true
@@ -66,3 +66,16 @@
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
   when: nextcloud_db_type == 'pgsql'
+  
+- name: get nextcloud-db IP address
+  command: "docker inspect --format '{''{ .NetworkSettings.Networks.backend.IPAddress }''}' nextcloud-db"
+  register: mariadb_ip_address
+  
+- name: wait for nextcloud-db to become ready
+  wait_for:
+    host: "{{ mariadb_ip_address.stdout }}"
+    port: "{{ '3306' if (nextcloud_db_type == 'mysql') else '5432' }}"
+    state: started
+    delay: 5
+    connect_timeout: 15
+    timeout: 30
