@@ -72,5 +72,5 @@ nextcloud_app_config:
     state: enable
   - name:  files_pdfviewer
     state: enable
-  - name:  extract
-    state: enable
+#  - name:  extract
+#    state: enable
