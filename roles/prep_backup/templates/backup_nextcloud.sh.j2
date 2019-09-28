@@ -22,7 +22,7 @@ sudo docker exec nextcloud-db pg_dump -c -U {{ nextcloud_db_user }} {{ nextcloud
 {% endif %}
 
 # backup the data dir
-{{ restic_install_path }}/restic backup --verbose --exclude {{ nextcloud_database_dir }} {{ nextcloud_base_dir }}
+{{ restic_install_path }}/restic backup --verbose {{ nextcloud_base_dir }}
 
 #
 # end maintenance mode
