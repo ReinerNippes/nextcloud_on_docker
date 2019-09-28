@@ -16,7 +16,7 @@
 
 - name: 'create data volume'
   docker_volume:
-    name: 'nextcloud_database_vol'
+    name: 'nextcloud-database-vol'
     state: present
 
 - name: mysql container
@@ -69,11 +69,11 @@
   
 - name: get nextcloud-db IP address
   command: "docker inspect --format '{''{ .NetworkSettings.Networks.backend.IPAddress }''}' nextcloud-db"
-  register: mariadb_ip_address
+  register: nextcloud_db_ip_address
   
 - name: wait for nextcloud-db to become ready
   wait_for:
-    host: "{{ mariadb_ip_address.stdout }}"
+    host: "{{ nextcloud_db_ip_address.stdout }}"
     port: "{{ '3306' if (nextcloud_db_type == 'mysql') else '5432' }}"
     state: started
     delay: 5
