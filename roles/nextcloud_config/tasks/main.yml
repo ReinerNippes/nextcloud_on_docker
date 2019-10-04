@@ -5,17 +5,13 @@
     nextcloud_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/nextcloud_admin_secret chars=ascii_letters,digits length=32') }}"
   when: nextcloud_passwd == ''
 
-- name: check install state
-  shell: '{{ docker_occ_cmd }} status | grep "installed:"'
-  register: nextcloud_status
-
 - name: first setup nextcloud
   shell: >
     docker exec --user www-data nextcloud php occ  maintenance:install 
     --database {{ nextcloud_db_type }} --database-host nextcloud-db --database-name {{ nextcloud_db_name }} 
     --database-table-prefix {{ nextcloud_db_prefix }} --database-user {{ nextcloud_db_user }} --database-pass {{ nextcloud_db_passwd }} 
     --admin-user {{ nextcloud_admin }} --admin-pass {{ nextcloud_passwd }} --data-dir {{ nextcloud_container_data_dir }}
-  when: ( 'false' in nextcloud_status.stdout )
+  when: ( not config_php.stat.exists )
   register: first_setup_nextcloud
 
 - name: configure nextcloud 

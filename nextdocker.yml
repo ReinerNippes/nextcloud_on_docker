@@ -8,9 +8,9 @@
     - { role: prep_ufw,          when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu" }
     - { role: prep_os,           when: (state is undefined or 'absent' not in state) }
     - { role: prep_docker,       when: (state is undefined or 'absent' not in state) }
-    - { role: prep_backup,       when: restic_repo != '' }
     - docker_container
     - { role: nextcloud_config,  when: (state is undefined or 'absent' not in state) }
+    - { role: prep_backup,       when: restic_repo != '' }
 
   post_tasks:
     - name: We are ready

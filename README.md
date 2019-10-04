@@ -81,7 +81,7 @@ If you want to setup the Nextcloud mail system put your mail server config here.
 ```ini
 # Setup the Nextcloud mail server.
 nextcloud_configure_mail    = false
-nextcloud_mail_from         = 
+nextcloud_mail_from         =
 nextcloud_mail_smtpmode     = smtp
 nextcloud_mail_smtpauthtype = LOGIN
 nextcloud_mail_domain       =
@@ -92,6 +92,25 @@ nextcloud_mail_smtphost     =
 nextcloud_mail_smtpport     = 587
 nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      =
+```
+
+Setup S3 Buckets as [primary storage](https://docs.nextcloud.com/server/latest/admin_manual/configuration_files/primary_storage.html)
+
+Create a AWS user with permission to accces the S3 bucket. 
+Provide your AWS Key and Secret below. The default bucket name is: 'nextcloud-{{ nextcloud_server_fqdn }}'.
+
+This only works on the initial run of the playbook. **If a file config.php exists already it won't be changed.** This will not migrate an existing Nextcloud installation to a S3 bucket.
+
+```ini
+# Use S3 Bucket as primary storage
+aws_s3_key            = 'AKIAUYIK6HF7ZKUBFG5D'
+aws_s3_secret         = 'Kpb1exYZGyqZguPZGeZ65g5u5wtnzGVgY6RS/uHH'
+aws_s3_bucket_name    = 'nextcloud-nextcloud.example.tld'
+aws_s3_hostname       = 's3.amazonaws.com'
+aws_s3_port           = '443'
+aws_s3_use_ssl        = 'true'
+aws_s3_region         = 'us-east-1'
+aws_s3_use_path_style = 'true'
 ```
 
 Setup the [restic](https://restic.readthedocs.io/en/latest/) backup tool.
@@ -187,6 +206,28 @@ ok: [localhost] => {
 }
 
 ```
+
+If you are in a hurry you can set the inventory variables on the cli. But remember if you run the playbook again without the -e options all default values will apply and your systems is likely to be broken.
+
+```bash
+./nextdocker.yml -e "nextcloud_server_fqdn=nextcloud.example.tld nextcloud_db_type=mysql"
+```
+
+## Expert setup
+
+If you change anything in the below mentioned files the playbook might not work anymore. You need a basic understanding of Linux, Ansible, Jinja2 and yaml to do so.
+
+If you want to do more fine tuning you may have a look at:
+
+- `group_vars\all.yml` for settings of directories, docker image tags and the rclone setup for restic backups.
+- `roles\docker_container\file` for php settings
+- `roles\docker_container\file` for webserver, php, turnserver and traefik settings
+
+and
+
+- `roles\nextcloud_config\defaults\main.yml` for nextcloud settings
+
+## Remove Nextcloud
 
 If you want to get rid of the containers run the following command.
 ```bash

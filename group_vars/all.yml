@@ -5,7 +5,6 @@ nextcloud_credential_store:    "{{ nextcloud_base_dir }}/secrets"
 nextcloud_data_dir:            "{{ nextcloud_base_dir }}/data"
 nextcloud_www_dir:             "{{ nextcloud_base_dir }}/www"
 nextcloud_config_dir:          "{{ nextcloud_base_dir }}/config"
-nextcloud_database_dir:        "{{ nextcloud_base_dir }}/database"
 nextcloud_database_dump_dir:   "{{ nextcloud_base_dir }}/database-dump"
 
 

@@ -6,35 +6,21 @@
     nextcloud_db_passwd: "{{ lookup('password', '{{ nextcloud_credential_store }}/database_user_secret chars=ascii_letters,digits length=32') }}"
   when: nextcloud_db_passwd == ''
 
+- name: create data dump directory
+  file:
+    name: '{{ nextcloud_database_dump_dir }}'
+    owner: root
+    group: root
+    mode: 0700
+    state: directory
+
+- name: 'create data volume'
+  docker_volume:
+    name: 'nextcloud-database-vol'
+    state: present
+
 - name: mysql container
   block:
-    - name: create mysql group
-      group:
-        name: mysql
-        system: true
-        
-    - name: create mysql user
-      user:
-        name: mysql
-        group: mysql
-        system: true
-        home: "{{ nextcloud_database_dir }}"
-        create_home: false
-        shell: /bin/bash
-        comment: mysql administrator
-        state: present
-
-    - name: create data directory
-      file:
-        name: '{{ item }}'
-        owner: mysql
-        group: mysql
-        mode: 0700
-        state: directory
-      loop:
-        - '{{ nextcloud_database_dump_dir }}'
-        - '{{ nextcloud_database_dir }}'
-
     - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} mysql container"
       docker_container:
         name: nextcloud-db
@@ -48,7 +34,7 @@
             MYSQL_PASSWORD:      "{{ nextcloud_db_passwd }}"
             MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
         volumes: 
-          - "{{ nextcloud_database_dir }}:/var/lib/mysql"
+          - 'nextcloud-database-vol:/var/lib/mysql'
         networks:
           - name: backend
         networks_cli_compatible: true
@@ -59,34 +45,6 @@
 
 - name: postgres container
   block: 
-    - name: create postgres group
-      group:
-        name: postgres
-        gid:  70
-    
-    - name: create postgres user
-      user:
-        name: postgres
-        uid:  70
-        group: postgres
-        system: true
-        home: "{{ nextcloud_database_dir }}"
-        create_home: false
-        shell: /bin/bash
-        comment: PostgreSQL administrator
-        state: present
-
-    - name: create data directory
-      file:
-        name: '{{ item }}'
-        owner: postgres
-        group: postgres
-        mode: 0700
-        state: directory
-      loop:
-        - '{{ nextcloud_database_dump_dir }}'
-        - '{{ nextcloud_database_dir }}'
-
     - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} postgres container"
       docker_container:
         name: nextcloud-db
@@ -100,17 +58,24 @@
             POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
             PGDATA:            /var/lib/postgresql/data
         volumes: 
-          - "{{ nextcloud_database_dir }}:/var/lib/postgresql/data:rw"
+          - "nextcloud-database-vol:/var/lib/postgresql/data:rw"
         networks:
           - name: backend
         networks_cli_compatible: true
         labels:
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
-    
-    - name: wait for nextcloud-db to come up
-      wait_for:
-        delay: 3
-        path: "{{ nextcloud_database_dir }}/global"
-      when: state is undefined or 'absent' not in state
   when: nextcloud_db_type == 'pgsql'
+  
+- name: get nextcloud-db IP address
+  command: "docker inspect --format '{''{ .NetworkSettings.Networks.backend.IPAddress }''}' nextcloud-db"
+  register: nextcloud_db_ip_address
+  
+- name: wait for nextcloud-db to become ready
+  wait_for:
+    host: "{{ nextcloud_db_ip_address.stdout }}"
+    port: "{{ '3306' if (nextcloud_db_type == 'mysql') else '5432' }}"
+    state: started
+    delay: 5
+    connect_timeout: 15
+    timeout: 30
