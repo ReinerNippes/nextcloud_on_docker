@@ -13,9 +13,11 @@
     owner: '{{ 82 if ( "fpm" in docker_nextcloud_image ) else 33 }}'
     group: '{{ 82 if ( "fpm" in docker_nextcloud_image ) else 33 }}'
     mode:  '0640'
+    backup: true
     force:  false
   when: 
     - ( aws_s3_key != '' )
+    - ( aws_s3_secret != '' )
     - ( not config_php.stat.exists )
 
 - name: copy php.ini to {{ nextcloud_config_dir }}
