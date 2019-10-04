@@ -48,14 +48,14 @@ nextcloud_mail_smtpname     =
 nextcloud_mail_smtppwd      = 
 
 # Use S3 Bucket as primary storage
-# aws_s3_bucket_name    = 'nextcloud'
 aws_s3_key            = ''
 aws_s3_secret         = ''
-# aws_s3_hostname       = ''
-# aws_s3_port           = ''
-# aws_s3_use_ssl        = ''
-# aws_s3_region         = ''
-# aws_s3_use_path_style = ''
+# aws_s3_bucket_name    = ''
+# aws_s3_hostname       = 's3.amazonaws.com'
+# aws_s3_port           = '443'
+# aws_s3_use_ssl        = 'true'
+# aws_s3_region         = 'us-east-1'
+# aws_s3_use_path_style = 'true'
 
 # Install restic backup tool if backup_folder is not empty
 restic_repo                 = ''              # e.g. /var/nc-backup
