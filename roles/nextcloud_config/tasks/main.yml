@@ -41,6 +41,7 @@
     loop:
       - background:cron
       - upgrade
+      - app:update --all
       - db:add-missing-indices
       - db:convert-filecache-bigint
   when: ( first_setup_nextcloud is changed ) or ( force_nextcloud_config|default(false) )
