@@ -1,9 +1,13 @@
 ---
 # Amazon Linux related docker OS tasks
 
+- name: install python docker via pip
+  pip:
+    name: docker
+    state: latest
+
 - name: install docker
   yum: 
     name: 
       - docker
-      - python2-docker
     state: latest
