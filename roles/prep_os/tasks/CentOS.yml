@@ -29,6 +29,8 @@
       - wget
       - facter
       - policycoreutils-python
+      - python2-passlib
+      - python2-bcrypt
     state: latest
     enablerepo: epel 
 

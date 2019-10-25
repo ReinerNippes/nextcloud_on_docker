@@ -3,22 +3,7 @@
 
 - name: install docker
   yum: 
-    name: docker
-    state: latest
-
-- name: remove python-requests
-  yum:
-    name: python-requests
-    state: absent
-
-- name: install python docker
-  pip:
-    name:
-      - pip
+    name: 
       - docker
-    state: latest
-
-- name: re-install cloud-init
-  yum:
-    name: cloud-init
+      - python2-docker
     state: latest

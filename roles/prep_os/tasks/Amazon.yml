@@ -23,4 +23,6 @@
       - wget
       - policycoreutils-python
       - facter
+      - python2-passlib 
+      - python2-bcrypt
     state: latest

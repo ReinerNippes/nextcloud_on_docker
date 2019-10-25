@@ -11,5 +11,7 @@
 
 - name: install docker
   yum: 
-    name: docker-ce
+    name: 
+      - docker-ce
+      - python2-docker
     state: latest
