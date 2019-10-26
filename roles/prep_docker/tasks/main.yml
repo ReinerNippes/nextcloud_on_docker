@@ -4,13 +4,6 @@
 - name: include os specific tasks
   include_tasks: "{{ ansible_distribution }}.yml"
 
-- name: install python docker
-  pip:
-    name:
-      - pip
-      - docker
-    state: latest
-
 - name: enable docker
   systemd:
     name:          docker

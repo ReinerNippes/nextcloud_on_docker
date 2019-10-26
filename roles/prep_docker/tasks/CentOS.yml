@@ -9,7 +9,13 @@
     group: root
     mode: 0644
 
+- name: install python docker via pip
+  pip:
+    name: docker
+    state: latest
+
 - name: install docker
   yum: 
-    name: docker-ce
+    name: 
+      - docker-ce
     state: latest

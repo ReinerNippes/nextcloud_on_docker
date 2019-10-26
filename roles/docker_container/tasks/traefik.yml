@@ -1,14 +1,6 @@
 ---
 # tasks file for docker_traefik
 
-- name: install python docker
-  pip:
-    name:
-      - pip
-      - passlib
-      - bcrypt
-    state: latest
-
 - name: ensures traefik dir exists
   file:
     path: "{{ traefik_config_dir }}"

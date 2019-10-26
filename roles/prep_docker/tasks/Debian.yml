@@ -32,5 +32,7 @@
 
 - name: install docker
   apt:
-    name: docker-ce
+    name: 
+      - docker-ce
+      - python-docker
     state: latest
