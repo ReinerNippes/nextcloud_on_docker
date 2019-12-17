@@ -18,6 +18,7 @@
 
 - name: docker database
   include_tasks: database.yml
+  when: nextcloud_db_type != 'sqlite'
 
 - name: docker redis
   include_tasks: redis.yml
