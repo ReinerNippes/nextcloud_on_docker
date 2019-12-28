@@ -32,11 +32,17 @@
 
 - name: install docker
   apt:
-    name: 
-      - docker-ce
+    name: docker-ce
     state: latest
-
-- name: install python docker
+  
+- name: install python-docker
+  apt:
+    name: python-docker
+    state: latest
+  when: ansible_distribution_version >= 10
+  
+- name: install python-docker
   pip:
     name: docker
     state: latest
+  when: ansible_distribution_version <= 9
