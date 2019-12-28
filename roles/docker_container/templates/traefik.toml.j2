@@ -1,9 +1,5 @@
 defaultEntryPoints = ["http", "https"]
 
-[web]
-# Port for the status page
-address = ":8080"
-
 [entryPoints]
 
   [entryPoints.http]
@@ -27,8 +23,8 @@ address = ":8080"
     [entryPoints.traefik.auth]
       [entryPoints.traefik.auth.basic]
         users = ["{{ traefik_api_user }}:{{ lookup('password', '{{ nextcloud_credential_store }}/traefik_api_password chars=ascii_letters,digits length=32') | password_hash('bcrypt','1234567890123456789012') }}"]
-{% endif %}
 
+{% endif %}
 {% if online_office == 'onlyoffice1' %}
   [entryPoints.onlyoffice]
     address = ":8443"
@@ -39,15 +35,19 @@ address = ":8080"
                      "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", 
                      "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", 
                      "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"]
-{% endif %}
 
+{% endif %}
+{% if traefik_api_user is defined %}
+[web]
+# Port for the status page
+address = ":8080"
 
 [api]
   entryPoint = "traefik"
   dashboard = true
 
+{% endif %}
 [docker]
-
 watch = true
 exposedbydefault = false
 
