@@ -20,7 +20,7 @@ prepare_ubuntu() {
 prepare_debian() { 
         $SUDO apt update -y 
         $SUDO apt dist-upgrade -y 
-        $SUDO apt install dirmngr curl git mc vim facter python python-pip python-apt python-passlib python-bcrypt aptitude -y 
+        $SUDO apt install dirmngr curl git mc vim facter python python-pip python-apt python-passlib python-bcrypt python-wheel python-setuptools aptitude -y 
         $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python-dev libffi-dev libssl-dev make -y 
         $SUDO pip install ansible -U 
  
