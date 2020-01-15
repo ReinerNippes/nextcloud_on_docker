@@ -14,7 +14,6 @@
     name:
       - apt-transport-https
       - ca-certificates
-      - python-pip
       - software-properties-common
     state: latest
 
@@ -38,7 +37,7 @@
   apt:
     name: 
       - docker-ce
-      - python-docker
+      - python3-docker
       
     state: latest
  
