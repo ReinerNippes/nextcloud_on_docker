@@ -78,4 +78,4 @@
     state: started
     delay: 5
     connect_timeout: 15
-    timeout: 30
+    timeout: 600
