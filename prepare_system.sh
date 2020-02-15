@@ -70,9 +70,12 @@ prepare_fedora() {
 
 prepare_amzn() {
         $SUDO amazon-linux-extras install epel -y
-        $SUDO yum install git vim mc curl facter libselinux-python python python-pip python-passlib python-bcrypt aptitude ansible -y
+        $SUDO amazon-linux-extras install python3 -y
+        $SUDO yum install git vim mc curl facter -y
         $SUDO yum update -y
-        $SUDO pip install ansible -U
+        $SUDO pip3 install ansible -U
+        $SUDO pip3 install passlib -U
+        $SUDO pip3 install bcrypt -U
 
         set +x
         echo

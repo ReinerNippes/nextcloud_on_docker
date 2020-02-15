@@ -11,6 +11,8 @@
     name: '*'
     update_cache: true
     state: latest
+  vars:
+    ansible_python_interpreter: python2
 
 - name: install needed packages
   yum:
@@ -21,8 +23,8 @@
       - screen
       - curl
       - wget
-      - policycoreutils-python
       - facter
-      - python2-passlib 
-      - python2-bcrypt
     state: latest
+  vars:
+    ansible_python_interpreter: python2
+    
