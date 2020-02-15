@@ -2,7 +2,7 @@
 
 100% Handsfree & Ready to login.
 
-Right now this will run on Ubuntu 16/18, Debian 9, CentOS 7, Amazon Linux 2. Maybe on Redhat 7.
+Right now this will run on Ubuntu 18, Debian 9/10, CentOS 7, Amazon Linux 2.
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
