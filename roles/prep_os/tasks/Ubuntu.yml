@@ -19,6 +19,6 @@
       - facter
       - unattended-upgrades
       - gnupg2
-      - python-passlib
-      - python-bcrypt
+      - python3-passlib
+      - python3-bcrypt
     state: latest
