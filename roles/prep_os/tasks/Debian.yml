@@ -17,6 +17,6 @@
       - software-properties-common
       - apt-transport-https
       - facter
-      - python-passlib
-      - python-bcrypt
+      - python3-passlib
+      - python3-bcrypt
     state: latest

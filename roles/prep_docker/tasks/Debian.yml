@@ -14,7 +14,6 @@
     name:
       - apt-transport-https
       - ca-certificates
-      - python-pip
       - software-properties-common
     state: latest
 
@@ -35,15 +34,16 @@
     name: docker-ce
     state: latest
 
-- name: install python-docker
+- name: install python3-docker
   apt:
-    name: python-docker
+    name: python3-docker
     state: latest
   when: ansible_distribution_major_version|int >= 10
   
-- name: install python-docker
+- name: install docker
   pip:
     name: docker
+    executable: pip3
     state: latest
   when: ansible_distribution_major_version|int <= 9
 
