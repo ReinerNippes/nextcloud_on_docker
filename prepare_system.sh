@@ -5,43 +5,58 @@
 
 prepare_ubuntu() {
         $SUDO apt update -y
-        $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy dist-upgrade
-        $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy install software-properties-common curl git mc vim facter python3 python3-setuptools python3-apt python3-pip python3-passlib python3-wheel python3-bcrypt aptitude -y
-        $SUDO [ $(uname -m) == "aarch64" ] && apt install gcc python3-dev libffi-dev libssl-dev make -y
+        $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
+        $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy install software-properties-common curl git mc vim facter python3 python3-setuptools python3-apt python3-pip python3-passlib python3-wheel python3-bcrypt aptitude -y
+        $SUDO [ $(uname -m) == "aarch64" ] && $SUDO apt install gcc python3-dev libffi-dev libssl-dev make -y
         $SUDO pip3 install ansible -U
 
         set +x
         echo
-        echo "   Ubuntu Sytem ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   Ubuntu System ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 prepare_debian() {
         $SUDO apt update -y
-        $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy dist-upgrade
+        $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
         $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy install dirmngr curl git mc vim facter python3 python3-pip python3-apt python3-passlib python3-bcrypt python3-wheel python3-setuptools aptitude ansible -y
         [ $(uname -m) == "aarch64" ] && $SUDO apt install gcc python3-dev libffi-dev libssl-dev make -y
         $SUDO pip3 install ansible -U
 
         set +x
         echo
-        echo "   Debian Sytem ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   Debian System ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 prepare_raspbian() {
         $SUDO apt update -y
-        $SUDO apt-get -o Dpkg::Options::="--force-confnew" --force-yes -fuy dist-upgrade
+        $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
         $SUDO apt install dirmngr mc vim git libffi-dev curl facter python python-apt python-pip python-passlib python-bcrypt aptitude ansible -y
         $SUDO pip install ansible -U
 
         set +x
         echo
-        echo "   Rasbpian System ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   Rasbpian System ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 prepare_centos() {
@@ -52,9 +67,14 @@ prepare_centos() {
 
         set +x
         echo
-        echo "   CentOS Sytem ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   CentOS System ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 prepare_fedora() {
@@ -63,9 +83,14 @@ prepare_fedora() {
 
         set +x
         echo
-        echo "   Fedora Sytem ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   Fedora System ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 prepare_amzn() {
@@ -79,9 +104,14 @@ prepare_amzn() {
 
         set +x
         echo
-        echo "   Amazon Linux 2 ready for nextcloud."
+        echo "------------------------------------------------------"
+        echo
+        echo "   Amazon Linux 2 ready to install nextcloud."
         echo
         ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
 }
 
 usage() {
