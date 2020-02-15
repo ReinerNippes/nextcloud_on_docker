@@ -45,6 +45,8 @@
   loop:
     - pip
     - selinux
+    - passlib
+    - bcrypt
 
 - name: turn on selinux
   selinux:
