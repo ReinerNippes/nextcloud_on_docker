@@ -16,6 +16,8 @@
     name: '*'
     update_cache: true
     state: latest
+  vars:
+      ansible_python_interpreter: python2
 
 - name: install needed packages
   yum:
@@ -24,17 +26,30 @@
       - unzip
       - bzip2
       - screen
-      - python2-pip
+      - python3-pip
       - curl
       - wget
       - facter
       - policycoreutils-python
-      - python2-passlib
-      - python2-bcrypt
+      - libselinux-python
     state: latest
     enablerepo: epel 
+  vars:
+    ansible_python_interpreter: python2
+
+- name: install pip3 packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+    executable: pip3
+  loop:
+    - pip
+    - selinux
 
 - name: turn on selinux
   selinux:
     policy: targeted
     state: enforcing
+  vars:
+    ansible_python_interpreter: python2
+
