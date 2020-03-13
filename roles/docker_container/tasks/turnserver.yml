@@ -4,7 +4,7 @@
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the turnserver container"
   docker_container:
     name:           'turn_server'
-    image:          'instrumentisto/coturn:{{ docker_turnserver_image | default("latest") }}'
+    image:          "{{ 'serverror' if ansible_architecture == 'aarch64' else 'instrumentisto' }}/coturn:{{ docker_turnserver_image | default('latest') }}"
     restart_policy: 'unless-stopped'
     command: >
       -n

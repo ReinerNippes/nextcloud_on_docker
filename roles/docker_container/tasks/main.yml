@@ -50,7 +50,7 @@
   include_tasks: turnserver.yml
   when: 
     - talk_install|bool
-    - ansible_architecture == 'x86_64'
+    - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
 
 - name: docker network
   include_tasks: network.yml
