@@ -24,9 +24,11 @@
     owner: root
     group: root
     mode: 0644
+  when: ansible_architecture == 'x86_64'
 
 - name: enable service disable-transparent-hugepages
   service:
     name: disable-transparent-huge-pages.service
     enabled: true
     state: started
+  when: ansible_architecture == 'x86_64'

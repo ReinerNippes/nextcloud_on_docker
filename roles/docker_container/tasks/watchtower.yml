@@ -5,7 +5,7 @@
   docker_container:
     name: watchtower
     image: containrrr/watchtower:{{ docker_watchtower_image | default('latest') }}
-    command: --cleanup --schedule "0 0 0 * * *"
+    command: --cleanup --schedule "0 0 0 * * *" --label-enable
     restart_policy: always
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock

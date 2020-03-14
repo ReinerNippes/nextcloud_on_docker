@@ -93,4 +93,4 @@
   include_tasks: talk.yml
   when: 
     - talk_install|bool
-    - ansible_architecture == 'x86_64'
+    - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
