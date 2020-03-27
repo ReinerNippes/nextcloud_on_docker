@@ -115,7 +115,7 @@ aws_s3_use_path_style = 'true'
 
 Setup the [restic](https://restic.readthedocs.io/en/latest/) backup tool.
 ```ini
-# The restic backup tool will be installed when 'backup_folder' is not empty.
+# The restic backup tool will be installed when 'restic_repo' is not empty.
 restic_repo                 = ''              # e.g. '/var/nc-backup' .
 # Configure the crontab settings for restic.
 backup_day                  = *
