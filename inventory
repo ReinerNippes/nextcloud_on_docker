@@ -57,7 +57,7 @@ aws_s3_secret         = ''
 # aws_s3_region         = 'us-east-1'
 # aws_s3_use_path_style = 'true'
 
-# Install restic backup tool if backup_folder is not empty
+# Install restic backup tool if restic_repo is not empty
 restic_repo                 = ''              # e.g. /var/nc-backup
 # crontab settings restic for restic
 backup_day                  = *
