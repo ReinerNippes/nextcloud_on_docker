@@ -6,7 +6,7 @@ Right now this will run on Ubuntu 18, Debian 9/10, CentOS 7, Amazon Linux 2.
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
-Onlyoffice, Collabora and Talk work only on a x86_64 server.
+Onlyoffice and Collabora work only on a x86_64 server because there are no ARM(64) images.
 
 ## Preparation
 
