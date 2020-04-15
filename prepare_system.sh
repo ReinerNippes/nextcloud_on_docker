@@ -92,6 +92,23 @@ prepare_fedora() {
         echo "------------------------------------------------------"
         echo
 }
+prepare_photon() {
+        $SUDO tdnf install git python3-pip -y
+        $SUDO tdnf update -y
+        $SUDO pip3 install ansible
+        $SUDO pip3 install --upgrade pip
+        
+        set +x
+        echo
+        echo "------------------------------------------------------"
+        echo
+        echo "   VMware Photon OS System ready to install Nextcloud."
+        echo
+        ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
+}
 
 prepare_amzn() {
         $SUDO amazon-linux-extras install epel -y
