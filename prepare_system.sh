@@ -98,6 +98,7 @@ prepare_photon() {
         $SUDO tdnf update -y
         $SUDO pip3 install ansible
         $SUDO pip3 install --upgrade pip
+        $SUDO shutdown -r +1
         
         set +x
         echo
