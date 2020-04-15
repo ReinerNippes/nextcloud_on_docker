@@ -92,6 +92,7 @@ prepare_fedora() {
         echo "------------------------------------------------------"
         echo
 }
+
 prepare_photon() {
         $SUDO tdnf install git python3-pip -y
         $SUDO tdnf update -y
