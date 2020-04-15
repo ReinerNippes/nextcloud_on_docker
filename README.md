@@ -2,7 +2,7 @@
 
 100% Handsfree & Ready to login.
 
-Right now this will run on Ubuntu 18, Debian 9/10, CentOS 7, Amazon Linux 2.
+Right now this will run on Ubuntu 18, Debian 9/10, CentOS 7, Amazon Linux 2, VMWare Photon OS
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
@@ -12,17 +12,19 @@ Onlyoffice and Collabora work only on a x86_64 server because there are no ARM(6
 
 Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
 ```bash
-curl -s https://raw.githubusercontent.com/ReinerNippes/nextcloud_on_docker/master/prepare_system.sh | /bin/bash
+curl -s https://raw.githubusercontent.com/azonictechnophile/nextcloud_on_docker/master/prepare_system.sh | /bin/bash
 ```
 
 Clone this repo and change into the directory nextcloud_on_docker.
 ```bash
-git clone https://github.com/ReinerNippes/nextcloud_on_docker
+git clone https://github.com/azonictechnophile/nextcloud_on_docker
 
 cd nextcloud_on_docker
 ```
 
 Note that root must have also sudo right otherwise the script will complain. Some hoster use distros where root is not in the sudoers file. In this case you have to add `root ALL=(ALL) NOPASSWD:ALL` to /etc/sudoers.
+
+VMWARE PHOTON OS: Install using the ISO version, currently with OVA of PHOTON OS when an update is preformed the docker service does not restart.
 
 ## Configuration
 
