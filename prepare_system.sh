@@ -156,6 +156,9 @@ case $ID in
         'ubuntu')
                 prepare_ubuntu
         ;;
+        'photon')
+                prepare_photon
+        ;;
         'debian')
                 prepare_debian
         ;;
