@@ -14,7 +14,7 @@ prepare_ubuntu() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Ubuntu System ready to install nextcloud."
+        echo "   Ubuntu System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -33,7 +33,7 @@ prepare_debian() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Debian System ready to install nextcloud."
+        echo "   Debian System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -51,7 +51,7 @@ prepare_raspbian() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Rasbpian System ready to install nextcloud."
+        echo "   Rasbpian System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -69,7 +69,7 @@ prepare_centos() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   CentOS System ready to install nextcloud."
+        echo "   CentOS System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -85,7 +85,7 @@ prepare_fedora() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Fedora System ready to install nextcloud."
+        echo "   Fedora System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -124,7 +124,7 @@ prepare_amzn() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Amazon Linux 2 ready to install nextcloud."
+        echo "   Amazon Linux 2 ready to install Nextcloud."
         echo
         ansible --version
         echo
