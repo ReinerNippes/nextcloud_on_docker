@@ -105,6 +105,8 @@ prepare_photon() {
         echo "------------------------------------------------------"
         echo
         echo "   VMware Photon OS System ready to install Nextcloud."
+        echo "           Photon OS will reboot in 1 min             "
+        echo "             type shutdown -c to cancel               "
         echo
         ansible --version
         echo
