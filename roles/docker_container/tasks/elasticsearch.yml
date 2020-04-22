@@ -13,16 +13,18 @@
     build:
       path: docker/elasticsearch_tesseract
       pull: yes
-    rm:     true
+      rm:   true
+    tag:  "{{ docker_elasticsearch_image }}"
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} elasticsearch & tessearct container"
   docker_container:
     name: elasticsearch_tesseract
-    image: elasticsearch_tesseract
+    image: elasticsearch_tesseract:{{ docker_elasticsearch_image }}
     restart_policy: always
     networks:
       - name: backend
     networks_cli_compatible: true
     env:
+      node.name: esearch
       discovery.type: single-node
     state: "{{ state | default('started') }}"
