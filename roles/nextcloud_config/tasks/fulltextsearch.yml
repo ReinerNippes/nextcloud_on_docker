@@ -42,3 +42,8 @@
     - config:app:set files_fulltextsearch_tesseract tesseract_psm --value="4"
     - config:app:set files_fulltextsearch_tesseract tesseract_lang --value="eng,de"
     - config:app:set files_fulltextsearch_tesseract tesseract_pdf --value="1"
+
+- name: create fulltextsearch index
+  shell: '{{ docker_occ_cmd }} {{ item }}'
+  loop:
+    - fulltextsearch:index
