@@ -29,44 +29,29 @@
     image: traefik:{{ docker_traefik_image | default('latest') }}
     restart_policy: unless-stopped
     networks:
-      - name: frontend
       - name: backend
+      - name: traefik
     networks_cli_compatible: true
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - "{{ traefik_config_dir }}/traefik.toml:/etc/traefik/traefik.toml"
+      - "{{ traefik_config_dir }}/traefik.toml:/traefik.toml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
-      - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      traefik.frontend.rule:                   "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/traefik"
-      traefik.docker.network:                  "frontend"
-      traefik.port:                            "8080"
-      traefik.enable:                          "true"
-      traefik.frontend.headers.referrerPolicy:       "no-referrer"
-      traefik.frontend.headers.SSLRedirect:          "true"
-      traefik.frontend.headers.STSSeconds:           "315360000"
-      traefik.frontend.headers.browserXSSFilter:     "true"
-      traefik.frontend.headers.contentTypeNosniff:   "true"
-      traefik.frontend.headers.forceSTSHeader:       "true"
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload:           "true"
-      traefik.frontend.headers.frameDeny:            "true"
-      traefik.frontend.whiteList.useXForwardedFor:   "true"
-      com.centurylinklabs.watchtower.enable:         "true"
+      com.centurylinklabs.watchtower.enable: "true"
     state: "{{ state | default('started') }}"
   register: traefik_facts
 
-- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik cert dumper container"
-  docker_container:
-    name: certdumper
-    image: "{{ 'serverror' if ansible_architecture == 'aarch64' else 'svendowideit' }}/traefik-certdumper:latest"
-    restart_policy: unless-stopped
-    volumes:
-      - '{{ traefik_config_dir }}:/traefik'
-    purge_networks: true
-    labels:
-      traefik.enable:                        "false"
-      com.centurylinklabs.watchtower.enable: "true"
-  when: (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
+#- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik cert dumper container"
+#  docker_container:
+#    name: certdumper
+#    image: "{{ 'serverror' if ansible_architecture == 'aarch64' else 'svendowideit' }}/traefik-certdumper:latest"
+#    restart_policy: unless-stopped
+#    volumes:
+#      - '{{ traefik_config_dir }}:/traefik'
+#    purge_networks: true
+#    labels:
+#      traefik.enable:                        "false"
+#      com.centurylinklabs.watchtower.enable: "true"
+#  when: (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')

@@ -17,9 +17,14 @@
     networks_cli_compatible: true
     labels:
       traefik.enable: "true"
-      traefik.frontend.rule: "Host:{{ nextcloud_server_fqdn }}; PathPrefixStrip:/portainer"
-      traefik.backend: "portainer"
-      traefik.port: "9000"
+      traefik.http.routers.portainer-http.entrypoints: "web"
+      traefik.http.routers.portainer-http.rule: "Host(`{{ portainer_server_fqdn }}`)"
+      traefik.http.routers.portainer-http.middlewares: "portainer-https@docker"
+      traefik.http.middlewares.portainer-https.redirectscheme.scheme: "https"
+      traefik.http.routers.portainer.entrypoints: "web-secure"
+      traefik.http.routers.portainer.rule: "Host(`{{ portainer_server_fqdn }}`)"
+      traefik.http.routers.portainer.tls: "true"
+      traefik.http.routers.portainer.tls.certresolver: "default"
       com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - "{{ portainer_data_dir }}:/data"

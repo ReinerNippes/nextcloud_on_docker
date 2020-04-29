@@ -24,8 +24,8 @@
   copy:
     src:  "php.ini"
     dest: "{{ nextcloud_config_dir }}/php.ini"
-    owner: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
-    group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"
+    owner: "33" 
+    group: "33" 
     mode: 0644
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the nextcloud container"
@@ -36,7 +36,6 @@
     networks:
       - name: backend
     networks_cli_compatible: true
-    links: '{{ nextcloud_db_links[nextcloud_db_type] }}'
     volumes:
       - "{{ nextcloud_www_dir }}:/var/www/html"
       - "{{ nextcloud_config_dir }}:/var/www/html/config"
