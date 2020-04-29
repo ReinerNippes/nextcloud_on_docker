@@ -1,0 +1,66 @@
+---
+# create all directories
+
+- name: make sure {{ nextcloud_base_dir }} is present
+  file:
+    name: "{{ nextcloud_base_dir }}"
+    owner: "{{ ansible_env.SUDO_USER | default('root') }}"
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    state: directory
+
+- name: make sure {{ nextcloud_credential_store }} is present
+  file: 
+    name: '{{ nextcloud_credential_store }}'
+    owner: "{{ ansible_env.SUDO_USER | default('root') }}"
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    mode:  0700
+    state: directory
+
+- name: make sure nextcloud directories are present
+  file:
+    name:  "{{ item.name }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    state: directory
+  loop:
+    - {name: "{{ nextcloud_config_dir }}", user: "33" , group: "33" }
+    - {name: "{{ nextcloud_data_dir }}", user: "33" , group: "33" } 
+    - {name: "{{ nextcloud_www_dir }}", user: "33" , group: "root" }
+
+- name: correct permissions for nginx
+  shell: "chmod 755 '{{ nextcloud_www-dir }}'"
+  when: "'fpm' in docker_nextcloud_image"    
+
+- name: make sure nextcloud nginx directories are present
+  file:
+    name: "{{ nextcloud_nginx_dir}}"
+    owner: "101"
+    group: "101"
+    state: directory
+  when: "'fpm' in docker_nextcloud_image"
+
+- name: make sure {{ traefik_config_dir }} is present
+  file:
+    name:  "{{ traefik_config_dir }}"
+    mode:  0750
+    owner: root
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+    state: directory
+
+- name: selinux targets
+  sefcontext:
+    target: "{{ item }}"
+    setype: container_var_lib_t
+    state: present
+  loop: 
+    - '{{ nextcloud_base_dir }}(/.*)?'
+  when: 
+    - ansible_os_family == 'RedHat'
+    - ansible_selinux.status == 'enabled'
+    
+- name: restorecon 
+  command: restorecon -Rv '{{ nextcloud_base_dir }}'
+  when: 
+    - ansible_os_family == 'RedHat'
+    - ansible_selinux.status == 'enabled'
+    
