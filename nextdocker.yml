@@ -24,7 +24,7 @@
     - name: We are ready
       debug:
         msg: 
-          - "Manage your container at https://{{ nextcloud_server_fqdn }}/portainer/ ."
+          - "Manage your container at https://{{ portainer_server_fqdn }} "
           - "Login with user: admin and password: {{ portainer_passwd }} "
       when: (state is undefined or 'absent' not in state) and (portainer_passwd != '')
 
