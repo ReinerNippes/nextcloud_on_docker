@@ -1,0 +1,65 @@
+---
+# tasks file for docker_traefik
+
+- name: ensures traefik dir exists
+  file:
+    path: "{{ traefik_config_dir }}"
+    state: directory
+    owner: root
+    group: "{{ ansible_env.SUDO_USER | default('root') }}"
+
+- name: ensures acme.json file exists
+  file:
+    path:  "{{ traefik_config_dir }}/acme.json"
+    state: touch
+    owner: root
+    group: root
+    mode:  0600
+
+- name: adding traefik.toml file
+  template:
+    src:     traefik.toml.j2
+    dest:    "{{ traefik_config_dir }}/traefik.toml"
+    owner:   root
+    group:   root
+
+- name: adding dynamic.toml file
+  template:
+    src:     dynamic.toml.j2
+    dest:    "{{ traefik_config_dir }}/dynamic.toml"
+    owner:   root
+    group:   root
+
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik container"
+  docker_container:
+    name: traefik
+    image: traefik:{{ docker_traefik_image | default('latest') }}
+    restart_policy: unless-stopped
+    networks:
+      - name: backend
+      - name: traefik
+    networks_cli_compatible: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "{{ traefik_config_dir }}/traefik.toml:/traefik.toml"
+      - "{{ traefik_config_dir }}/dynamic.toml:/dynamic.toml"
+      - "{{ traefik_config_dir }}/acme.json:/acme.json"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    state: "{{ state | default('started') }}"
+  register: traefik_facts
+
+#- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik cert dumper container"
+#  docker_container:
+#    name: certdumper
+#    image: "{{ 'serverror' if ansible_architecture == 'aarch64' else 'svendowideit' }}/traefik-certdumper:latest"
+#    restart_policy: unless-stopped
+#    volumes:
+#      - '{{ traefik_config_dir }}:/traefik'
+#    purge_networks: true
+#    labels:
+#      traefik.enable:                        "false"
+#      com.centurylinklabs.watchtower.enable: "true"
+#  when: (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
