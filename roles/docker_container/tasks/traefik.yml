@@ -23,6 +23,13 @@
     owner:   root
     group:   root
 
+- name: adding dynamic.toml file
+  template:
+    src:     dynamic.toml.j2
+    dest:    "{{ traefik_config_dir }}/dynamic.toml"
+    owner:   root
+    group:   root
+
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the traefik container"
   docker_container:
     name: traefik
@@ -37,6 +44,7 @@
       - "443:443"
     volumes:
       - "{{ traefik_config_dir }}/traefik.toml:/traefik.toml"
+      - "{{ traefik_config_dir }}/dynamic.toml:/dynamic.toml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
     labels:
       com.centurylinklabs.watchtower.enable: "true"
