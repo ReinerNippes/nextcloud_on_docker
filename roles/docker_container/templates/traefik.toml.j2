@@ -6,6 +6,10 @@
   endpoint = "tcp://dockerproxy:2375"
   network = "traefik"
 
+[providers.file]
+  watch=true
+  filename = "dynamic.toml"
+
 [entryPoints]
   [entryPoints.web]
     address = ":80"
