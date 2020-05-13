@@ -18,15 +18,20 @@
     labels:
       traefik.enable: "true"
       traefik.http.routers.portainer-http.entrypoints: "web"
-      traefik.http.routers.portainer-http.rule: "Host(`{{ portainer_server_fqdn }}`)"
+      traefik.http.routers.portainer-http.rule: "Host(`{{ nextcloud_server_fqdn }}`) && PathPrefix(`/portainer/`)"
       traefik.http.routers.portainer-http.middlewares: "portainer-https@docker"
       traefik.http.middlewares.portainer-https.redirectscheme.scheme: "https"
-      traefik.http.routers.portainer.entrypoints: "web-secure"
-      traefik.http.routers.portainer.rule: "Host(`{{ portainer_server_fqdn }}`)"
+      traefik.http.routers.portainer.entrypoints: "web-secure"      
+      traefik.http.routers.portainer.rule: "Host(`{{ nextcloud_server_fqdn }}`) && PathPrefix(`/portainer/`)"
+      traefik.http.routers.portainer.middlewares: portainerpathstrip@docker
+      traefik.http.middlewares.portainerpathstrip.stripprefix.prefixes: '/portainer'
+      traefik.http.routers.portainer.service: portainer
       traefik.http.routers.portainer.tls: "true"
       traefik.http.routers.portainer.tls.certresolver: "default"
       com.centurylinklabs.watchtower.enable: "true"
+
     volumes:
       - "{{ portainer_data_dir }}:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
     state: "{{ state | default('started') }}"
+

@@ -15,11 +15,11 @@
     labels:
       traefik.enable: "true"
       traefik.http.routers.adminer-http.entrypoints: "web"
-      traefik.http.routers.adminer-http.rule: "Host(`{{ adminer_server_fqdn }}`)"
+      traefik.http.routers.adminer-http.rule: "Host(`{{ nextcloud_server_fqdn }}`) && Path(`/adminer/`)"
       traefik.http.routers.adminer-http.middlewares: "adminer-https@docker"
       traefik.http.middlewares.adminer-https.redirectscheme.scheme: "https"
       traefik.http.routers.adminer.entrypoints: "web-secure"
-      traefik.http.routers.adminer.rule: "Host(`{{ adminer_server_fqdn }}`)"
+      traefik.http.routers.adminer.rule: "Host(`{{ nextcloud_server_fqdn }}`) && Path(`/adminer/`)"
       traefik.http.routers.adminer.tls: "true"
       traefik.http.routers.adminer.tls.certresolver: "default"
       com.centurylinklabs.watchtower.enable: "true"

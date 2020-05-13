@@ -16,17 +16,17 @@
     group: root
     mode:  0600
 
-- name: adding traefik.toml file
+- name: adding traefik.yaml file
   template:
-    src:     traefik.toml.j2
-    dest:    "{{ traefik_config_dir }}/traefik.toml"
+    src:     traefik.yaml.j2
+    dest:    "{{ traefik_config_dir }}/traefik.yaml"
     owner:   root
     group:   root
 
-- name: adding dynamic.toml file
+- name: adding dynamic.yaml file
   template:
-    src:     dynamic.toml.j2
-    dest:    "{{ traefik_config_dir }}/dynamic.toml"
+    src:     dynamic.yaml.j2
+    dest:    "{{ traefik_config_dir }}/dynamic.yaml"
     owner:   root
     group:   root
 
@@ -43,8 +43,8 @@
       - "80:80"
       - "443:443"
     volumes:
-      - "{{ traefik_config_dir }}/traefik.toml:/traefik.toml"
-      - "{{ traefik_config_dir }}/dynamic.toml:/dynamic.toml"
+      - "{{ traefik_config_dir }}/traefik.yaml:/traefik.yaml"
+      - "{{ traefik_config_dir }}/dynamic.yaml:/dynamic.yaml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
     labels:
       com.centurylinklabs.watchtower.enable: "true"

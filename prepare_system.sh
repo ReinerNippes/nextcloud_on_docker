@@ -1,6 +1,6 @@
 #!/bin/bash -uxe
 #
-# Prepare system for nextcloud installtion
+# Prepare system for nextcloud installation
 #
 
 prepare_ubuntu() {
@@ -138,7 +138,7 @@ prepare_amzn() {
 usage() {
         echo
         echo "Linux distribution not detected."
-        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora] prepare_system.sh"
+        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora|proton] prepare_system.sh"
         echo "Other distributions not yet supported."
         echo
 }

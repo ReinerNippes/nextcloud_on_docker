@@ -1,0 +1,30 @@
+## Static Configuration
+
+entryPoints:
+  web:
+    address: ':80'
+  web-secure:
+    address: ':443'
+providers:
+  docker:
+    exposedByDefault: false
+    endpoint: 'tcp://dockerproxy:2375'
+    network: 'traefik'
+  file:
+    watch: true
+    filename: 'dynamic.yaml'
+log:
+  level: error
+{% if ssl_cert_email is defined %}
+certificatesResolver:
+  certificatesResolverDefault:
+    acme:
+      email: "{{ ssl_cert_email }}"
+      storage: 'acme.json'
+      tlsChallenge: {}
+{% endif %}
+{% if acme_provider is defined %}
+      dnsChallenge: 
+        provider: "{{ acme_provider }}"
+        delayBeforeCheck: 0
+{% endif %}

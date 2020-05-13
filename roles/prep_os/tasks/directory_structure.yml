@@ -28,14 +28,14 @@
     - {name: "{{ nextcloud_www_dir }}", user: "33" , group: "root" }
 
 - name: correct permissions for nginx
-  shell: "chmod 755 '{{ nextcloud_www-dir }}'"
+  shell: "chmod 755 '{{ nextcloud_www_dir }}'"
   when: "'fpm' in docker_nextcloud_image"    
 
 - name: make sure nextcloud nginx directories are present
   file:
     name: "{{ nextcloud_nginx_dir}}"
-    owner: "101"
-    group: "101"
+    owner: "33"
+    group: "33"
     state: directory
   when: "'fpm' in docker_nextcloud_image"
 
