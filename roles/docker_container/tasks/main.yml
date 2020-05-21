@@ -9,6 +9,9 @@
 - name: docker watchtower
   include_tasks: watchtower.yml
 
+- name: docker dockerproxy
+  include_tasks: dockerproxy.yml
+
 - name: docker traefik
   include_tasks: traefik.yml
 
@@ -51,7 +54,3 @@
   when: 
     - talk_install|bool
     - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
-
-- name: docker network
-  include_tasks: network.yml
-  when: state is defined and 'absent' in state

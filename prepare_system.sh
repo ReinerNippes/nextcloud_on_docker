@@ -1,6 +1,6 @@
 #!/bin/bash -uxe
 #
-# Prepare system for nextcloud installtion
+# Prepare system for nextcloud installation
 #
 
 prepare_ubuntu() {
@@ -14,7 +14,7 @@ prepare_ubuntu() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Ubuntu System ready to install nextcloud."
+        echo "   Ubuntu System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -33,7 +33,7 @@ prepare_debian() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Debian System ready to install nextcloud."
+        echo "   Debian System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -51,7 +51,7 @@ prepare_raspbian() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Rasbpian System ready to install nextcloud."
+        echo "   Rasbpian System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -69,7 +69,7 @@ prepare_centos() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   CentOS System ready to install nextcloud."
+        echo "   CentOS System ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -85,7 +85,28 @@ prepare_fedora() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Fedora System ready to install nextcloud."
+        echo "   Fedora System ready to install Nextcloud."
+        echo
+        ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
+}
+
+prepare_photon() {
+        $SUDO tdnf install git python3-pip -y
+        $SUDO tdnf update -y
+        $SUDO pip3 install ansible
+        $SUDO pip3 install --upgrade pip
+        $SUDO shutdown -r +1
+        
+        set +x
+        echo
+        echo "------------------------------------------------------"
+        echo
+        echo "   VMware Photon OS System ready to install Nextcloud."
+        echo "           Photon OS will reboot in 1 min             "
+        echo "             type shutdown -c to cancel               "
         echo
         ansible --version
         echo
@@ -106,7 +127,7 @@ prepare_amzn() {
         echo
         echo "------------------------------------------------------"
         echo
-        echo "   Amazon Linux 2 ready to install nextcloud."
+        echo "   Amazon Linux 2 ready to install Nextcloud."
         echo
         ansible --version
         echo
@@ -117,7 +138,7 @@ prepare_amzn() {
 usage() {
         echo
         echo "Linux distribution not detected."
-        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora] prepare_system.sh"
+        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora|proton] prepare_system.sh"
         echo "Other distributions not yet supported."
         echo
 }
@@ -138,6 +159,9 @@ fi
 case $ID in
         'ubuntu')
                 prepare_ubuntu
+        ;;
+        'photon')
+                prepare_photon
         ;;
         'debian')
                 prepare_debian

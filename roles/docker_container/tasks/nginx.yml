@@ -4,7 +4,7 @@
 - name: copy uploadsize.conf to {{ nextcloud_config_dir }}
   copy:
     src:  'uploadsize.conf'
-    dest: '{{ nextcloud_config_dir }}/uploadsize.conf'
+    dest: '{{ nextcloud_nginx_dir }}/uploadsize.conf'
     owner: '33'
     group: '33'
     mode:  0644
@@ -12,7 +12,7 @@
 - name: copy nginx.conf
   template:
     src:  'nginx.conf.j2'
-    dest: '{{ nextcloud_config_dir }}/nginx.conf'
+    dest: '{{ nextcloud_nginx_dir }}/nginx.conf'
     owner: '33'
     group: '33'
     mode:  0644
@@ -22,36 +22,37 @@
     name: nginx
     image: nginx:{{ docker_nginx_image | default('latest') }}
     restart_policy: always
-    links:
-      - 'nextcloud:nextcloud'
     networks:
       - name: backend
     networks_cli_compatible: true
     volumes:
-      - "{{ nextcloud_config_dir }}/nginx.conf:/etc/nginx/nginx.conf"
-      - "{{ nextcloud_config_dir }}/uploadsize.conf:/etc/nginx/conf.d/uploadsize.conf"
+      - "{{ nextcloud_nginx_dir }}/nginx.conf:/etc/nginx/nginx.conf"
+      - "{{ nextcloud_nginx_dir }}/uploadsize.conf:/etc/nginx/conf.d/uploadsize.conf"
     volumes_from:
       - nextcloud
     labels:
-      traefik.docker.network: "frontend"
       traefik.enable:         "true"
-      traefik.frontend.rule:  "Host:{{ nextcloud_server_fqdn }}"
-      traefik.port:           "80"
-      traefik.protocol:       "http"
-      traefik.frontend.headers.referrerPolicy:          "no-referrer"
-      traefik.frontend.headers.SSLRedirect:             "true"
-      traefik.frontend.headers.STSSeconds:              "315360000"
-      traefik.frontend.headers.browserXSSFilter:        "true"
-      traefik.frontend.headers.contentTypeNosniff:      "true"
-      traefik.frontend.headers.forceSTSHeader:          "true"
-      traefik.frontend.headers.STSIncludeSubdomains:    "true"
-      traefik.frontend.headers.STSPreload:              "true"
-      traefik.frontend.headers.customFrameOptionsValue: "SAMEORIGIN"
-      traefik.frontend.redirect.permanent:              "true"
-      traefik.frontend.redirect.regex:                  "https://(.*)/.well-known/(card|cal)dav"
-      traefik.frontend.redirect.replacement:            "https://$1/remote.php/dav/"
-      traefik.frontend.whiteList.useXForwardedFor:      "true"
-
+      traefik.http.middlewares.nginx-https.redirectscheme.scheme: "https"
+      traefik.http.routers.nginx-http.entrypoints: "web"
+      traefik.http.routers.nginx-http.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
+      traefik.http.routers.nginx-http.middlewares: "nginx-https@docker"
+      traefik.http.routers.nginx.entrypoints: "web-secure"
+      traefik.http.routers.nginx.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
+      traefik.http.routers.nginx.middlewares: "nginx@docker,nginx-red@docker"
+      traefik.http.routers.nginx.tls: "true"
+      traefik.http.routers.nginx.tls.certresolver: "default"
+      traefik.http.middlewares.nginx.headers.referrerPolicy: "no-referrer"
+      traefik.http.middlewares.nginx.headers.SSLRedirect: "true"
+      traefik.http.middlewares.nginx.headers.STSSeconds: "315360000"
+      traefik.http.middlewares.nginx.headers.browserXSSFilter: "true"
+      traefik.http.middlewares.nginx.headers.contentTypeNosniff: "true"
+      traefik.http.middlewares.nginx.headers.forceSTSHeader: "true"
+      traefik.http.middlewares.nginx.headers.STSIncludeSubdomains: "true"
+      traefik.http.middlewares.nginx.headers.STSPreload: "true"
+      traefik.http.middlewares.nginx.headers.customFrameOptionsValue: "SAMEORIGIN"
+      traefik.http.middlewares.nginx-red.redirectregex.permanent: "true"
+      traefik.http.middlewares.nginx-red.redirectregex.regex: "https://(.*)/.well-known/(card|cal)dav"
+      traefik.http.middlewares.nginx-red.redirectregex.replacement: "https://$1/remote.php/dav"
       com.centurylinklabs.watchtower.enable:            "true"
     state: "{{ state | default('started') }}"
   register: docker_result

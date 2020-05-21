@@ -1,9 +1,9 @@
 ---
 # tasks file to create docker network
 
-- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} frontend network"
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} traefik network"
   docker_network:
-    name: frontend
+    name: traefik
     state: "{{ state | default('present') }}"
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} backend network"

@@ -1,0 +1,24 @@
+---
+# VMware Photon OS related tasks
+
+- name: update os
+  shell: "tdnf -y update"
+
+- name: install needed packages
+  shell: "tdnf install -y {{ item }}"
+  with_items:
+      - zip
+      - unzip
+      - wget    
+      - tmux
+      - cronie
+
+- name: install pip3 packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+    executable: pip3
+  loop:
+    - passlib
+    - bcrypt
+

@@ -6,6 +6,7 @@ nextcloud_data_dir:            "{{ nextcloud_base_dir }}/data"
 nextcloud_www_dir:             "{{ nextcloud_base_dir }}/www"
 nextcloud_config_dir:          "{{ nextcloud_base_dir }}/config"
 nextcloud_database_dump_dir:   "{{ nextcloud_base_dir }}/database-dump"
+nextcloud_nginx_dir:           "{{ nextcloud_base_dir }}/nginx"
 
 
 traefik_config_dir:            "{{ nextcloud_base_dir }}/traefik"
@@ -16,14 +17,15 @@ nextcloud_container_data_dir:  /var/nc-data
 
 docker_postgres_image:         10-alpine
 docker_mysql_image:            latest
-docker_nextcloud_image:        fpm-alpine
-docker_nginx_image:            alpine
+docker_nextcloud_image:        stable-fpm
+docker_nginx_image:            stable
 docker_adminer_image:          latest
-docker_traefik_image:          1.7-alpine
+docker_traefik_image:          latest
 docker_watchtower_image:       latest
-docker_redis_image:            4-alpine
+docker_redis_image:            latest
 docker_collabora_image:        latest
 docker_turnserver_image:       latest
+docker_dockerproxy_image:      latest
 
 docker_occ_cmd:                'docker exec --user www-data nextcloud php occ'
 
