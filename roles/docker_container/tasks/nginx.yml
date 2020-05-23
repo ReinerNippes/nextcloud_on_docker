@@ -40,7 +40,7 @@
       traefik.http.routers.nginx.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
       traefik.http.routers.nginx.middlewares: "nginx@docker,nginx-red@docker"
       traefik.http.routers.nginx.tls: "true"
-      traefik.http.routers.nginx.tls.certresolver: "default"
+      traefik.http.routers.nginx.tls.certresolver: "certificatesResolverDefault"
       traefik.http.middlewares.nginx.headers.referrerPolicy: "no-referrer"
       traefik.http.middlewares.nginx.headers.SSLRedirect: "true"
       traefik.http.middlewares.nginx.headers.STSSeconds: "315360000"

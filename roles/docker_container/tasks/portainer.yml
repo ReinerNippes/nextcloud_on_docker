@@ -27,7 +27,7 @@
       traefik.http.middlewares.portainerpathstrip.stripprefix.prefixes: '/portainer'
       traefik.http.routers.portainer.service: portainer
       traefik.http.routers.portainer.tls: "true"
-      traefik.http.routers.portainer.tls.certresolver: "default"
+      traefik.http.routers.portainer.tls.certresolver: "certificatesResolverDefault"
       com.centurylinklabs.watchtower.enable: "true"
 
     volumes:
