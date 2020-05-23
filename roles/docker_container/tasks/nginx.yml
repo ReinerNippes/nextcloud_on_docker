@@ -32,6 +32,7 @@
       - nextcloud
     labels:
       traefik.enable:         "true"
+      traefik.docker.network: backend
       traefik.http.middlewares.nginx-https.redirectscheme.scheme: "https"
       traefik.http.routers.nginx-http.entrypoints: "web"
       traefik.http.routers.nginx-http.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
@@ -40,6 +41,7 @@
       traefik.http.routers.nginx.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
       traefik.http.routers.nginx.middlewares: "nginx@docker,nginx-red@docker"
       traefik.http.routers.nginx.tls: "true"
+      traefik.http.routers.nginx.tls.options: "TLSOptionsDefault@file"
       traefik.http.routers.nginx.tls.certresolver: "certificatesResolverDefault"
       traefik.http.middlewares.nginx.headers.referrerPolicy: "no-referrer"
       traefik.http.middlewares.nginx.headers.SSLRedirect: "true"

@@ -14,6 +14,7 @@
     networks_cli_compatible: true
     labels:
       traefik.enable: "true"
+      traefik.docker.network: backend
       traefik.http.routers.adminer-http.entrypoints: "web"
       traefik.http.routers.adminer-http.rule: "Host(`{{ nextcloud_server_fqdn }}`) && Path(`/adminer/`)"
       traefik.http.routers.adminer-http.middlewares: "adminer-https@docker"
@@ -21,6 +22,7 @@
       traefik.http.routers.adminer.entrypoints: "web-secure"
       traefik.http.routers.adminer.rule: "Host(`{{ nextcloud_server_fqdn }}`) && Path(`/adminer/`)"
       traefik.http.routers.adminer.tls: "true"
+      traefik.http.routers.adminer.tls.options: "TLSOptionsDefault@file"
       traefik.http.routers.adminer.tls.certresolver: "certificatesResolverDefault"
       com.centurylinklabs.watchtower.enable: "true"
     state: "{{ state | default('started') }}"
