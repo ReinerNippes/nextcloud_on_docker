@@ -16,8 +16,8 @@ providers:
 log:
   level: error
 {% if ssl_cert_email is defined %}
-certificatesResolver:
-  certificatesResolverDefault:
+certificatesResolvers:
+  default:
     acme:
       email: "{{ ssl_cert_email }}"
       storage: 'acme.json'

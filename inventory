@@ -77,5 +77,5 @@ adminer_enabled             = false
 
 
 # Set to true to install Portainer webgui for Docker.
-portainer_enabled           = true
+portainer_enabled           = false
 portainer_passwd            = ''       # If empty the playbook will generate a random password.
