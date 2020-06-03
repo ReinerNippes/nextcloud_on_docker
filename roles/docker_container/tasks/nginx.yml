@@ -5,16 +5,16 @@
   copy:
     src:  'uploadsize.conf'
     dest: '{{ nextcloud_nginx_dir }}/uploadsize.conf'
-    owner: '33'
-    group: '33'
+    owner: 'root'
+    group: 'root'
     mode:  0644
 
 - name: copy nginx.conf
   template:
     src:  'nginx.conf.j2'
     dest: '{{ nextcloud_nginx_dir }}/nginx.conf'
-    owner: '33'
-    group: '33'
+    owner: 'root'
+    group: 'root'
     mode:  0644
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the nginx container"
