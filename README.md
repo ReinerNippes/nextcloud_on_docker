@@ -2,7 +2,7 @@
 
 100% Handsfree & Ready to login.
 
-Right now this will run on Ubuntu 18, Debian 9/10, CentOS 7, Amazon Linux 2, VMWare Photon OS
+Right now this will run on Ubuntu 18/20, Debian 9/10, CentOS 7, Amazon Linux 2, VMWare Photon OS
 
 The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scaleway Server and on Rasberry 3+ running Debian 9.
 
@@ -143,7 +143,6 @@ If you want to, you can get access to your database with [Adminer](https://www.a
 ```ini
 # Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer. The password will be stored in {{ nextcloud_base_dir }}/secrets.
 adminer_enabled             = false           # The password will be stored in {{ nextcloud_base_dir }}/secrets.
-adminer_server_fqdn         = ''       # If empty playbook will error out if set to true. Example: 'adminer.example.com'
 ```
 
 You can install [Portainer](https://www.portainer.io/), a webgui for Docker.
@@ -151,7 +150,6 @@ You can install [Portainer](https://www.portainer.io/), a webgui for Docker.
 # Set to true to install Portainer webgui for Docker and provide fqdn. Fqdn is required due to portainer being routed through traefik.
 portainer_enabled           = false
 portainer_passwd            = ''      # If empty the playbook will generate a random password.
-portainer_server_fqdn       = ''      # If empty playbook will error out if set to true. Example: 'portainer.example.com'
 ```
 If you want to use [rclone](https://rclone.org) to backup your data to a cloud storage provider, remove the variable `restic_repo` from `ìnventory` and edit the file `group_var/all` instead.
 ```ini
@@ -228,10 +226,15 @@ and
 
 If you want to get rid of the containers run the following command.
 ```bash
-ansible-playbook nextdocker.yml -e state=absent
+scripts/remove_all_container.sh
 ```
+or 
+```bash
+scripts/remove_all_docker_stuff.sh
+```
+to remove **all** docker artifacts. That includes the database volume!
 
-Your data won't be deleted. You have to do this manually by executing the following.
+Your data files won't be deleted. You have to do this manually by executing the following.
 ```bash
 rm -rf {{ nextcloud_base_dir }}
 ```
