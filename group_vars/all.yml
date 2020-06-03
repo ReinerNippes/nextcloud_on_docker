@@ -15,14 +15,14 @@ portainer_data_dir:            "portainer-data-vol"
 
 nextcloud_container_data_dir:  /var/nc-data
 
-docker_postgres_image:         10-alpine
+docker_postgres_image:         11-alpine
 docker_mysql_image:            latest
-docker_nextcloud_image:        stable-fpm
-docker_nginx_image:            stable
+docker_nextcloud_image:        stable-fpm-alpine
+docker_nginx_image:            alpine
 docker_adminer_image:          latest
 docker_traefik_image:          latest
 docker_watchtower_image:       latest
-docker_redis_image:            latest
+docker_redis_image:            alpine
 docker_collabora_image:        latest
 docker_turnserver_image:       latest
 docker_dockerproxy_image:      latest
