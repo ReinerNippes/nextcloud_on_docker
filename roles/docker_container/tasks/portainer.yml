@@ -11,7 +11,7 @@
     name: portainer
     image: portainer/portainer:latest
     restart_policy: unless-stopped
-    command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt','1234567890A2b456z89012') }}
+    command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt') }}
     networks:
       - name: backend
     networks_cli_compatible: true
