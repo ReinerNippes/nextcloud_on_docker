@@ -12,12 +12,12 @@ Onlyoffice and Collabora work only on a x86_64 server because there are no ARM(6
 
 Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
 ```bash
-curl -s https://raw.githubusercontent.com/azonictechnophile/nextcloud_on_docker/master/prepare_system.sh | /bin/bash
+curl -s https://raw.githubusercontent.com/reinernippes/nextcloud_on_docker/master/prepare_system.sh | /bin/bash
 ```
 
 Clone this repo and change into the directory nextcloud_on_docker.
 ```bash
-git clone https://github.com/azonictechnophile/nextcloud_on_docker
+git clone https://github.com/reinernippes/nextcloud_on_docker
 
 cd nextcloud_on_docker
 ```
