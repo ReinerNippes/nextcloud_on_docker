@@ -25,5 +25,10 @@
       traefik.http.routers.adminer.tls.options: "TLSOptionsDefault@file"
       traefik.http.routers.adminer.tls.certresolver: "certificatesResolverDefault"
       com.centurylinklabs.watchtower.enable: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://adminer:8080/ || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
     state: "{{ state | default('started') }}"
       

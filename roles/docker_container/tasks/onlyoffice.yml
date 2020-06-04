@@ -11,4 +11,9 @@
     networks_cli_compatible: true
     labels:
         com.centurylinklabs.watchtower.enable:            "true"
-    state:          '{{ state | default("started") }}'
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://onlyoffice_documentserver/healthcheck || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    state: '{{ state | default("started") }}'
