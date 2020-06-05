@@ -76,7 +76,7 @@ talk_install                = false
 adminer_enabled             = false
 
 # # Set to true to fulltext search.
-fulltextsearch_enabled      = true
+fulltextsearch_enabled      = false
 
 # Set to true to install Portainer webgui for Docker.
 portainer_enabled           = false
