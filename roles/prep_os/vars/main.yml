@@ -6,3 +6,4 @@ service_path:
   Ubuntu: '/lib/systemd/system'
   Debian: '/lib/systemd/system'
   Amazon: '/usr/lib/systemd/system'
+  VMware Photon OS: '/usr/lib/systemd/system'

@@ -97,7 +97,12 @@ http {
             proxy_set_header Host $http_host;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
-        } 
+        }
+
+        location ^~ /hosting/capabilities {
+            proxy_pass https://collabora_online:9980;
+            proxy_set_header Host $http_host;
+        }
 {% endif %}
 
 {% if (online_office == 'onlyoffice') and (ansible_architecture == 'x86_64') %}
@@ -109,8 +114,6 @@ http {
                 client_max_body_size 100m;
 
                 proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
 
                 proxy_set_header Host $http_host;
                 proxy_set_header X-Real-IP $remote_addr;

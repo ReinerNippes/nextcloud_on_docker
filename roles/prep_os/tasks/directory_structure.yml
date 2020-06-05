@@ -1,5 +1,5 @@
 ---
-# create all diretories
+# create all directories
 
 - name: make sure {{ nextcloud_base_dir }} is present
   file:
@@ -16,16 +16,18 @@
     mode:  0700
     state: directory
 
-- name: make sure nextcloud directoies are present
+- name: make sure nextcloud directories are present
   file:
     name:  "{{ item.name }}"
     owner: "{{ item.user }}"
     group: "{{ item.group }}"
+    mode:  "{{ item.mode | default('0750') }}"
     state: directory
   loop:
-    - {name: "{{ nextcloud_config_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}" }
-    - {name: "{{ nextcloud_data_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}"  }
-    - {name: "{{ nextcloud_www_dir }}", user: "{{ 82 if ( 'fpm' in docker_nextcloud_image ) else 33 }}", group: "root"  }
+    - {name: "{{ nextcloud_config_dir }}", user: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}" }
+    - {name: "{{ nextcloud_data_dir }}", user: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}"  }
+    - {name: "{{ nextcloud_www_dir }}", user: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}", group: "{{ 82 if ( 'alpine' in docker_nextcloud_image ) else 33 }}", mode: "0755" }
+    - {name: "{{ nextcloud_nginx_dir }}", user: "root", group: "root" }
 
 - name: make sure {{ traefik_config_dir }} is present
   file:

@@ -15,3 +15,8 @@
     labels:
       com.centurylinklabs.watchtower.enable:         "true"
     state: "{{ state | default('started') }}"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

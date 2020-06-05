@@ -1,0 +1,9 @@
+---
+# VMware Photon OS Linux related docker OS tasks
+
+- name: install python docker via pip
+  pip:
+    name: docker
+    state: latest
+
+    

@@ -9,6 +9,9 @@
 - name: docker watchtower
   include_tasks: watchtower.yml
 
+- name: docker dockerproxy
+  include_tasks: dockerproxy.yml
+
 - name: docker traefik
   include_tasks: traefik.yml
 
@@ -32,10 +35,6 @@
 - name: docker nextcloud
   include_tasks: nextcloud.yml
 
-- name: docker nginx
-  include_tasks: nginx.yml
-  when: "'fpm' in docker_nextcloud_image"
-
 - name: docker onlyoffice
   include_tasks: onlyoffice.yml
   when: online_office == 'onlyoffice'
@@ -46,12 +45,12 @@
     - online_office == 'collabora'
     - ansible_architecture == 'x86_64'
 
+- name: docker nginx
+  include_tasks: nginx.yml
+  when: "'fpm' in docker_nextcloud_image"
+
 - name: docker turnserver
   include_tasks: turnserver.yml
   when: 
     - talk_install|bool
     - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
-
-- name: docker network
-  include_tasks: network.yml
-  when: state is defined and 'absent' in state

@@ -77,6 +77,18 @@
 - name: run nextcloud cronjob once
   shell: 'docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1'
 
+- name: modify .htaccess for card and cal dev
+  block:
+  - name: modifying /opt/nextcloud/www/.htaccess
+    shell: sed -i 's+/remote.php/dav/+https://{{ nextcloud_server_fqdn }}/remote.php/dav/+g' /opt/nextcloud/www/.htaccess
+    when:
+      - "'fpm' not in docker_nextcloud_image"
+
+  - name: updating maintenance htaccess    
+    shell: '{{ docker_occ_cmd }} maintenance:update:htaccess'
+    when:
+      - "'fpm' not in docker_nextcloud_image"
+
 - name: setup collabora app in nextcloud
   include_tasks: configure_collabora.yml
   when: 

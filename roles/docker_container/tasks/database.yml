@@ -41,6 +41,11 @@
         labels:
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
+        healthcheck:
+          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
   when: nextcloud_db_type == 'mysql'
 
 - name: postgres container
@@ -65,17 +70,9 @@
         labels:
           com.centurylinklabs.watchtower.enable:         "true"
         state: "{{ state | default('started') }}"
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U postgres"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
   when: nextcloud_db_type == 'pgsql'
-  
-- name: get nextcloud-db IP address
-  command: "docker inspect --format '{''{ .NetworkSettings.Networks.backend.IPAddress }''}' nextcloud-db"
-  register: nextcloud_db_ip_address
-  
-- name: wait for nextcloud-db to become ready
-  wait_for:
-    host: "{{ nextcloud_db_ip_address.stdout }}"
-    port: "{{ '3306' if (nextcloud_db_type == 'mysql') else '5432' }}"
-    state: started
-    delay: 5
-    connect_timeout: 15
-    timeout: 600
