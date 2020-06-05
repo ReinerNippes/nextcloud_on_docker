@@ -47,3 +47,10 @@
   shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
     - fulltextsearch:index
+  when: fulltextsearch_app_installed is changed
+
+- name: enable and start live search
+  service:
+    name: nextcloud-fulltext-elasticsearch-worker.service
+    enabled: true
+    state: started
