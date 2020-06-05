@@ -8,6 +8,8 @@ The playbook runs on x86_64 and ARM(64) servers. It's tested on AWS EC2, Scalewa
 
 Onlyoffice and Collabora work only on a x86_64 server because there are no ARM(64) images.
 
+> **WARNING**: This a new version of this Playbook using Traefik v2. Don't run this Playbook to update your installation from a previous version of this Playbook. This may break your system.
+
 ## Preparation
 
 Install [Ansible](https://www.ansible.com/) and some needed tools by running the following command with a user that can sudo or is root. 
