@@ -24,6 +24,7 @@ docker_traefik_image:          latest
 docker_watchtower_image:       latest
 docker_redis_image:            alpine
 docker_collabora_image:        latest
+docker_onlyoffice_image:       latest
 docker_turnserver_image:       latest
 docker_dockerproxy_image:      latest
 
