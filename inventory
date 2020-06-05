@@ -6,7 +6,7 @@ localhost ansible_connection=local
 ### Preliminary variables ###
 
 # The domain name for your Nextcloud instance. You'll get a Let's Encrypt certificate for this domain.
-nextcloud_server_fqdn       = nc-nippes.it
+nextcloud_server_fqdn       = nextcloud.example.tld
 
 # Your email address (for Let's Encrypt).
 ssl_cert_email              = 
@@ -79,5 +79,5 @@ adminer_enabled             = false
 fulltextsearch_enabled      = true
 
 # Set to true to install Portainer webgui for Docker.
-portainer_enabled           = true
-portainer_passwd            = ''       # If empty the playbook will generate a random password.
+portainer_enabled           = false
+portainer_passwd            = ''              # If empty the playbook will generate a random password.
