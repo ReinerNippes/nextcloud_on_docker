@@ -141,6 +141,12 @@ You can also install the TURN server needed for [Nextcloud Talk](https://nextclo
 talk_install                = false
 ```
 
+If you want to use fulltext search.  
+```ini
+# Set to true to fulltext search.
+fulltextsearch_enabled      = false
+```
+
 If you want to, you can get access to your database with [Adminer](https://www.adminer.org/). Adminer is a web frontend for your database (like phpMyAdmin).
 ```ini
 # Set to true to enable access to your database with Adminer at https://nextcloud_server_fqdn/adminer. The password will be stored in {{ nextcloud_base_dir }}/secrets.
