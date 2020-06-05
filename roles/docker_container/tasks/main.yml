@@ -54,3 +54,17 @@
   when: 
     - talk_install|bool
     - (ansible_architecture == 'x86_64' or ansible_architecture == 'aarch64')
+
+- name: docker elasticsearch_tesseract
+  include_tasks: elasticsearch.yml
+  when: 
+    - fulltextsearch_enabled|bool
+
+- name: docker elasticsearch_tesseract
+  include_tasks: elasticsearch.yml
+  when: 
+    - fulltextsearch_enabled|bool
+
+- name: docker network
+  include_tasks: network.yml
+  when: state is defined and 'absent' in state
