@@ -7,8 +7,8 @@ Requires=docker.service
 User=root
 Group=root
 WorkingDirectory=/opt/nextcloud
-ExecStart={{ docker_occ_cmd }} fulltextsearch:live -q
-ExecStop={{ docker_occ_cmd }} fulltextsearch:stop
+ExecStart=/bin/bash {{ docker_occ_cmd }} fulltextsearch:live -q
+ExecStop=/bin/bash {{ docker_occ_cmd }} fulltextsearch:stop
 Nice=19
 Restart=always
 
