@@ -17,18 +17,30 @@
     reload: true
     sysctl_file: /etc/sysctl.conf
 
-- name: disable transparent hugepages - copy service file
-  copy:
-    src: disable-transparent-huge-pages.service
-    dest: '{{ service_path[ansible_distribution] }}/disable-transparent-huge-pages.service'
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_architecture == 'x86_64'
+- name: check /sys/kernel/mm/transparent_hugepage/enabled 
+  stat:
+    path: /sys/kernel/mm/transparent_hugepage/enabled
+  register: hugepage_enabled
 
-- name: enable service disable-transparent-hugepages
-  service:
-    name: disable-transparent-huge-pages.service
-    enabled: true
+- name: disable transparent hugepages
+  block:
+  - name: disable transparent hugepages - copy service file
+    copy:
+      src: disable-transparent-huge-pages.service
+      dest: '{{ service_path[ansible_distribution] }}/disable-transparent-huge-pages.service'
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: enable service disable-transparent-hugepages
+    service:
+      name: disable-transparent-huge-pages.service
+      enabled: true
+      state: started
+  when:
+    - ansible_memtotal_mb > 2048
+    - ansible_architecture == 'x86_64'
+    - hugepage_enabled.stat.isreg is defined and hugepage_enabled.stat.isreg
+
     state: started
   when: ansible_architecture == 'x86_64'
