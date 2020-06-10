@@ -41,6 +41,3 @@
     - ansible_memtotal_mb > 2048
     - ansible_architecture == 'x86_64'
     - hugepage_enabled.stat.isreg is defined and hugepage_enabled.stat.isreg
-
-    state: started
-  when: ansible_architecture == 'x86_64'
