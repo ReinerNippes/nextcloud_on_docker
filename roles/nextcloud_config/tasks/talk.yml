@@ -10,8 +10,7 @@
   shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
     - app:enable spreed
-    - config:app:set spreed stun_servers --value '["{{ nextcloud_server_fqdn }}:5349"]'
-    - config:app:set spreed turn_servers --value '[{"server":"{{ nextcloud_server_fqdn }}:5349","secret":"{{ lookup('password', '{{ nextcloud_credential_store }}/talk_secret chars=ascii_letters,digits length=32') | lower }}","protocols":"udp,tcp"}]'
+    - config:app:set spreed turn_servers --value '[{"server":"{{ nextcloud_server_fqdn }}:3478","secret":"{{ lookup('password', '{{ nextcloud_credential_store }}/talk_secret chars=ascii_letters,digits length=32') | lower }}","protocols":"udp,tcp"}]'
 #  when: talk_app_installed is changed
   
 - name: open ufw firewall
@@ -19,6 +18,6 @@
     name: prep_ufw
   vars:
     ufw_rules: 
-      - { port: '5349', proto: 'tcp', rule: 'allow' }
-      - { port: '5349', proto: 'udp', rule: 'allow' }
+      - { port: '3478', proto: 'tcp', rule: 'allow' }
+      - { port: '3478', proto: 'udp', rule: 'allow' }
   when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
