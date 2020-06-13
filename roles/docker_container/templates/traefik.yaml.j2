@@ -9,7 +9,7 @@ providers:
   docker:
     exposedByDefault: false
     endpoint: 'tcp://dockerproxy:2375'
-    network: 'traefik'
+    network: 'dockerproxy'
   file:
     watch: true
     filename: 'dynamic.yaml'

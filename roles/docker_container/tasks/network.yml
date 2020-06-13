@@ -11,3 +11,7 @@
     name: backend
     state: "{{ state | default('present') }}"
 
+- name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} dockerproxy network"
+  docker_network:
+    name: dockerproxy
+    state: "{{ state | default('present') }}"

@@ -38,6 +38,7 @@
     networks:
       - name: backend
       - name: traefik
+      - name: dockerproxy
     networks_cli_compatible: true
     ports:
       - "80:80"

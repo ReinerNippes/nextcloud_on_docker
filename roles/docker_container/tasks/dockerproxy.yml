@@ -6,7 +6,7 @@
     name: dockerproxy
     image: tecnativa/docker-socket-proxy:{{ docker_dockerproxy_image | default('latest') }}
     networks:
-      - name: traefik
+      - name: dockerproxy
     networks_cli_compatible: true
     labels:
       com.centurylinklabs.watchtower.enable: "true"
