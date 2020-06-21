@@ -10,7 +10,7 @@
   shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
     - app:enable spreed
-    - config:app:set spreed stun_servers --value '["{{ nextcloud_fqdn }}:3478"]'
+    - config:app:set spreed stun_servers --value '["{{ nextcloud_server_fqdn }}:3478"]'
     - config:app:set spreed turn_servers --value '[{"server":"{{ nextcloud_server_fqdn }}:3478","secret":"{{ lookup('password', '{{ nextcloud_credential_store }}/talk_secret chars=ascii_letters,digits length=32') | lower }}","protocols":"udp,tcp"}]'
 #  when: talk_app_installed is changed
   
