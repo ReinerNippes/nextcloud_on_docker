@@ -246,3 +246,6 @@ Your data files won't be deleted. You have to do this manually by executing the 
 ```bash
 rm -rf {{ nextcloud_base_dir }}
 ```
+
+If you find this Playbook helpful and want to donate something. Please go to this web page donate for childern in need. 
+https://wir-fuer-kinder-in-not.org/ aand click on "Spenden" (Donate)
