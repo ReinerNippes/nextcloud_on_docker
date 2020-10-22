@@ -230,6 +230,8 @@ and
 
 - `roles\nextcloud_config\defaults\main.yml` for nextcloud settings
 
+Also if you are working on a remote computer through ssh be sure to check the **firewall settings** in `roles/prep_ufw/defaults/main.yml` Only ports 20,80,443 will be opened by default. Please test locally before deploying on your remote server.
+
 ## Remove Nextcloud
 
 If you want to get rid of the containers run the following command.
