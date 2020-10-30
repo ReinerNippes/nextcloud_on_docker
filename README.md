@@ -230,7 +230,7 @@ and
 
 - `roles\nextcloud_config\defaults\main.yml` for nextcloud settings
 
-Also if you are working on a remote computer through ssh be sure to check the **firewall settings** in `roles/prep_ufw/defaults/main.yml` Only ports 20,80,443 will be opened by default. Please test locally before deploying on your remote server.
+Also if you are working on a remote computer through ssh be sure to check the **firewall settings** in `roles/prep_ufw/defaults/main.yml` Only ports 22,80,443 will be opened by default. Please test locally before deploying on your remote (ssh) server, you will get locked out if you use a custom port.
 
 ## Remove Nextcloud
 
