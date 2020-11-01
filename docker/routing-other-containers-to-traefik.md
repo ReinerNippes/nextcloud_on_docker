@@ -54,5 +54,5 @@ becomes
 You cannot have more than one container with the same rule name.
 
 ## Credits
-Credit goes to [Chris Wiegman](https://chriswiegman.com/2019/10/serving-your-docker-apps-with-https-and-traefik-2/).
+Based on the Tutorial from [Chris Wiegman](https://chriswiegman.com/2019/10/serving-your-docker-apps-with-https-and-traefik-2/).
 
