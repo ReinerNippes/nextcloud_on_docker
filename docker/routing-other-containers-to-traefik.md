@@ -6,7 +6,7 @@ Using this method, *Traefik2* will take care of automatic request and management
 
 In the example below we will use the **[whoami](https://doc.traefik.io/traefik/v2.0/user-guides/docker-compose/basic-example/)** container. If you setup everything just right, when accessing `subdomain.fqdn.com` you will get information regarding IP, container name, etc. from the *whoami* container
 
- 1. Create `docker-compose.yml` file with the sample content below. 
+ 1. Create `docker-compose.yml` file with the sample content below. Or use [docker-compose-whoami.yml](docker-compose-whoami.yml)
 >
     version: '3'
         networks:
@@ -52,9 +52,6 @@ becomes
 >traefik.http.middlewares.yourwebappname-https.redirectscheme.scheme=https
 
 You cannot have more than one container with the same rule name.
-
-## Sample config
-Check out the sample [docker-compose-whoami.yml](docker-compose-whoami.yml) for traefik/whoami
 
 ## Credits
 Credit goes to [Chris Wiegman](https://chriswiegman.com/2019/10/serving-your-docker-apps-with-https-and-traefik-2/).
