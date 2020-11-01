@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  traefik:
+    external: true
+services:
+  whoami:
+    image: traefik/whoami
+    networks:
+       - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.whoami-https.redirectscheme.scheme=https
+      - traefik.http.routers.whoami-http.entrypoints=web
+      - traefik.http.routers.whoami-http.rule=Host(`whoami.example.com`)
+      - traefik.http.routers.whoami-http.middlewares=whoami-https@docker
+      - traefik.http.routers.whoami.entrypoints=web-secure
+      - traefik.http.routers.whoami.rule=Host(`whoami.example.com`)
+      - traefik.http.routers.whoami.tls=true
+      - traefik.http.routers.whoami.tls.certresolver=certificatesResolverDefault
+      - traefik.docker.network=traefik

@@ -233,7 +233,8 @@ and
 Also if you are working on a remote computer through ssh be sure to check the **firewall settings** in `roles/prep_ufw/defaults/main.yml` Only ports 22,80,443 will be opened by default. Please test locally before deploying on your remote (ssh) server, you will get locked out if you use a custom port.
 
 ### Serving web apps in other containers on the server
-If you have other containers serving apps on your server and wish to use the Traefik2-container created by this playbook as a reverse proxy for them take a look [routing other containers to traefik](docker/routing-other-containers-to-traefik.md). There is also a [sample config](docker/docker-compose-whoami.yml).
+
+If you have other containers serving apps on your server and wish to use the Traefik2-container created by this playbook as a reverse proxy for them take a look [routing other containers to traefik](docker/routing-other-containers-to-traefik.md). There is also a [sample config](./docker/docker-compose-whoami.yml).
 
 ## Remove Nextcloud
 
