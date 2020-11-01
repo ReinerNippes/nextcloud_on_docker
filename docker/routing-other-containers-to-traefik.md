@@ -53,6 +53,7 @@ becomes
 
 You cannot have more than one container with the same rule name.
 
+## Sample config
 Check out the sample [docker-compose-whoami.yml](docker-compose-whoami.yml) for traefik/whoami
 
 ## Credits
