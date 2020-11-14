@@ -25,7 +25,7 @@ prepare_ubuntu() {
 prepare_debian() {
         $SUDO apt update -y
         $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
-        $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy install dirmngr curl git mc vim facter python3 python3-pip python3-apt python3-passlib python3-bcrypt python3-wheel python3-setuptools aptitude ansible -y
+        $SUDO apt-get -o Dpkg::Options::="--force-confnew" -fuy install dirmngr curl git mc vim facter python3 python3-pip python3-apt python3-passlib python3-bcrypt python3-wheel python3-setuptools aptitude -y
         [ $(uname -m) == "aarch64" ] && $SUDO apt install gcc python3-dev libffi-dev libssl-dev make -y
         $SUDO pip3 install ansible -U
 
@@ -44,7 +44,7 @@ prepare_debian() {
 prepare_raspbian() {
         $SUDO apt update -y
         $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
-        $SUDO apt install dirmngr mc vim git libffi-dev curl facter python python-apt python-pip python-passlib python-bcrypt aptitude ansible -y
+        $SUDO apt install dirmngr mc vim git libffi-dev curl facter python python-apt python-pip python-passlib python-bcrypt aptitude -y
         $SUDO pip install ansible -U
 
         set +x
@@ -61,7 +61,7 @@ prepare_raspbian() {
 
 prepare_centos() {
         $SUDO yum install epel-release -y
-        $SUDO yum install git vim mc curl facter python36 python36-pip ansible -y
+        $SUDO yum install git vim mc curl facter python36 python36-pip -y
         $SUDO yum update -y
         $SUDO pip3 install ansible -U
 
