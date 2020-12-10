@@ -17,7 +17,7 @@
     - fulltextsearch
     - fulltextsearch_elasticsearch
     - files_fulltextsearch
-    - files_fulltextsearch_tesseract
+#    - files_fulltextsearch_tesseract
   when: fulltextsearch_app_installed is changed
 
 - name: configure fulltextsearch app
