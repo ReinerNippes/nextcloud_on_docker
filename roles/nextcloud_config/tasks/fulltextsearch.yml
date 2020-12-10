@@ -8,7 +8,7 @@
     - fulltextsearch
     - fulltextsearch_elasticsearch
     - files_fulltextsearch
-    - files_fulltextsearch_tesseract
+#    - files_fulltextsearch_tesseract
   register: fulltextsearch_app_installed
 
 - name: enable fulltextsearch apps
@@ -38,10 +38,10 @@
     - config:app:set files_fulltextsearch files_office --value="1"
     - config:app:set files_fulltextsearch files_image --value="1"
     - config:app:set files_fulltextsearch files_audio --value="0"
-    - config:app:set files_fulltextsearch_tesseract tesseract_enabled --value="1"
-    - config:app:set files_fulltextsearch_tesseract tesseract_psm --value="4"
-    - config:app:set files_fulltextsearch_tesseract tesseract_lang --value="eng,de"
-    - config:app:set files_fulltextsearch_tesseract tesseract_pdf --value="1"
+#    - config:app:set files_fulltextsearch_tesseract tesseract_enabled --value="1"
+#    - config:app:set files_fulltextsearch_tesseract tesseract_psm --value="4"
+#    - config:app:set files_fulltextsearch_tesseract tesseract_lang --value="eng,de"
+#    - config:app:set files_fulltextsearch_tesseract tesseract_pdf --value="1"
 
 - name: create fulltextsearch index
   shell: '{{ docker_occ_cmd }} {{ item }}'
