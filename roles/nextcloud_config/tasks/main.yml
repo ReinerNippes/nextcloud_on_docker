@@ -70,7 +70,7 @@
 - name: nextcloud cronjob
   cron:
     name: nextcloud cronjob
-    minute: '*/15'
+    minute: '*/5'
     user: root
     job: "docker exec --user www-data nextcloud php -f cron.php > /dev/null 2>&1"
 
