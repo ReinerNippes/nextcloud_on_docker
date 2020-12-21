@@ -23,7 +23,7 @@
 - name: configure fulltextsearch app
   shell: '{{ docker_occ_cmd }} {{ item }}'
   loop:
-    - config:app:set fulltextsearch search_platform --value "OCA\FullTextSearch_ElasticSearch\Platform\ElasticSearchPlatform"
+    - config:app:set fulltextsearch search_platform --value "OCA\FullTextSearch_Elasticsearch\Platform\ElasticSearchPlatform"
     - config:app:set fulltextsearch app_navigation --value="1"
     - config:app:set fulltextsearch_elasticsearch analyzer_tokenizer --value "standard"
     - config:app:set fulltextsearch_elasticsearch elastic_host --value "http://elasticsearch_tesseract:9200"
