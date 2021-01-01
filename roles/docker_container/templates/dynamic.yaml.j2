@@ -11,12 +11,12 @@ http:
     nextcloud:
       headers:
         referrerPolicy: "no-referrer"
-        browserXSSFilter: "true"
-        contentTypeNosniff: "true"
+        browserXSSFilter: true
+        contentTypeNosniff: true
         customFrameOptionsValue: "SAMEORIGIN"
     nextcloud-redirect:
         redirectregex:
-          permanent: "true"
+          permanent: true
           regex: "https://(.*)/.well-known/(card|cal)dav"
           replacement: "https://$1/remote.php/dav"
 
