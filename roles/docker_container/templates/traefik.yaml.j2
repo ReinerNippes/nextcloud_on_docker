@@ -1,10 +1,24 @@
 ## Static Configuration
 
+api:
+  dashboard: false
+
 entryPoints:
   web:
     address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          to: web-secure
+
   web-secure:
     address: ':443'
+    http:
+      middlewares:
+        - secureHeaders@file
+      tls:
+        certResolver: letsencrypt
+
 providers:
   docker:
     exposedByDefault: false
@@ -13,12 +27,13 @@ providers:
   file:
     watch: true
     filename: 'dynamic.yaml'
+
 log:
   level: error
   
 {% if ssl_cert_email is defined %}
 certificatesResolvers:
-  certificatesResolverDefault:
+  letsencrypt:
     acme:
       email: "{{ ssl_cert_email }}"
       storage: 'acme.json'

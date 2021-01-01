@@ -1,8 +1,28 @@
 ## Dynamic Configuration
+http:
+  middlewares:
+    secureHeaders:
+      headers:
+        sslRedirect: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 31536000
+    nextcloud:
+      headers:
+        referrerPolicy: "no-referrer"
+        browserXSSFilter: "true"
+        contentTypeNosniff: "true"
+        customFrameOptionsValue: "SAMEORIGIN"
+    nextcloud-redirect:
+        redirectregex:
+          permanent: "true"
+          regex: "https://(.*)/.well-known/(card|cal)dav"
+          replacement: "https://$1/remote.php/dav"
 
 tls:
   options:
-    TLSOptionsDefault:
+    default:
       minVersion: 'VersionTLS12'
       preferServerCipherSuites: true
       cipherSuites:
