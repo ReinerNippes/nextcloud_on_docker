@@ -9,7 +9,7 @@
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the portainer container"
   docker_container:
     name: portainer
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     restart_policy: unless-stopped
     command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt') }}
     networks:
@@ -17,19 +17,12 @@
     networks_cli_compatible: true
     labels:
       traefik.enable: "true"
-      traefik.docker.network: backend
-      traefik.http.routers.portainer-http.entrypoints: "web"
-      traefik.http.routers.portainer-http.rule: "Host(`{{ nextcloud_server_fqdn }}`) && PathPrefix(`/portainer/`)"
-      traefik.http.routers.portainer-http.middlewares: "portainer-https@docker"
-      traefik.http.middlewares.portainer-https.redirectscheme.scheme: "https"
       traefik.http.routers.portainer.entrypoints: "web-secure"      
       traefik.http.routers.portainer.rule: "Host(`{{ nextcloud_server_fqdn }}`) && PathPrefix(`/portainer/`)"
-      traefik.http.routers.portainer.middlewares: portainerpathstrip@docker
-      traefik.http.middlewares.portainerpathstrip.stripprefix.prefixes: '/portainer'
+      traefik.http.routers.portainer.middlewares: portainer-pathstrip@docker
+      traefik.http.middlewares.portainer-pathstrip.stripprefix.prefixes: '/portainer'
       traefik.http.routers.portainer.service: portainer
-      traefik.http.routers.portainer.tls: "true"
-      traefik.http.routers.portainer.tls.options: "TLSOptionsDefault@file"
-      traefik.http.routers.portainer.tls.certresolver: "certificatesResolverDefault"
+      traefik.http.services.portainer.loadbalancer.server.port: "9000"
       com.centurylinklabs.watchtower.enable: "true"
 
     volumes:
