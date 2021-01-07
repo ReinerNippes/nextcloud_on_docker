@@ -3,6 +3,21 @@
 # Prepare system for nextcloud installation
 #
 
+prepare_manjaro() {
+        $SUDO pacman -S asible --noconfirm
+
+        set +x
+        echo
+        echo "------------------------------------------------------"
+        echo
+        echo "   Manjaro System ready to install Nextcloud."
+        echo
+        ansible --version
+        echo
+        echo "------------------------------------------------------"
+        echo
+}
+
 prepare_ubuntu() {
         $SUDO apt update -y
         $SUDO apt-get -o Dpkg::Options::="--force-confold" -fuy dist-upgrade
@@ -138,7 +153,7 @@ prepare_amzn() {
 usage() {
         echo
         echo "Linux distribution not detected."
-        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora|proton] prepare_system.sh"
+        echo "Use: ID=[manjaro|ubuntu|debian|centos|raspbian|amzn|fedora|proton] prepare_system.sh"
         echo "Other distributions not yet supported."
         echo
 }
@@ -157,6 +172,9 @@ else
 fi
 
 case $ID in
+        'manjaro')
+                prepare_manjaro
+        ;;
         'ubuntu')
                 prepare_ubuntu
         ;;
