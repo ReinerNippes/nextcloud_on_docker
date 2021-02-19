@@ -5,7 +5,7 @@ nextccloud_system_config:
   - "overwrite.cli.url --value=https://{{ nextcloud_server_fqdn }}"
   - "trusted_domains 0 --value={{ nextcloud_server_fqdn }}"
   - "trusted_domains 1 --value=nginx"
-  - "trusted_proxies 0 --value={{ traefik_facts.ansible_facts.docker_container.NetworkSettings.Networks.backend.IPAddress }}"
+  - "trusted_proxies 0 --value={{ traefik_facts.container.NetworkSettings.Networks.backend.IPAddress }}"
   - "redis host --value='redis'"
   - "redis port --value='6379' --type=integer"
   - "redis timeout --value='0' --type=integer"
@@ -48,12 +48,11 @@ nextccloud_system_config:
   - "loglevel --value=1 --type=integer"
   - "maintenance --value=false --type=boolean"
   - "theme --value=''"
-  
 
 nextccloud_mail_config:
-  - "mail_from_address --value={{ nextcloud_mail_from }}" 
-  - "mail_smtpmode     --value={{ nextcloud_mail_smtpmode }}" 
-  - "mail_smtpauthtype --value={{ nextcloud_mail_smtpauthtype }}" 
+  - "mail_from_address --value={{ nextcloud_mail_from }}"
+  - "mail_smtpmode     --value={{ nextcloud_mail_smtpmode }}"
+  - "mail_smtpauthtype --value={{ nextcloud_mail_smtpauthtype }}"
   - "mail_domain       --value={{ nextcloud_mail_domain }}"
   - "mail_smtpname     --value={{ nextcloud_mail_smtpname }}"
   - "mail_smtpsecure   --value={{ nextcloud_mail_smtpsecure }}"
@@ -64,15 +63,15 @@ nextccloud_mail_config:
   - "mail_smtppassword --value={{ nextcloud_mail_smtppwd }}"
 
 nextcloud_app_config:
-  - name:  survey_client
+  - name: survey_client
     state: disable
-  - name:  firstrunwizard
+  - name: firstrunwizard
     state: disable
-  - name:  admin_audit
+  - name: admin_audit
     state: enable
-  - name:  files_pdfviewer
+  - name: files_pdfviewer
     state: enable
 #  - name:  extract
 #    state: enable
 #  - name: files_versions_s3
-#    state: enable 
+#    state: enable
