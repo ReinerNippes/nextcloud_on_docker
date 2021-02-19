@@ -3,16 +3,21 @@
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the onlyoffice container"
   docker_container:
-    name:           'onlyoffice_documentserver'
-    image:          'onlyoffice/documentserver:{{ docker_onlyoffice_image | default("latest") }}'
-    restart_policy: 'always'
+    name: "onlyoffice_documentserver"
+    image: 'onlyoffice/documentserver:{{ docker_onlyoffice_image | default("latest") }}'
+    restart_policy: "always"
     networks:
-     - name:        'backend'
+      - name: "backend"
     networks_cli_compatible: true
     labels:
-        com.centurylinklabs.watchtower.enable:            "true"
+      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.depends-on: "nextcloud{% if 'fpm' in docker_nextcloud_image %},nginx{% endif %}"
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://onlyoffice_documentserver/healthcheck || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl --fail http://onlyoffice_documentserver/healthcheck || exit 1",
+        ]
       interval: 20s
       timeout: 10s
       retries: 5

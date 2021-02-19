@@ -5,6 +5,8 @@ nextcloud_traefik_label:
   nginx:
     traefik.enable: "false"
     com.centurylinklabs.watchtower.enable: "true"
+    com.centurylinklabs.watchtower.depends-on: "nginx,redis{% if nextcloud_db_type != 'sqlite' %},nextcloud-db{% endif %}"
+
   apache:
     traefik.enable: "true"
     traefik.http.routers.cloud.entrypoints: "web-secure"
@@ -13,20 +15,11 @@ nextcloud_traefik_label:
     traefik.http.routers.nginx.service: "cloud"
     traefik.http.services.nginx.loadbalancer.server.port: "80"
     com.centurylinklabs.watchtower.enable: "true"
-
-nextcloud_db_links:
-  pgsql:
-    - 'nextcloud-db:db'
-    - 'redis:redis'
-  mysql:
-    - 'nextcloud-db:db'
-    - 'redis:redis'
-  sqlite:
-    - 'redis:redis'
+    com.centurylinklabs.watchtower.depends-on: "redis,nextcloud-db"
 
 service_path:
-  CentOS: '/usr/lib/systemd/system'
-  Fedora: '/usr/lib/systemd/system'
-  Amazon: '/usr/lib/systemd/system'
-  Ubuntu: '/lib/systemd/system'
-  Debian: '/lib/systemd/system'
+  CentOS: "/usr/lib/systemd/system"
+  Fedora: "/usr/lib/systemd/system"
+  Amazon: "/usr/lib/systemd/system"
+  Ubuntu: "/lib/systemd/system"
+  Debian: "/lib/systemd/system"
