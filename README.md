@@ -155,7 +155,7 @@ adminer_enabled             = false           # The password will be stored in {
 
 You can install [Portainer](https://www.portainer.io/), a webgui for Docker.
 ```ini
-# Set to true to install Portainer webgui for Docker and provide fqdn. Fqdn is required due to portainer being routed through traefik.
+# Set to true to install Portainer webgui for Docker at https://nextcloud_server_fqdn/portainer/. 
 portainer_enabled           = false
 portainer_passwd            = ''      # If empty the playbook will generate a random password.
 ```
