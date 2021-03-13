@@ -77,6 +77,6 @@ adminer_enabled             = false
 # Set to true to fulltext search.
 fulltextsearch_enabled      = false
 
-# Set to true to install Portainer webgui for Docker.
+# Set to true to install Portainer webgui for Docker at https://nextcloud_server_fqdn/portainer/ .
 portainer_enabled           = false
 portainer_passwd            = ''              # If empty the playbook will generate a random password.
