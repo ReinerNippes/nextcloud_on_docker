@@ -14,11 +14,16 @@ http:
         browserXSSFilter: true
         contentTypeNosniff: true
         customFrameOptionsValue: "SAMEORIGIN"
+        customRequestHeaders: 
+          X-Forwarded-Proto: https
     nextcloud-redirect:
-        redirectregex:
-          permanent: true
-          regex: "https://(.*)/.well-known/(card|cal)dav"
-          replacement: "https://$1/remote.php/dav"
+        replacepathregex:
+          regex: "^/.well-known/ca(l|rd)dav"
+          replacement: "/remote.php/dav/"
+    nextcloud-webfinger:
+        replacepathregex:
+          regex: "^(/.well-known.*)"
+          replacement: "/index.php$${1}"
 
 tls:
   options:

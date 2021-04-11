@@ -3,19 +3,19 @@
 
 - name: copy uploadsize.conf to {{ nextcloud_config_dir }}
   copy:
-    src:  'uploadsize.conf'
-    dest: '{{ nextcloud_nginx_dir }}/uploadsize.conf'
-    owner: 'root'
-    group: 'root'
-    mode:  0644
+    src: "uploadsize.conf"
+    dest: "{{ nextcloud_nginx_dir }}/uploadsize.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
 
 - name: copy nginx.conf
   template:
-    src:  'nginx.conf.j2'
-    dest: '{{ nextcloud_nginx_dir }}/nginx.conf'
-    owner: 'root'
-    group: 'root'
-    mode:  0644
+    src: "nginx.conf.j2"
+    dest: "{{ nextcloud_nginx_dir }}/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the nginx container"
   docker_container:
@@ -34,9 +34,9 @@
       traefik.enable: "true"
       traefik.http.routers.nginx.entrypoints: "web-secure"
       traefik.http.routers.nginx.rule: "Host(`{{ nextcloud_server_fqdn }}`)"
-      traefik.http.routers.nginx.middlewares: "nextcloud@file,nextcloud-redirect@file"
+      traefik.http.routers.nginx.middlewares: "nextcloud@file,nextcloud-redirect@file,nextcloud-webfinger@file"
       traefik.http.routers.nginx.service: "nginx"
       traefik.http.services.nginx.loadbalancer.server.port: "80"
-      com.centurylinklabs.watchtower.enable:            "true"
+      com.centurylinklabs.watchtower.enable: "true"
     state: "{{ state | default('started') }}"
   register: docker_result
