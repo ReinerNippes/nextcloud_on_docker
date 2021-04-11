@@ -30,6 +30,10 @@ nextcloud_db_name           = 'nextcloud'
 nextcloud_db_user           = 'nextcloud'
 nextcloud_db_passwd         = ''              # If empty the playbook will generate a random password (stored in {{ nextcloud_base_dir }}/secrets ).
 
+# this sets the default region for phone numbers on your Nextcloud server
+# using ISO 3166-1 country codes such as DE for Germany, FR for France,
+nextcloud_default_phone_region = 'DE'
+
 ### Optional variables ###
 
 # Setup the Nextcloud mail server.

@@ -48,6 +48,7 @@ nextccloud_system_config:
   - "loglevel --value=1 --type=integer"
   - "maintenance --value=false --type=boolean"
   - "theme --value=''"
+  - "default_phone_region --value='{{ nextcloud_default_phone_region }}'"
 
 nextccloud_mail_config:
   - "mail_from_address --value={{ nextcloud_mail_from }}"
