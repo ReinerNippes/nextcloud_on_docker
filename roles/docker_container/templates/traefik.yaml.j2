@@ -30,7 +30,8 @@ providers:
 
 log:
   level: error
-  
+
+{# letsencrypt certs, see https://doc.traefik.io/traefik/https/acme/#the-different-acme-challenges for details #}
 {% if ssl_cert_email is defined %}
 certificatesResolvers:
   letsencrypt:
