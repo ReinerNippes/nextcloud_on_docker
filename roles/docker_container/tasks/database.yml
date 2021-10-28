@@ -29,7 +29,7 @@
         user: mysql:mysql
         tty: yes
         env:
-            MYSQL_DATABASE:      "{{ nextcloud_db_name  }}"
+            MYSQL_DATABASE:      "{{ nextcloud_db_name }}"
             MYSQL_USER:          "{{ nextcloud_db_user }}"
             MYSQL_PASSWORD:      "{{ nextcloud_db_passwd }}"
             MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
@@ -58,7 +58,7 @@
         user: postgres:postgres
         tty: yes
         env:
-            POSTGRES_DB:       "default"
+            POSTGRES_DB:       "{{ nextcloud_db_name }}"
             POSTGRES_USER:     "{{ nextcloud_db_user }}"
             POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
             PGDATA:            /var/lib/postgresql/data
