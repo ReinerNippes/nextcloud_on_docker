@@ -4,7 +4,7 @@
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the turnserver container"
   docker_container:
     name:           'turn_server'
-    image:          "{{ 'serverror' if ansible_architecture == 'aarch64' else 'instrumentisto' }}/coturn:{{ docker_turnserver_image | default('latest') }}"
+    image:          "coturn/coturn:{{ docker_turnserver_image | default('latest') }}"
     restart_policy: 'unless-stopped'
     command: >
       -n
@@ -20,9 +20,12 @@
       --bps-capacity=0
       --stale-nonce
       --no-multicast-peers
+      --min-port=49160 
+      --max-port=49200
     volumes:
       - 'turnserver-data-vol:/var/lib/coturn:rw'
     ports:
-      - 0.0.0.0:3478:3478/udp
-      - 0.0.0.0:3478:3478/tcp
+      - 3478:3478/udp
+      - 3478:3478/tcp
+      - 49152-49200:49152-49200/udp
     state:          '{{ state | default("started") }}'
