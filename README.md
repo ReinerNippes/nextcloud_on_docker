@@ -223,8 +223,28 @@ If you change anything in the below mentioned files the playbook might not work 
 If you want to do more fine tuning you may have a look at:
 
 - `group_vars\all.yml` for settings of directories, docker image tags and the rclone setup for restic backups.
-- `roles\docker_container\file` for php settings
-- `roles\docker_container\file` for webserver, php, turnserver and traefik settings
+- `roles\docker_container\files` for php settings
+- `roles\docker_container\files` for webserver, php, turnserver and traefik settings
+
+### Container Image Versions
+
+If you want to use other image versions change them in group_vars\all.yml 
+
+```
+docker_postgres_image:         14-alpine     # https://hub.docker.com/_/postgres?tab=description
+docker_mysql_image:            latest        # https://hub.docker.com/_/mariadb
+docker_nextcloud_image:        22-fpm-alpine # https://hub.docker.com/_/nextcloud
+docker_nginx_image:            1.22-alpine   # https://hub.docker.com/_/nginx
+docker_adminer_image:          latest        # https://hub.docker.com/_/adminer
+docker_traefik_image:          2.5           # https://hub.docker.com/_/traefik
+docker_watchtower_image:       latest        # https://hub.docker.com/r/containrrr/watchtower
+docker_redis_image:            6-alpine      # https://hub.docker.com/_/redis
+docker_collabora_image:        latest        # https://hub.docker.com/r/collabora/code
+docker_onlyoffice_image:       latest        # https://hub.docker.com/r/onlyoffice/documentserver
+docker_turnserver_image:       latest        # https://hub.docker.com/r/instrumentisto/coturn
+docker_dockerproxy_image:      latest        # https://hub.docker.com/r/tecnativa/docker-socket-proxy
+docker_elasticsearch_image:    7.6.2         # https://hub.docker.com/_/elasticsearch
+```
 
 and
 
