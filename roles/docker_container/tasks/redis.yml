@@ -11,9 +11,9 @@
       - name: backend
     networks_cli_compatible: true
     volumes:
-      - 'redis-data-vol:/data:rw'
+      - "redis-data-vol:/data:rw"
     labels:
-      com.centurylinklabs.watchtower.enable:         "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_redis }}"
     state: "{{ state | default('started') }}"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]

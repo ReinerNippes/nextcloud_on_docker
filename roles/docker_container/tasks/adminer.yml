@@ -17,7 +17,7 @@
       traefik.http.routers.adminer.entrypoints: "web-secure"
       traefik.http.routers.adminer.rule: "Host(`{{ nextcloud_server_fqdn }}`) && (Path(`/adminer/`) || Path(`/adminer`))"
       traefik.http.services.adminer.loadbalancer.server.port: "8080"
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_adminer }}"
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://adminer:8080/ || exit 1"]
       interval: 20s

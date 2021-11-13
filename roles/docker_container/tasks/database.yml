@@ -8,15 +8,15 @@
 
 - name: create data dump directory
   file:
-    name: '{{ nextcloud_database_dump_dir }}'
+    name: "{{ nextcloud_database_dump_dir }}"
     owner: root
     group: root
     mode: 0700
     state: directory
 
-- name: 'create data volume'
+- name: "create data volume"
   docker_volume:
-    name: 'nextcloud-database-vol'
+    name: "nextcloud-database-vol"
     state: present
 
 - name: mysql container
@@ -29,27 +29,27 @@
         user: mysql:mysql
         tty: yes
         env:
-            MYSQL_DATABASE:      "{{ nextcloud_db_name  }}"
-            MYSQL_USER:          "{{ nextcloud_db_user }}"
-            MYSQL_PASSWORD:      "{{ nextcloud_db_passwd }}"
-            MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
-        volumes: 
-          - 'nextcloud-database-vol:/var/lib/mysql'
+          MYSQL_DATABASE: "{{ nextcloud_db_name  }}"
+          MYSQL_USER: "{{ nextcloud_db_user }}"
+          MYSQL_PASSWORD: "{{ nextcloud_db_passwd }}"
+          MYSQL_ROOT_PASSWORD: "{{ lookup('password', '{{ nextcloud_credential_store }}/mysql_root_secret chars=ascii_letters,digits length=32') }}"
+        volumes:
+          - "nextcloud-database-vol:/var/lib/mysql"
         networks:
           - name: backend
         networks_cli_compatible: true
         labels:
-          com.centurylinklabs.watchtower.enable:         "true"
+          com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_mysql }}"
         state: "{{ state | default('started') }}"
         healthcheck:
-          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
           interval: 10s
           timeout: 5s
           retries: 5
   when: nextcloud_db_type == 'mysql'
 
 - name: postgres container
-  block: 
+  block:
     - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} postgres container"
       docker_container:
         name: nextcloud-db
@@ -58,17 +58,17 @@
         user: postgres:postgres
         tty: yes
         env:
-            POSTGRES_DB:       "default"
-            POSTGRES_USER:     "{{ nextcloud_db_user }}"
-            POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
-            PGDATA:            /var/lib/postgresql/data
-        volumes: 
+          POSTGRES_DB: "default"
+          POSTGRES_USER: "{{ nextcloud_db_user }}"
+          POSTGRES_PASSWORD: "{{ nextcloud_db_passwd }}"
+          PGDATA: /var/lib/postgresql/data
+        volumes:
           - "nextcloud-database-vol:/var/lib/postgresql/data:rw"
         networks:
           - name: backend
         networks_cli_compatible: true
         labels:
-          com.centurylinklabs.watchtower.enable:         "true"
+          com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_postgres }}"
         state: "{{ state | default('started') }}"
         healthcheck:
           test: ["CMD-SHELL", "pg_isready -U postgres"]

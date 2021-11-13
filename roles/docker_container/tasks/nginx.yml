@@ -37,7 +37,7 @@
       traefik.http.routers.nginx.middlewares: "nextcloud@file,nextcloud-redirect@file,nextcloud-webfinger@file"
       traefik.http.routers.nginx.service: "nginx"
       traefik.http.services.nginx.loadbalancer.server.port: "80"
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_nginx }}"
       com.centurylinklabs.watchtower.depends-on: "nextcloud"
     state: "{{ state | default('started') }}"
   register: docker_result

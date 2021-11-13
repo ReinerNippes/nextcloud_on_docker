@@ -48,6 +48,6 @@
       - "{{ traefik_config_dir }}/dynamic.yaml:/dynamic.yaml"
       - "{{ traefik_config_dir }}/acme.json:/acme.json"
     labels:
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_traefik }}"
     state: "{{ state | default('started') }}"
   register: traefik_facts

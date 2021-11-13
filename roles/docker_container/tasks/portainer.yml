@@ -9,7 +9,7 @@
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the portainer container"
   docker_container:
     name: portainer
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:{{ docker_portainer_image | default('latest') }}
     restart_policy: unless-stopped
     command: --host unix:///var/run/docker.sock --admin-password {{ portainer_passwd | password_hash('bcrypt') }}
     networks:
@@ -23,7 +23,7 @@
       traefik.http.middlewares.portainer-pathstrip.stripprefix.prefixes: '/portainer'
       traefik.http.routers.portainer.service: portainer
       traefik.http.services.portainer.loadbalancer.server.port: "9000"
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_portainer }}"
 
     volumes:
       - "{{ portainer_data_dir }}:/data"

@@ -35,4 +35,6 @@
     env:
       node.name: esearch
       discovery.type: single-node
+    labels:
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_elasticsearch }}"
     state: "{{ state | default('started') }}"

@@ -10,7 +10,7 @@
       - name: "backend"
     networks_cli_compatible: true
     labels:
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_onlyoffice }}"
       com.centurylinklabs.watchtower.depends-on: "nextcloud{% if 'fpm' in docker_nextcloud_image %},nginx{% endif %}"
     healthcheck:
       test:

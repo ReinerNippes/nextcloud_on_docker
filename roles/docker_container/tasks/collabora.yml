@@ -3,17 +3,17 @@
 
 - name: "{{ 'Create' if (state is undefined or 'absent' not in state) else 'Terminate' }} the collabora container"
   docker_container:
-    name:           'collabora_online'
-    image:          'collabora/code:{{ docker_collabora_image | default("latest") }}'
-    restart_policy: 'always'
-    tty:            'yes'
+    name: "collabora_online"
+    image: 'collabora/code:{{ docker_collabora_image | default("latest") }}'
+    restart_policy: "always"
+    tty: "yes"
     networks:
-     - name:        'backend'
+      - name: "backend"
     networks_cli_compatible: true
     env:
-        domain:     "{{ nextcloud_server_fqdn | regex_replace('\\.', '\\.') }}"
-        dictionaries: "{{ collabora_dictionaries }}"
-    capabilities:   'MKNOD'
+      domain: "{{ nextcloud_server_fqdn | regex_replace('\\.', '\\.') }}"
+      dictionaries: "{{ collabora_dictionaries }}"
+    capabilities: "MKNOD"
     labels:
-        com.centurylinklabs.watchtower.enable:            "true"
-    state:          '{{ state | default("started") }}'
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_collabora }}"
+    state: '{{ state | default("started") }}'

@@ -9,7 +9,7 @@
       - name: dockerproxy
     networks_cli_compatible: true
     labels:
-      com.centurylinklabs.watchtower.enable: "true"
+      com.centurylinklabs.watchtower.enable: "{{ watchtower_enabled_dockerproxy }}"
     env:
         CONTAINERS: "1"
     restart_policy: always

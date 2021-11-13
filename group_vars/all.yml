@@ -15,10 +15,13 @@ portainer_data_dir:            "portainer-data-vol"
 
 nextcloud_container_data_dir:  /var/nc-data
 
+# choose your container image version
+
+docker_nextcloud_image:        22-fpm-alpine
 docker_postgres_image:         14-alpine
 docker_mysql_image:            latest
-docker_nextcloud_image:        22-fpm-alpine
-docker_nginx_image:            1.22-alpine
+docker_nginx_image:            1.21-alpine
+docker_portainer_image:        2.9.2-alpine
 docker_adminer_image:          latest
 docker_traefik_image:          2.5
 docker_watchtower_image:       latest
@@ -28,6 +31,23 @@ docker_onlyoffice_image:       latest
 docker_turnserver_image:       latest
 docker_dockerproxy_image:      latest
 docker_elasticsearch_image:    7.6.2
+
+# enable auto update by watchtower for each container
+
+watchtower_enabled_nextcloud: "true"
+watchtower_enabled_postgres: "true"
+watchtower_enabled_mysql: "true"
+watchtower_enabled_nginx: "true"
+watchtower_enabled_portainer: "true"
+watchtower_enabled_adminer: "true"
+watchtower_enabled_traefik: "true"
+watchtower_enabled_watchtower: "true"
+watchtower_enabled_redis: "true"
+watchtower_enabled_collabora: "true"
+watchtower_enabled_onlyoffice: "true"
+watchtower_enabled_dockerproxy: "true"
+watchtower_enabled_elasticsearch: "true"
+
 
 docker_occ_cmd:                'docker exec --user www-data nextcloud php occ'
 
