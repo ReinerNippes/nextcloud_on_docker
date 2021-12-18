@@ -138,7 +138,7 @@ prepare_amzn() {
 usage() {
         echo
         echo "Linux distribution not detected."
-        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora|proton] prepare_system.sh"
+        echo "Use: ID=[ubuntu|debian|centos|raspbian|amzn|fedora|photon] prepare_system.sh"
         echo "Other distributions not yet supported."
         echo
 }
